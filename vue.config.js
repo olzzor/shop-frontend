@@ -5,14 +5,14 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost.test:8080',
+        target: 'http://172.31.44.24:8080',
+        // target: 'http://localhost.test:8080',
         changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
+        pathRewrite: {'^/api': ''}
       }
     },
-    allowedHosts: ['localhost.test','admin.localhost.test']
+    allowedHosts: 'all'
+    // allowedHosts: ['localhost.test','admin.localhost.test']
   },
   configureWebpack: {
     plugins: [

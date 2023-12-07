@@ -80,8 +80,10 @@ const adminRoutes = [
     },
 ];
 
-const USER_HOST = 'localhost.test:3000';
-const ADMIN_HOST_NAME = 'admin.localhost.test';
+const USER_HOST = '172.31.44.24.test:3000';
+const ADMIN_HOST_NAME = 'admin.172.31.44.24.test';
+// const USER_HOST = 'localhost.test:3000';
+// const ADMIN_HOST_NAME = 'admin.localhost.test';
 
 let routesToUse;
 
