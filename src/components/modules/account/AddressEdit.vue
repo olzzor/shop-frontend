@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-address">
+  <div class="address-edit">
     <div class="title">
       <span>주소지 추가 및 변경</span>
       <button class="btn-add-address" type="button" @click="state.showAddAddressModal = true">+ 추가</button>
@@ -38,11 +38,11 @@
 <script>
 import {onMounted, reactive} from "vue";
 import axios from "axios";
-import AddAddressModal from "@/components/modules/address/AddAddressModal.vue";
-import EditAddressModal from "@/components/modules/address/EditAddressModal.vue";
+import AddAddressModal from "@/components/modules/account/AddressAddModal.vue";
+import EditAddressModal from "@/components/modules/account/AddressEditModal.vue";
 
 export default {
-  name: "EditAddress",
+  name: "AddressEdit",
   components: {AddAddressModal, EditAddressModal},
   setup() {
     const state = reactive({
@@ -94,7 +94,7 @@ export default {
 </script>
 
 <style scoped>
-.edit-address {
+.address-edit {
   display: flex;
   flex-direction: column;
   justify-content: center;

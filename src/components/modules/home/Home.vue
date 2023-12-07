@@ -16,8 +16,8 @@
 import {onMounted, reactive, watch} from "vue";
 import {onBeforeRouteLeave, useRoute} from "vue-router";
 import axios from "axios";
-import AvailableProducts from "@/components/modules/product/AvailableProducts.vue";
-import RecentlyViewedProducts from "@/components/modules/product/RecentlyViewedProducts.vue";
+import AvailableProducts from "@/components/modules/product/ProductsAvailable.vue";
+import RecentlyViewedProducts from "@/components/modules/product/ProductsRecentlyViewed.vue";
 import NoticeModal from "@/components/modules/notice/NoticeModal.vue";
 
 export default {

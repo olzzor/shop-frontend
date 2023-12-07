@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import ShippingInfo from "@/modules/components/order/ShippingInfo.vue";
-import PriceSummary from "@/modules/components/order/PriceSummary.vue";
+import ShippingInfo from "@/components/modules/order/OrderShippingInfo.vue";
+import PriceSummary from "@/components/modules/order/OrderPriceSummary.vue";
 import {ref, onMounted, reactive} from 'vue';
 import {useRoute} from "vue-router";
 import axios from "axios";
@@ -115,14 +115,12 @@ export default {
 
             }).finally(() => {
               state.isSubmitting = false;
+              router.push({path: "/member/order-history"});
             });
-
-            router.push({path: "/member/order-history"});
-            console.log("결제 성공");
 
           } else {
             state.isSubmitting = false;
-            console.log("결제 실패");
+            alert("결제에 실패했습니다.");
           }
         });
 

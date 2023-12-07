@@ -41,7 +41,7 @@ const store = createStore({
                 state.icons[type] = state.showLinks[type] ? 'bi bi-chevron-bar-up' : 'bi bi-chevron-bar-down';
             }
         },
-        // PriceSummary.vue 에서 사용
+        // OrderPriceSummary.vue 에서 사용
         setCartProducts(state, cartProducts) {
             state.cartProducts = cartProducts;
         },

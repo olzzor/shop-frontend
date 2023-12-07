@@ -290,7 +290,6 @@ export default {
 
 .btn-add {
   background: linear-gradient(to bottom, #3a3a3a, #000000);
-  background-color: rgb(0, 0, 0);
   color: rgb(255, 255, 255);
   transition-property: color, background-color;
   display: block;

@@ -21,8 +21,8 @@
 import {reactive} from "vue";
 // import axios from "axios";
 // import store from "@/scripts/store";
-import ContactUs from "@/components/modules/contact/ContactUs.vue";
-import FrequentlyAskedQuestions from "@/components/modules/components/support/components/FrequentlyAskedQuestions.vue";
+import ContactUs from "@/components/modules/support/ContactUs.vue";
+import FrequentlyAskedQuestions from "@/components/modules/support/FrequentlyAskedQuestions.vue";
 
 export default {
   name: "Support",

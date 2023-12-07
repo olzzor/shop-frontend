@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import ContactUs from "@/components/modules/contact/ContactUs.vue";
+import ContactUs from "@/components/modules/support/ContactUs.vue";
 
 export default {
   name: 'CustomerSupport',

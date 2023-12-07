@@ -1,5 +1,5 @@
 <template>
-  <div class="find-password">
+  <div class="login-password-find">
     <div class="title">비밀번호 찾기</div>
     <div class="content">
 
@@ -24,7 +24,7 @@ import router from "@/scripts/router";
 import axiosInstance from "@/scripts/axiosInstance";
 
 export default {
-  name: "RecoverPassword",
+  name: "LoginPasswordFind",
   setup() {
     const state = reactive({
       isSubmitting: false,
@@ -86,7 +86,7 @@ export default {
 </script>
 
 <style scoped>
-.find-password {
+.login-password-find {
   display: flex;
   flex-direction: column;
   justify-content: center;

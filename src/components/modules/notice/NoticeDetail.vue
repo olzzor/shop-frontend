@@ -119,4 +119,5 @@ export default {
   max-width: 100%; /* 이미지의 최대 너비를 notice-content의 너비로 제한 */
   height: auto; /* 높이를 자동으로 조절하여 이미지의 원래 비율을 유지 */
 }
+
 </style>

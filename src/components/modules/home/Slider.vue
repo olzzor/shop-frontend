@@ -9,24 +9,14 @@
       </router-link>
     </div>
 
-    <div class="pagination">
+    <!-- 페이지네이션 바는 슬라이더가 한 개 이상일 때만 표시 -->
+    <div class="pagination" v-if="state.sliders.length > 1">
       <div class="bar-container" :style="'--slider-count: ' + state.sliders.length">
         <div v-for="(slider, index) in state.sliders" :key="index" class="bar" @click="setSlide(index)">
           <div :class="{ fill: currentSlide === index }"></div>
         </div>
       </div>
     </div>
-    <!--    <div class="pagination">-->
-    <!--      <div class="play-pause-controls">-->
-    <!--        <button v-if="isPlaying" @click="togglePlay"><i class="bi bi-pause-fill"></i></button>-->
-    <!--        <button v-else @click="togglePlay"><i class="bi bi-play-fill"></i></button>-->
-    <!--      </div>-->
-    <!--      <div class="navigation-controls">-->
-    <!--        <button @click="prevSlide"><i class="bi bi-chevron-left"></i></button>-->
-    <!--        <span>{{ currentSlide + 1 }} / {{ state.sliders.length }}</span>-->
-    <!--        <button @click="nextSlide"><i class="bi bi-chevron-right"></i></button>-->
-    <!--      </div>-->
-    <!--    </div>-->
   </div>
 </template>
 
@@ -38,7 +28,7 @@ export default {
   name: "Slider",
   setup() {
     const currentSlide = ref(0); // 현재 슬라이드의 인덱스를 저장하는 ref
-    const isPlaying = ref(true);
+    // const isPlaying = ref(true);
     const state = reactive({
       sliders: [],
     });
@@ -49,9 +39,9 @@ export default {
       });
     };
 
-    const togglePlay = () => {
-      isPlaying.value = !isPlaying.value;
-    };
+    // const togglePlay = () => {
+    //   isPlaying.value = !isPlaying.value;
+    // };
 
     const setSlide = (index) => {
       currentSlide.value = index;
@@ -69,15 +59,18 @@ export default {
       load();
 
       setInterval(() => {
-        if (isPlaying.value && state.sliders.length > 0) {
+        if (state.sliders.length > 1) {
           nextSlide();
         }
+        // if (isPlaying.value && state.sliders.length > 0) {
+        //   nextSlide();
+        // }
       }, 3000); // 3초마다 슬라이드 변경
     });
 
     return {
-      currentSlide, isPlaying, state,
-      togglePlay, setSlide, prevSlide, nextSlide,
+      currentSlide, state,
+      setSlide, prevSlide, nextSlide,
     }
   }
 }
@@ -122,25 +115,6 @@ img {
   background: none; /* 버튼의 배경색을 없앰 */
   border: rgba(0, 0, 0, 0.5); /* 추가: 버튼의 테두리를 없앰 */
   color: white; /* 아이콘 색을 흰색으로 설정 */
-}
-
-.navigation-controls {
-  background-color: rgba(233, 233, 233, 0.9); /* 회색 배경색과 투명도 설정 */
-  border-radius: 30px; /* 둥글게 묶어서 표시 */
-  display: flex; /* 플렉스박스 레이아웃 사용 */
-  align-items: center; /* 세로 중앙 정렬 */
-  gap: 5px; /* 요소 간 간격 설정 */
-  padding: 5px 10px; /* 패딩 설정 */
-}
-
-.navigation-controls button {
-  background: none; /* 버튼의 배경색을 없앰 */
-  border: none; /* 버튼의 테두리를 없앰 */
-}
-
-.navigation-controls span {
-  color: #000;
-  font-size: 0.8rem;
 }
 
 .pagination span.active {

@@ -34,7 +34,7 @@
 import {onMounted, reactive} from "vue";
 import axios from "axios";
 import lib from "@/scripts/lib";
-import ContactUsModal from "@/components/modules/components/modal/ContactUsModal.vue";
+import ContactUsModal from "@/components/modules/contact/ContactUsModal.vue";
 
 export default {
   name: 'ContactHistory',

@@ -121,7 +121,7 @@ import lib from "@/scripts/lib";
 import store from "@/scripts/store";
 import router from "@/scripts/router";
 import price from "@/scripts/price";
-import PriceSummary from "@/modules/components/order/PriceSummary.vue";
+import PriceSummary from "@/components/modules/order/OrderPriceSummary.vue";
 
 export default {
   name: 'Cart',

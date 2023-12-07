@@ -63,7 +63,7 @@
 import {reactive} from "vue";
 import axios from "axios";
 import lib from "@/scripts/lib";
-import price from "../../../../scripts/price";
+import price from "../../../scripts/price";
 
 export default {
   name: 'Favorites',

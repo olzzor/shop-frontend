@@ -217,8 +217,8 @@ import {computed, nextTick, onMounted, reactive, ref,} from "vue";
 import {useRoute} from "vue-router";
 import axios from "axios";
 import lib from "@/scripts/lib";
-import SearchProductModal from "@/components/modules/coupon/admin/SearchProductModal.vue";
-import SearchUserModal from "@/components/modules/coupon/admin/SearchUserModal.vue";
+import SearchProductModal from "@/components/modules/admin/coupon/SearchProductModal.vue";
+import SearchUserModal from "@/components/modules/admin/coupon/SearchUserModal.vue";
 import router from "@/scripts/router";
 
 export default {

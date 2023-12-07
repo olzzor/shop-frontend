@@ -17,9 +17,9 @@ import {computed, onMounted} from "vue";
 import {useRoute} from "vue-router/dist/vue-router";
 import axios from "axios";
 import store from "@/scripts/store";
-import Header from "@/common/Header.vue";
-import Slider from "@/common/Slider.vue";
-import Footer from "@/common/Footer.vue";
+import Header from "@/components/modules/home/Header.vue";
+import Slider from "@/components/modules/home/Slider.vue";
+import Footer from "@/components/modules/home/Footer.vue";
 
 export default {
   name: 'App',

@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-profile">
+  <div class="profile-edit">
     <div class="title">회원 정보 변경</div>
 
     <div class="content">
@@ -43,7 +43,7 @@ import axios from "axios";
 import store from "@/scripts/store";
 
 export default {
-  name: "EditProfile",
+  name: "ProfileEdit",
   props: ['user'],
   setup() {
     const passwordVisible = ref(false);
@@ -140,7 +140,7 @@ export default {
 </script>
 
 <style scoped>
-.edit-profile {
+.profile-edit {
   display: flex;
   flex-direction: column;
   justify-content: center;
