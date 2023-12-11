@@ -7,7 +7,8 @@ import axios from "axios"
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-axios.defaults.baseURL = 'http://localhost.test:8080';
+// axios.defaults.baseURL = 'http://localhost.test:8080';
+axios.defaults.baseURL = 'http://13.209.40.88:8080';
 axios.defaults.withCredentials = true;
 
 createApp(App)
