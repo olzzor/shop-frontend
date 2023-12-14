@@ -25,7 +25,7 @@
           <td>
             <input type="text" class="input-field" id="code"
                    :class="{ 'input-error': state.errorMessage.code }" v-model="state.form.code"
-                   @input="trimInput('code')" @keyup.enter="createCoupon"/>
+                   @keyup.enter="createCoupon"/>
           </td>
         </tr>
 
@@ -50,9 +50,9 @@
         <tr>
           <td colspan="2" class="table-title">쿠폰 적용 최소 금액</td>
           <td>
-            <input type="text" class="input-field" id="minAmount"
-                   :class="{ 'input-error': state.errorMessage.minAmount }" v-model="state.form.minAmount"
-                   @input="trimInput('minAmount')" @keyup.enter="createCoupon"/>
+            <input type="number" min="0" class="input-field" id="minAmount"
+                   :class="{ 'input-error': state.errorMessage.minAmount }" v-model.number="state.form.minAmount"
+                   @keyup.enter="createCoupon"/>
           </td>
         </tr>
 
@@ -66,7 +66,7 @@
                   {{ lib.getDiscountTypeName(type) }}
                 </option>
               </select>
-              <input type="text" class="input-field" v-model="state.form.discountValue">
+              <input type="number" min="0"  class="input-field" v-model.number="state.form.discountValue">
             </div>
           </td>
         </tr>
@@ -107,7 +107,9 @@
           <td colspan="2" class="table-title">유효기간</td>
           <td>
             <div class="date">
-              <input type="date" class="input-field date" v-model="state.form.startValidDate">
+              <input type="date" class="input-field date"
+                     :class="{ 'input-error': state.errorMessage.startValidDate }" v-model="state.form.startValidDate"
+                     @keyup.enter="createCoupon"/>
               &nbsp;~&nbsp;
               <input type="date" class="input-field date"
                      :class="{ 'input-error': state.errorMessage.endValidDate }" v-model="state.form.endValidDate"
@@ -163,12 +165,26 @@ export default {
     const showSearchProductModal = ref(false);
     const showSearchUserModal = ref(false);
     const state = reactive({
-      form: {type: '', code: '', name: '', detail: '', minAmount: '', discountType: '', discountValue: 0, startValidDate: '', endValidDate: '', categories: [], products: [], users: [], status: '',},
+      form: {type: '', code: '', name: '', detail: '', minAmount: 0, discountType: '', discountValue: 0, startValidDate: '', endValidDate: '', categories: [], products: [], users: [], status: '',},
       targetType: 'CATEGORY', // 'CATEGORY' or 'PRODUCT'
       selectedProducts: [],
       selectedUsers: [],
       hasError: false, errorMessage: {},
     });
+
+    const resetState = () => {
+      state.form = {
+        type: '', code: '', name: '', detail: '', minAmount: 0,
+        discountType: '', discountValue: 0,
+        startValidDate: '', endValidDate: '',
+        categories: [], products: [], users: [],
+        status: '',
+      };
+      state.selectedProducts = [];
+      state.selectedUsers = [];
+      state.hasError = false;
+      state.errorMessage = {};
+    };
 
     const handleProductSelected = (selectedProducts) => {
       if (selectedProducts && selectedProducts.length > 0) { // 선택된 상품이 있을 경우
@@ -219,10 +235,6 @@ export default {
       } else {
         state.form.categories = [];
       }
-    };
-
-    const trimInput = (key) => {
-      state.form[key] = state.form[key].trim();
     };
 
     const checkInput = () => {
@@ -288,9 +300,14 @@ export default {
         result = false;
       }
 
-      if (state.form.startValidDate && state.form.endValidDate
-          && (new Date(state.form.startValidDate) > new Date(state.form.endValidDate))) {
-        state.errorMessage.endValidDate = "종료 유효기간은 시작 유효기간보다 이후여야 합니다.";
+      if (!state.form.startValidDate) {
+        state.errorMessage.startValidDate = "유효 기간의 시작 날짜를 입력해주세요.";
+        result = false;
+      } else if (!state.form.endValidDate) {
+        state.errorMessage.endValidDate = "유효 기간의 종료 날짜를 입력해주세요.";
+        result = false;
+      } else if (new Date(state.form.startValidDate) > new Date(state.form.endValidDate)) {
+        state.errorMessage.endValidDate = "유효 기간의 종료 날짜는 시작 날짜보다 이후여야 합니다.";
         result = false;
       }
 
@@ -305,18 +322,27 @@ export default {
 
     const createCoupon = async () => {
       if (checkInput()) {
-
         axios.post('/api/coupon/regist', state.form).then(() => {
           window.alert('쿠폰이 등록되었습니다.');
+          resetState();
 
         }).catch(error => {
           if (error.response) {
-            window.alert(error.response.data);
-            if (error.response.status === 401) {
-              router.push({path: "/login"});
+            switch (error.response.status) {
+              case 400: // BAD_REQUEST
+                window.alert(error.response.data.message);
+                break;
+              case 401: // UNAUTHORIZED
+                window.alert(error.response.data.message);
+                break;
+              case 404: // NOT_FOUND
+                window.alert(error.response.data.message);
+                break;
+              default:
+                window.alert("오류가 발생했습니다. 다시 시도해주세요.");
             }
           } else {
-            window.alert("쿠폰 등록에 실패하였습니다.");
+            window.alert("오류가 발생했습니다. 다시 시도해주세요.");
           }
         });
       }
@@ -330,7 +356,7 @@ export default {
       nextTick(() => {
         const textarea = document.querySelector('#coupon-detail');
         textarea.style.height = '100px';
-        textarea.style.height = (textarea.scrollHeight < 250 ? textarea.scrollHeight : 250) + 'px'; // 최대 높이 제한 (약 10줄)
+        textarea.style.height = (textarea.scrollHeight < 150 ? textarea.scrollHeight : 150) + 'px'; // 최대 높이 제한 (약 10줄)
       });
     };
 
@@ -341,7 +367,7 @@ export default {
       showSearchProductModal, showSearchUserModal,
       state,
       handleProductSelected, handleUserSelected,
-      trimInput, autoGrow, createCoupon, back, toggleAllCategories, selectedAll,
+      autoGrow, createCoupon, back, toggleAllCategories, selectedAll,
     }
   }
 }

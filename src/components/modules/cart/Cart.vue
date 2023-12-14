@@ -82,7 +82,9 @@
                       </div>
                     </div>
 
-                    <div class="trash-icon-wrapper">
+                    <div class="action-icons">
+                      <i class="bi bi-heart-fill" v-if="cp.favoriteInfo.favorite"  @click="removeFavorite(cp.favoriteInfo.id)" :disabled="state.isSubmitting"></i>
+                      <i class="bi bi-heart" v-else @click="addFavorite(cp.productSize.id)" :disabled="state.isSubmitting"></i>
                       <i class="bi bi-trash3" @click="removeFromCart(cp.id)" :disabled="state.isSubmitting"></i>
                     </div>
                   </div>
@@ -183,6 +185,37 @@ export default {
       });
     };
 
+    const addFavorite = (productSizeId) => {
+      axios.post(`/api/favorite/add/${productSizeId}`).then(() => {
+        load();
+
+      }).catch(error => {
+        if (error.response) {
+          switch (error.response.status) {
+            case 400:
+              window.alert(error.response.data.message);
+              break;
+            case 404:
+              window.alert(error.response.data.message);
+              break;
+            case 409:
+              window.alert(error.response.data.message);
+              break;
+            default:
+              window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+          }
+        } else {
+          window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+        }
+      });
+    };
+
+    const removeFavorite = (favoriteId) => {
+      axios.delete(`/api/favorite/delete/${favoriteId}`).then(() => {
+        load();
+      })
+    };
+
     const removeFromCart = (cartProductId) => {
       state.isSubmitting = true;
 
@@ -209,7 +242,7 @@ export default {
       state, quantities,
       hasUnavailableProducts,
       updateQuantity, updateCoupon,
-      removeFromCart, checkout,
+      addFavorite, removeFavorite, removeFromCart, checkout,
     };
   }
 }
@@ -352,9 +385,12 @@ ul li img {
   flex-direction: row;
 }
 
-.trash-icon-wrapper {
+.action-icons {
   align-self: flex-end; /* 오른쪽 정렬 */
+  align-items: center;
   margin-top: auto;
+  display: flex; /* 아이콘들을 수평으로 배치 */
+  gap: 10px; /* 아이콘 간 간격 */
 }
 
 label {

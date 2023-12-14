@@ -26,7 +26,7 @@
       <div class="type-field" :class="{ 'input-error': state.errorMessage.type }">
         <select class="select-field" v-model="state.form.type">
           <option class="default-option" disabled value="">문의 사항을 선택해주세요.</option>
-          <option v-for="type in types" :key="type" :value="type">{{ type }}</option>
+          <option v-for="ct in contactTypes" :key="ct" :value="ct">{{ lib.getContactTypeName(ct) }}</option>
         </select>
       </div>
       <div class="error-message" v-if="state.errorMessage.type">{{ state.errorMessage.type }}</div>
@@ -62,13 +62,14 @@
 import {onMounted, reactive} from "vue";
 import store from "@/scripts/store";
 import axios from "axios";
+import lib from "@/scripts/lib";
 
 export default {
   name: "ContactUsModal",
   props: {show: Boolean},
   emits: ['close'],
   setup(props, {emit}) {
-    const types = ['주문 상태', '반품', '주소 변경', '배송 조회', '오류 문의', '기타'];
+    const contactTypes = lib.contactTypes;
 
     const state = reactive({
       show: true,
@@ -175,8 +176,8 @@ export default {
     onMounted(load);
 
     return {
-      store,
-      types, state,
+      store, lib,
+      contactTypes, state,
       inquiry, close,
     }
   }

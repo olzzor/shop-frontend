@@ -10,7 +10,7 @@
         <li v-for="(contact, idx) in state.contacts" :key="idx">
           <div class="contact">
             <div class="contact-details">
-              <span class="contact-title">[{{ contact.type }}] {{ contact.title }}</span>
+              <span class="contact-title">[{{ lib.getContactTypeName(contact.type) }}] {{ contact.title }}</span>
               <span class="contact-date">{{ lib.getFormattedDate(contact.regDate, 'YYYY-MM-DD HH:mm:ss') }}</span>
             </div>
 

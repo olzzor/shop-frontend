@@ -11,7 +11,7 @@
       <div class="notice-date">
         <small>
           {{ lib.getFormattedDate(state.notice.regDate, 'YYYY-MM-DD') }}
-          <span v-if="!isModDateAfterRegDate">(최근 수정 {{ lib.getFormattedDate(state.notice.modDate, 'YYYY-MM-DD') }})</span>
+          <span v-if="isModDateAfterRegDate">(최근 수정 {{ lib.getFormattedDate(state.notice.modDate, 'YYYY-MM-DD') }})</span>
         </small>
       </div>
 
@@ -60,9 +60,15 @@ export default {
     }
 
     const isModDateAfterRegDate = computed(() => {
-      const modDate = new Date(state.notice.modDate);
-      const regDate = new Date(state.notice.regDate);
-      return modDate > regDate;
+      // 년월일 형식으로 날짜 포맷팅
+      const modDateFormatted = lib.getFormattedDate(state.notice.modDate, 'YYYY-MM-DD');
+      const regDateFormatted = lib.getFormattedDate(state.notice.regDate, 'YYYY-MM-DD');
+
+      // 문자열 비교로 날짜 비교
+      return modDateFormatted > regDateFormatted;
+      // const modDate = new Date(state.notice.modDate);
+      // const regDate = new Date(state.notice.regDate);
+      // return modDate > regDate;
     });
 
     const load = () => {
@@ -82,7 +88,6 @@ export default {
 }
 </script>
 
-<!--<style>-->
 <style scoped>
 .notice-detail {
   display: flex;

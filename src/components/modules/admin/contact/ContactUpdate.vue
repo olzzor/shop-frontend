@@ -7,7 +7,7 @@
         <li v-for="(contact, idx) in state.contacts" :key="idx">
           <div class="contact">
             <div class="contact-header">
-              <span class="contact-title">[{{ contact.type }}] {{ contact.title }}</span>
+              <span class="contact-title">[{{ lib.getContactTypeName(contact.type) }}] {{ contact.title }}</span>
               <span class="contact-inquirer">{{ contact.inquirerName }} ({{ contact.inquirerEmail }})</span>
             </div>
 
