@@ -5,8 +5,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://13.209.40.88:8080',
-        // target: 'http://localhost.test:8080',
+        target: 'http://bridgeshop.com:8080',
         changeOrigin: true,
         pathRewrite: {'^/api': ''}
       }
@@ -54,6 +53,7 @@ module.exports = {
           ]
         }
       ]
-    }
+    },
+    devtool: process.env.NODE_ENV === 'development' ? 'source-map' : false, // 개발 환경에서 소스 맵 활성화
   }
 }

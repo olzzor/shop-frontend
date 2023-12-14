@@ -80,10 +80,8 @@ const adminRoutes = [
     },
 ];
 
-const USER_HOST = '13.209.40.88:3000';
-const ADMIN_HOST_NAME = 'admin.13.209.40.88';
-// const USER_HOST = 'localhost.test:3000';
-// const ADMIN_HOST_NAME = 'admin.localhost.test';
+const USER_HOST = 'bridgeshop.com:3000';
+const ADMIN_HOST_NAME = 'admin.bridgeshop.com';
 
 let routesToUse;
 
