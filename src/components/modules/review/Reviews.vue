@@ -38,7 +38,7 @@
               <div class="review">
                 <div class="product-image-section">
                   <router-link :to="{ name: 'ProductDetail', params: { id: r.productSizes[currentProductImageIndices[r.id] || 0].product.id }}">
-                    <span class="product-image-container" :style="{backgroundImage: `url(${r.productSizes[currentProductImageIndices[r.id] || 0].product.productImages[0].filePath}${r.productSizes[currentProductImageIndices[r.id] || 0].product.productImages[0].fileName})`}"></span>
+                    <span class="product-image-container" :style="{backgroundImage: `url(${r.productSizes[currentProductImageIndices[r.id] || 0].product.productImages[0].fileUrl})`}"></span>
                   </router-link>
                   <button class="btn-product-image-prev" v-if="r.productSizes.length > 1" @click="changeProductImage(r.id, -1)">◀</button>
                   <button class="btn-product-image-next" v-if="r.productSizes.length > 1" @click="changeProductImage(r.id, 1)">▶</button>
@@ -62,10 +62,10 @@
 
                   <div class="review-image-row" v-if="r.reviewImages && r.reviewImages.length" @click="showReviewModal(r.id)">
                     <div v-for="(ri, idx) in displayReviewImages(r.id)" :key="idx">
-                      <span class="review-image-container" :style="{backgroundImage: `url(${ri.filePath}${ri.fileName})`}"></span>
+                      <span class="review-image-container" :style="{backgroundImage: `url(${ri.fileUrl})`}"></span>
                     </div>
-                    <button class="btn-review-image-prev" v-if="r.reviewImages.length > 5" @click="changeReviewImage(r.id, -1)">◀</button>
-                    <button class="btn-review-image-next" v-if="r.reviewImages.length > 5" @click="changeReviewImage(r.id, 1)">▶</button>
+                    <button class="btn-review-image-prev" v-if="r.reviewImages.length > 5" @click="changeReviewImage($event, r.id, -1)">◀</button>
+                    <button class="btn-review-image-next" v-if="r.reviewImages.length > 5" @click="changeReviewImage($event, r.id, 1)">▶</button>
                   </div>
                 </div>
               </div>
@@ -113,13 +113,20 @@ export default {
 
     const displayReviewImages = (reviewId) => {
       const review = state.reviews.find(r => r.id === reviewId);
-      const startIndex = currentReviewImageIndices[reviewId] || 0;
-      let endIndex = startIndex + 5;
-      let displayImages = review.reviewImages.slice(startIndex, endIndex);
+      const imageCount = review.reviewImages.length; // 리뷰의 이미지 개수
+
+      // 리뷰 이미지가 5개 이하인 경우, 전체 이미지 배열 반환
+      if (imageCount <= 5) {
+        return review.reviewImages;
+      }
+
+      const startIndex = currentReviewImageIndices[reviewId] || 0; // 현재 표시되고 있는 이미지의 시작 인덱스
+      let endIndex = startIndex + 5; // 표시할 마지막 이미지의 인덱스 계산
+      let displayImages = review.reviewImages.slice(startIndex, endIndex); // 시작 인덱스부터 끝 인덱스까지의 이미지를 잘라서 표시할 이미지 목록을 생성
 
       // 이미지 목록이 끝에 도달한 경우, 시작부터 추가로 이미지를 가져옴
-      if (endIndex > review.reviewImages.length) {
-        endIndex = endIndex - review.reviewImages.length;
+      if (endIndex > imageCount) {
+        endIndex = endIndex - imageCount;
         displayImages = displayImages.concat(review.reviewImages.slice(0, endIndex));
       }
 
@@ -133,7 +140,9 @@ export default {
       currentProductImageIndices[reviewId] = nextIndex;
     };
 
-    const changeReviewImage = (reviewId, direction) => {
+    const changeReviewImage = (event, reviewId, direction) => {
+      event.stopPropagation(); // 이벤트 버블링 중단
+
       const totalImages = state.reviews.find(r => r.id === reviewId).reviewImages.length;
       const currentIndex = currentReviewImageIndices[reviewId] || 0;
       let nextIndex = currentIndex + direction;

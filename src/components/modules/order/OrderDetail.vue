@@ -23,7 +23,7 @@
           <div class="order-product">
             <div class="product-image">
               <router-link :to="{ name: 'ProductDetail', params: { id: od.product.id }}">
-                <img :src="`${od.product.productImages[0].filePath}${od.product.productImages[0].fileName}`" />
+                <img :src="`${od.product.productImages[0].fileUrl}`" />
               </router-link>
             </div>
 

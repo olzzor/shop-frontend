@@ -3,9 +3,7 @@
   <div class="slider">
     <div class="slider-content" v-if="state.sliders.length > 0 && state.sliders[currentSlide]" :key="currentSlide">
       <router-link :to="{ name: 'NoticeDetail', params: { id: state.sliders[currentSlide].id }}">
-        <img
-            :src="`${state.sliders[currentSlide].noticeSliderImage.filePath}${state.sliders[currentSlide].noticeSliderImage.fileName}`"
-            :alt="state.sliders[currentSlide].title" />
+        <img :src="`${state.sliders[currentSlide].noticeSliderImage.fileUrl}`" :alt="state.sliders[currentSlide].title" />
       </router-link>
     </div>
 

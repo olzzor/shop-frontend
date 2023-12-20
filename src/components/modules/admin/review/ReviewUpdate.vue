@@ -39,14 +39,14 @@
           <td>
             <div class="image">
               <div class="image-box" v-for="(ri, index) in state.review.reviewImages" :key="index">
-                <img class="review-image" :src="`${ri.filePath}${ri.fileName}`"/>
+                <img class="review-image" :src="`${ri.fileUrl}`"/>
               </div>
             </div>
           </td>
           <td>
             <div class="image">
               <div class="image-box" v-for="(ri, index) in state.review.reviewImages" :key="index">
-                <img class="review-image" :src="`${ri.filePath}${ri.fileName}`"/>
+                <img class="review-image" :src="`${ri.fileUrl}`"/>
               </div>
             </div>
           </td>

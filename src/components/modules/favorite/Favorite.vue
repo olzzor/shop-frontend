@@ -8,11 +8,13 @@
     <div class="content" v-if="state.favorites.length > 0">
       <ul>
         <li v-for="(f, idx) in state.favorites" :key="idx">
-
           <div class="favorite-product">
             <div class="product-image">
               <router-link :to="{ name: 'ProductDetail', params: { id: f.product.id }}">
-                <img :src="`${f.product.productImages[0].filePath}${f.product.productImages[0].fileName}`" />
+                <img :src="`${f.product.productImages[0].fileUrl}`" />
+                <div v-if="f.product.status !== 'ON_SALE'" class="not-in-stock-overlay">
+                  <div class="not-in-stock">NOT IN STOCK</div>
+                </div>
               </router-link>
             </div>
 
@@ -204,13 +206,6 @@ ul li img {
   height: 180px;
 }
 
-ul li i {
-  float: right;
-  font-size: 20px;
-  margin-top: 65px;
-  margin-right: 50px;
-}
-
 .favorite-product {
   display: flex; /* Flexbox 적용 */
   align-items: center; /* 수직 중앙 정렬 */
@@ -219,6 +214,7 @@ ul li i {
 }
 
 .product-image {
+  position: relative;
   flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
   margin: 10px 20px 10px 20px;
 }
@@ -248,8 +244,7 @@ ul li i {
 }
 
 .title-container {
-  display: inline-block;
-  white-space: nowrap;
+  white-space: normal; /* 자동으로 줄바꿈 */
 }
 
 .discount-container {
@@ -307,5 +302,34 @@ ul li i {
   background-color: rgb(0, 0, 0);
   color: rgb(255, 255, 255);
   transition-property: color, background-color;
+}
+
+.not-in-stock-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; /* 오버레이가 이미지와 같은 너비를 가지도록 설정 */
+  height: 100%; /* 오버레이가 이미지와 같은 높이를 가지도록 설정 */
+  background: rgba(0, 0, 0, 0.4); /* 반투명 배경 적용 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.not-in-stock {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: black;
+  color: white;
+  font-size: .85rem;
+  padding: 5px 8px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 130px;
+  text-align: center;
+  z-index: 2;
 }
 </style>

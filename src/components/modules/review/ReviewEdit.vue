@@ -168,7 +168,7 @@ export default {
 
       // 리뷰의 이미지 정보를 images ref와 existingImages ref에 설정
       if (data.reviewImages && data.reviewImages.length > 0) {
-        images.value = data.reviewImages.map(img => img.filePath + img.fileName);
+        images.value = data.reviewImages.map(img => img.fileUrl);
         existingImages.value = data.reviewImages.map(img => ({
           id: img.id,
           fileName: img.fileName,
@@ -229,7 +229,6 @@ export default {
 
         }).then(() => {
           window.alert('리뷰가 수정되었습니다.');
-          // router.push({path: "/"});
 
         }).catch(error => {
           if (error.response) {

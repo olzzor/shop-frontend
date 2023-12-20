@@ -40,16 +40,11 @@
         </tr>
 
         <tr>
-          <td colspan="2" class="table-title">
-            메인 이미지
-            <button type="button" class="btn-image-download" @click="downloadImage(state.notice.noticeMainImage)">
-              <i class="bi bi-download"></i>
-            </button>
-          </td>
+          <td colspan="2" class="table-title">메인 이미지</td>
           <td>
             <div class="image">
               <div v-if="state.notice.noticeMainImage" class="image-box">
-                <img class="notice-image" :src="`${state.notice.noticeMainImage.filePath}${state.notice.noticeMainImage.fileName}`"/>
+                <img class="notice-image" :src="`${state.notice.noticeMainImage.fileUrl}`" @click="showImage(state.notice.noticeMainImage.fileUrl)" />
               </div>
             </div>
           </td>
@@ -78,15 +73,11 @@
         </tr>
 
         <tr>
-          <td class="table-title">이미지
-            <button v-if="state.notice.noticeSliderImage" type="button" class="btn-image-download" @click="downloadImage(state.notice.noticeSliderImage)">
-              <i class="bi bi-download"></i>
-            </button>
-          </td>
+          <td class="table-title">이미지</td>
           <td>
             <div class="image">
               <div v-if="state.notice.noticeSliderImage" class="image-box">
-                <img class="notice-image" :src="`${state.notice.noticeSliderImage.filePath}${state.notice.noticeSliderImage.fileName}`"/>
+                <img class="notice-image" :src="`${state.notice.noticeSliderImage.fileUrl}`" @click="showImage(state.notice.noticeSliderImage.fileUrl)" />
               </div>
             </div>
           </td>
@@ -113,15 +104,11 @@
         </tr>
 
         <tr>
-          <td class="table-title">이미지
-            <button v-if="state.notice.noticeModalImage" type="button" class="btn-image-download" @click="downloadImage(state.notice.noticeModalImage)">
-              <i class="bi bi-download"></i>
-            </button>
-          </td>
+          <td class="table-title">이미지</td>
           <td>
             <div class="image">
               <div v-if="state.notice.noticeModalImage" class="image-box">
-                <img class="notice-image" :src="`${state.notice.noticeModalImage.filePath}${state.notice.noticeModalImage.fileName}`"/>
+                <img class="notice-image" :src="`${state.notice.noticeModalImage.fileUrl}`" @click="showImage(state.notice.noticeModalImage.fileUrl)" />
               </div>
             </div>
           </td>
@@ -175,11 +162,8 @@ export default {
       },
     });
 
-    const downloadImage = (noticeImage) => {
-      const link = document.createElement('a');
-      link.href = `${noticeImage.filePath}${noticeImage.fileName}`;
-      link.download = noticeImage.fileName;
-      link.click();
+    const showImage = (fileUrl) => {
+      window.open(fileUrl, '_blank');
     };
 
     const handleMainImageUpload = (event) => {
@@ -250,6 +234,7 @@ export default {
         id: data.id,
         type: data.type,
         title: data.title,
+        content: data.content,
         status: data.status,
         isSliderImage: data.isSliderImage,
         isModalImage: data.isModalImage
@@ -262,7 +247,7 @@ export default {
     return {
       lib, noticeTypes, noticeStatuses,
       state,
-      downloadImage, handleMainImageUpload, handleSliderImageUpload, handleModalImageUpload,
+      showImage, handleMainImageUpload, handleSliderImageUpload, handleModalImageUpload,
       updateNotice,
     }
   }
@@ -369,11 +354,5 @@ tr {
   border-color: rgb(0, 0, 0);
   color: rgb(255, 255, 255);
   transition-property: color, background-color;
-}
-
-.btn-image-download {
-  border: none; /* 테두리 제거 */
-  background-color: transparent; /* 배경색 투명으로 설정 */
-  cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
 }
 </style>

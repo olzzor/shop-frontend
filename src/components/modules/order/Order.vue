@@ -95,7 +95,6 @@ export default {
           merchant_uid: new Date().getTime(), // 상점에서 관리하는 주문 번호를 전달
           name: "주문명: 테스트",
           amount: price.value, // 총 결제 금액
-          // amount: 1, // 총 결제 금액
           buyer_email: addressInfo.email,
           buyer_name: addressInfo.name,
           buyer_tel: addressInfo.phone,
@@ -128,55 +127,6 @@ export default {
         state.isSubmitting = false;
       }
     };
-
-    // const payment = () => {
-    //   state.isSubmitting = true;
-    //
-    //   if (addressRef.value.checkInput()) {
-    //     const addressInfo = addressRef.value.getAddress();
-    //
-    //     IMP.init("imp13050435");
-    //
-    //     IMP.request_pay({ // param
-    //       pg: "html5_inicis",
-    //       pay_method: "card",
-    //       merchant_uid: new Date().getTime(), // 상점에서 관리하는 주문 번호를 전달
-    //       name: "주문명: 테스트",
-    //       amount: price.value, // 총 결제 금액
-    //       // amount: 1, // 총 결제 금액
-    //       buyer_email: addressInfo.email,
-    //       buyer_name: addressInfo.name,
-    //       buyer_tel: addressInfo.phone,
-    //       buyer_addr: addressInfo.address2 ? `${addressInfo.address1} ${addressInfo.address2}` : addressInfo.address1,
-    //       buyer_postcode: addressInfo.zipCode
-    //     }, rsp => { // callback
-    //       console.log(rsp);
-    //       const imp_uid = rsp.imp_uid;
-    //
-    //       if (rsp.success) {
-    //         axios.post(`/api/verifyIamport/${imp_uid}`).then((result) => {
-    //           if (rsp.paid_amount === result.data.response.amount) {
-    //             alert("결제가 완료되었습니다.");
-    //           } else {
-    //             alert("결제에 실패했습니다." + "에러코드 : " + rsp.error_code + "에러 메시지 : " + rsp.error_message);
-    //           }
-    //
-    //         }).finally(() => {
-    //           state.isSubmitting = false;
-    //         });
-    //
-    //         router.push({path: "/"});
-    //         console.log("결제 성공");
-    //       } else {
-    //         state.isSubmitting = false;
-    //         console.log("결제 실패");
-    //       }
-    //     });
-    //
-    //   } else {
-    //     state.isSubmitting = false;
-    //   }
-    // };
 
     return {
       price, state, addressRef, cartProducts,

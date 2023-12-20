@@ -114,7 +114,7 @@
 
           <td class="column-product-image">
             <div class="product-image">
-              <img :src="`${product.productImages[0].filePath}${product.productImages[0].fileName}`"/>
+              <img :src="`${product.productImages[0].fileUrl}`"/>
             </div>
           </td>
 

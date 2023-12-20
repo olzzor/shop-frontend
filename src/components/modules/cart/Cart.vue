@@ -6,7 +6,6 @@
 
     <div class="content">
       <div v-if="state.cartProducts.length > 0">
-
         <div class="product-list">
           <div class="product-info">
             <ul>
@@ -14,7 +13,7 @@
                 <div class="cart-product">
                   <div class="product-image">
                     <router-link :to="{ name: 'ProductDetail', params: { id: cp.product.id }}">
-                      <img :src="`${cp.product.productImages[0].filePath}${cp.product.productImages[0].fileName}`" />
+                      <img :src="`${cp.product.productImages[0].fileUrl}`" />
                       <div v-if="cp.product.status !== 'ON_SALE'" class="not-in-stock-overlay">
                         <div class="not-in-stock">NOT IN STOCK</div>
                       </div>
@@ -328,12 +327,12 @@ ul li img {
 
 .product-subtotal {
   display: flex;
+  flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
   flex-direction: column;
-  justify-content: space-between;
-  width: 200px;
+  width: 170px;
   height: 100%;
   padding-block: 30px;
-  margin-right: 20px;
+  margin-inline: 20px;
 }
 
 .product-title-row {
@@ -349,8 +348,7 @@ ul li img {
 }
 
 .title-container {
-  display: inline-block;
-  white-space: nowrap;
+  white-space: normal; /* 자동으로 줄바꿈 */
 }
 
 .discount-container {
@@ -387,7 +385,6 @@ ul li img {
 
 .action-icons {
   align-self: flex-end; /* 오른쪽 정렬 */
-  align-items: center;
   margin-top: auto;
   display: flex; /* 아이콘들을 수평으로 배치 */
   gap: 10px; /* 아이콘 간 간격 */

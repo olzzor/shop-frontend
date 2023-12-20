@@ -14,8 +14,7 @@
           <div class="product">
             <div v-if="product.productImages && product.productImages.length > 0" class="image-section">
               <router-link :to="{ name: 'ProductDetail', params: { id: product.id }}">
-                <span class="image-container"
-                      :style="{backgroundImage: `url(${product.productImages[0].filePath}${product.productImages[0].fileName})`}" />
+                <span class="image-container" :style="{backgroundImage: `url(${product.productImages[0].fileUrl})`}" />
               </router-link>
             </div>
             <div v-else class="image-section"><span class="image-container"/></div>

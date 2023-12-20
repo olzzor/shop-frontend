@@ -18,7 +18,7 @@
           <div class="product">
             <div class="image-section">
               <router-link :to="{ name: 'ProductDetail', params: { id: rv.product.id }}">
-                <span class="image-container" :style="{backgroundImage: `url(${rv.product.productImages[0].filePath}${rv.product.productImages[0].fileName})`}"/>
+                <span class="image-container" :style="{backgroundImage: `url(${rv.product.productImages[0].fileUrl})`}"/>
               </router-link>
             </div>
 

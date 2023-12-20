@@ -5,8 +5,7 @@
   <div class="modal-content" v-if="state.show">
     <div class="notice-image">
       <router-link :to="{ name: 'NoticeDetail', params: { id: notice.id }}">
-<!--        <img :src="`${notice.noticeImages[0].filePath}${notice.noticeImages[0].fileName}`" />-->
-        <img :src="`${notice.noticeModalImage.filePath}${notice.noticeModalImage.fileName}`" />
+        <img :src="`${notice.noticeModalImage.fileUrl}`" />
       </router-link>
     </div>
 

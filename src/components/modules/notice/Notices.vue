@@ -7,7 +7,7 @@
         <div class="notice-item" v-for="n in state.notices" :key="n.id">
           <div class="notice-img">
             <router-link :to="{ name: 'NoticeDetail', params: { id: n.id }}">
-              <img :src="`${n.noticeMainImage.filePath}${n.noticeMainImage.fileName}`" />
+              <img :src="`${n.noticeMainImage.fileUrl}`" />
             </router-link>
           </div>
           <div class="notice-title"><b>{{ n.title }}</b></div>

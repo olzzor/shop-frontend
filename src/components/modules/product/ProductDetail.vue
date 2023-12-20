@@ -7,13 +7,13 @@
         <div class="product-images">
           <div v-if="state.product.productImages && state.product.productImages.length > state.selectedImageIndex">
             <span class="selected-image-container" alt="Selected Product Image"
-                  :style="{backgroundImage: `url(${state.product.productImages[state.selectedImageIndex].filePath}${state.product.productImages[state.selectedImageIndex].fileName})`}" />
+                  :style="{backgroundImage: `url(${state.product.productImages[state.selectedImageIndex].fileUrl})`}" />
           </div>
 
           <div class="image-wrapper">
             <div class="image-list" ref="imageListRef">
               <div v-for="(file, idx) in state.product.productImages" :key="idx">
-              <span class="image-container" :style="{backgroundImage: `url(${file.filePath}${file.fileName})`}"
+              <span class="image-container" :style="{backgroundImage: `url(${file.fileUrl})`}"
                     @click="selectImage(idx)" />
               </div>
             </div>

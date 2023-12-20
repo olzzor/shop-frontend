@@ -85,14 +85,11 @@
         <tr>
           <td class="table-title">
             이미지
-            <button type="button" class="btn-image-download" @click="downloadImage">
-              <i class="bi bi-download"></i>
-            </button>
           </td>
           <td>
             <div class="image">
               <div class="image-box" v-for="(pf, index) in state.product.productImages" :key="index">
-                <img class="product-image" :src="`${pf.filePath}${pf.fileName}`"/>
+                <img class="product-image" :src="`${pf.fileUrl}`" @click="showImage(pf.fileUrl)"/>
               </div>
             </div>
           </td>
@@ -159,13 +156,8 @@ export default {
       },
     });
 
-    const downloadImage = () => {
-      for (const file of state.product.productImages) {
-        const link = document.createElement('a');
-        link.href = `${file.filePath}${file.fileName}`;
-        link.download = file.fileName;
-        link.click();
-      }
+    const showImage = (fileUrl) => {
+      window.open(fileUrl, '_blank');
     };
 
     const clickImageInput = () => {
@@ -271,7 +263,7 @@ export default {
     return {
       lib, categoryCodes, productStatuses,
       imageInput, images, state,
-      downloadImage, clickImageInput, previewImage, dropImage, deleteImage,
+      showImage, clickImageInput, previewImage, dropImage, deleteImage,
       updateProduct, autoGrow
     }
   }
@@ -416,11 +408,5 @@ tbody .table-title {
   border-color: rgb(0, 0, 0);
   color: rgb(255, 255, 255);
   transition-property: color, background-color;
-}
-
-.btn-image-download {
-  border: none; /* 테두리 제거 */
-  background-color: transparent; /* 배경색 투명으로 설정 */
-  cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
 }
 </style>

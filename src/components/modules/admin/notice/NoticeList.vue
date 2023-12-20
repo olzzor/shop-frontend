@@ -130,7 +130,7 @@
 
           <td class="column-notice-main-image">
             <div class="notice-main-image">
-              <img :src="`${n.noticeMainImage.filePath}${n.noticeMainImage.fileName}`"/>
+              <img :src="`${n.noticeMainImage.fileUrl}`"/>
             </div>
           </td>
 
@@ -139,7 +139,7 @@
           </td>
           <td class="column-notice-slider-image">
             <div v-if="n.noticeSliderImage" class="notice-slider-image">
-              <img :src="`${n.noticeSliderImage.filePath}${n.noticeSliderImage.fileName}`"/>
+              <img :src="`${n.noticeSliderImage.fileUrl}`"/>
             </div>
           </td>
 
@@ -148,7 +148,7 @@
           </td>
           <td class="column-notice-modal-image">
             <div v-if="n.noticeModalImage" class="notice-modal-image">
-              <img :src="`${n.noticeModalImage.filePath}${n.noticeModalImage.fileName}`"/>
+              <img :src="`${n.noticeModalImage.fileUrl}`"/>
             </div>
           </td>
 
