@@ -1,0 +1,340 @@
+.cart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1000px;
+
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* 자식 요소들이 전체 너비를 차지하도록 설정 */
+
+    .product-list {
+      display: flex; /* 새로 추가된 컨테이너에 flex 적용 */
+
+      .product-info {
+        flex-grow: 1; /* 가능한 모든 여유 공간을 차지하도록 설정 */
+        margin-right: 20px; /* price-summary와의 간격을 조정 */
+
+        ul {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+
+          li {
+            display: flex;
+            border-bottom: 1px solid #eee;
+
+            .cart-product {
+              display: flex; /* Flexbox 적용 */
+              align-items: flex-start; /* 상단 정렬 */
+              justify-content: space-between;
+              flex-grow: 1; // 가용 공간을 차지하도록 설정
+
+              .product-image {
+                position: relative;
+                flex: 0 0 auto;
+                margin: 10px 20px;
+
+                img {
+                  width: 150px;
+                  height: 180px;
+                }
+
+                .not-in-stock-overlay {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%; /* 오버레이가 이미지와 같은 너비를 가지도록 설정 */
+                  height: 100%; /* 오버레이가 이미지와 같은 높이를 가지도록 설정 */
+                  background: rgba(0, 0, 0, 0.4); /* 반투명 배경 적용 */
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  z-index: 1;
+
+                  .not-in-stock {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: black;
+                    color: white;
+                    font-size: .85rem;
+                    padding: 5px 8px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                    width: 130px;
+                    text-align: center;
+                    z-index: 2;
+                  }
+                }
+              }
+
+              .product-details {
+                flex-grow: 1; /* 가능한 모든 여유 공간을 차지하도록 설정 */
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                padding-block: 30px;
+
+                .details-wrapper {
+                  justify-content: flex-start;
+
+                  .product-title-row {
+                    display: block; // 블록 레벨 요소, 자동 줄바꿈 처리
+                    font-size: 0.9rem;
+                    font-weight: bold;
+
+                    .title-container, .discount-container {
+                      display: inline;
+                    }
+
+                    .title-container {
+                      white-space: normal; /* 자동으로 줄바꿈 */
+                    }
+
+                    .discount-container {
+                      margin-left: 0.2rem;
+                      color: #dc3545;
+                    }
+                  }
+
+                  .product-price-row {
+                    font-size: 0.9rem;
+
+                    .price-container {
+                      display: flex; /* Use flexbox for the price container */
+                      align-items: center;
+                      gap: 0.25rem;
+
+                      .original-price {
+                        color: darkgray;
+
+                        &.sale {
+                          text-decoration: line-through;
+                        }
+                      }
+
+                      .discounted-price {
+                        color: #dc3545;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            .product-subtotal {
+              display: flex;
+              flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
+              flex-direction: column;
+              justify-content: space-between;
+              width: 190px;
+              height: 100%;
+              padding-block: 30px;
+              margin-inline: 20px;
+
+              .subtotal-quantity-container, .subtotal-coupon-container, .subtotal-price-container {
+                display: flex;
+                flex-direction: row;
+
+                label {
+                  flex: 0 0 45px;
+                }
+
+                .label-content {
+                  flex-grow: 1;
+                }
+
+                .select-field {
+                  border-color: darkgray;
+                  border-radius: 4px;
+                  flex-grow: 1;
+                  width: 100%;
+                }
+
+                .discount-text {
+                  color: darkgray;
+
+                  .amount {
+                    color: black;
+                  }
+                }
+              }
+
+              .action-icons {
+                display: flex; /* 아이콘들을 수평으로 배치 */
+                justify-content: space-between;
+                align-self: flex-end; /* 오른쪽 정렬 */
+                gap: 10px; /* 아이콘 간 간격 */
+                margin-top: auto;
+
+                .bi {
+                  vertical-align: middle;
+                  margin: 0;
+                  padding: 0;
+                }
+              }
+            }
+          }
+        }
+
+        .alert-message {
+          color: #dc3545;
+          text-align: right;
+          margin-top: 10px;
+        }
+      }
+
+      .price-summary {
+        width: 200px;
+        flex-shrink: 0; /* 요약 부분의 크기가 줄어들지 않도록 설정 */
+      }
+    }
+
+    .actions {
+      width: 100%; /* 전체 너비를 차지하게 설정 */
+      text-align: center; /* 버튼을 중앙에 배치 */
+      margin-top: 20px; /* 상단 간격 추가 */
+
+      .button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        font-size: .75rem;
+        font-weight: 700;
+        height: 3.2rem;
+        justify-content: center;
+        text-align: center;
+        transition-timing-function: cubic-bezier(.215, .61, .355, 1);
+        width: 100%;
+        margin-block: 10px;
+        border-radius: 5px;
+        border: none; /* 테두리 제거 */
+
+        &.btn-checkout {
+          background: linear-gradient(to bottom, #3a3a3a, #000000);
+          color: rgb(255, 255, 255);
+          margin-inline: auto;
+          display: block; /* block으로 설정하여 width를 제어 */
+          width: 50%;
+        }
+      }
+    }
+
+    &.no-cart-data {
+      font-size: 1rem;
+    }
+  }
+}
+
+@include mobile {
+  .cart {
+    margin-top: 60px;
+    margin-inline: 10px;
+
+    .title {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    .content {
+      .product-list {
+        display: flex;
+        flex-direction: column;
+
+        .product-info {
+          margin-right: 0px;
+          ul {
+            li {
+              flex-direction: column;
+              .cart-product {
+                .product-image {
+                  img {}
+                  .not-in-stock-overlay {
+                    .not-in-stock {}
+                  }
+                }
+
+                .product-details {
+                  .details-wrapper {
+                    .product-title-row {
+                      font-size: 0.75rem;
+                      .title-container, .discount-container {}
+                      .title-container {}
+                      .discount-container {}
+                    }
+
+                    .product-price-row {
+                      font-size: 0.75rem;
+                      .price-container {
+                        .original-price {
+                          &.sale {}
+                        }
+                        .discounted-price {}
+                      }
+                    }
+                  }
+                }
+              }
+
+              .product-subtotal {
+                width: 90%;
+                height: 100%;
+                font-size: 0.75rem;
+                padding-block: 10px;
+                margin-inline: 20px;
+                .subtotal-quantity-container, .subtotal-coupon-container, .subtotal-price-container {
+                  label {}
+                  .label-content {}
+                  .select-field {}
+                  .discount-text {
+                    .amount {}
+                  }
+                }
+
+                .action-icons {
+                  .bi {}
+                }
+              }
+            }
+          }
+
+          .alert-message {
+            font-size: .65rem;
+            margin-top: 5px;
+          }
+        }
+
+        .price-summary {
+          align-self: flex-end;
+        }
+      }
+
+      .actions {
+        .button {
+          font-size: .7rem;
+          font-weight: 500;
+          height: 2.5rem;
+          &.btn-checkout {
+            width: 60%;
+          }
+        }
+      }
+
+      &.no-cart-data {
+        font-size: .8rem;
+      }
+    }
+  }
+}
+

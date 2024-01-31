@@ -1,0 +1,125 @@
+.contact-history {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 90px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 800px;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+
+    .btn-contact-us {
+      background-color: #000; /* 버튼의 배경색 */
+      color: #fff; /* 글자색 */
+      border: none; /* 테두리 제거 */
+      border-radius: 5px; /* 둥근 모서리 */
+      cursor: pointer; /* 마우스를 올렸을 때 커서 모양 변경 */
+      font-size: 0.8rem;
+      text-align: center;
+      width: 100px;
+      height: 28px;
+      line-height: 28px;
+    }
+  }
+
+  .content {
+    font-size: .75rem;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        display: flex;
+        border-bottom: 1px solid #eee;
+
+        .contact {
+          display: flex; /* Flexbox 적용 */
+          align-items: center; /* 수직 중앙 정렬 */
+          justify-content: space-between;
+          width: 100%;
+
+          .contact-details {
+            display: flex;
+            flex-grow: 1; /* 가능한 모든 여유 공간을 차지하도록 설정 */
+            flex-direction: column;
+            margin: 10px 20px 10px 20px;
+
+            .contact-title {
+              font-size: 1rem;
+            }
+
+            .contact-date {
+              color: #888;
+            }
+          }
+
+          .contact-status {
+            align-items: center; /* 아이콘들을 수직 중앙에 위치시킵니다. */
+            flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
+            display: flex; /* 아이콘들을 수평으로 배치 */
+            margin: 10px 20px 10px 20px;
+          }
+        }
+      }
+    }
+
+    &.no-contact-data {
+      font-size: 1rem;
+    }
+  }
+}
+
+@include mobile {
+  .contact-history {
+    margin-top: 60px;
+    margin-inline: 10px;
+
+    .title {
+      font-size: 16px;
+      margin-bottom: 10px;
+
+      .btn-contact-us {
+        font-size: 0.7rem;
+        width: 90px;
+        height: 23px;
+        line-height: 23px;
+      }
+    }
+
+    .content {
+      font-size: .7rem;
+
+      ul {
+        li {
+          .contact {
+            .contact-details {
+              margin: 10px 10px 10px 10px;
+
+              .contact-title {
+                font-size: .8rem;
+              }
+
+              .contact-date {}
+            }
+
+            .contact-status {
+              margin: 10px 20px 10px 20px;
+            }
+          }
+        }
+      }
+
+      &.no-contact-data {
+        font-size: .8rem;
+      }
+    }
+  }
+}

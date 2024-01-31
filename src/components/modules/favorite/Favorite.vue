@@ -20,12 +20,8 @@
 
             <div class="product-details">
               <div class="product-title-row">
-                <div class="title-container">
-                  {{ f.product.name }}
-                </div>
-                <div class="discount-container" v-if="f.product.discountPer">
-                  <span>{{ f.product.discountPer }}%</span>↓
-                </div>
+                <span class="title-container">{{ f.product.name }}</span>
+                <span class="discount-container" v-if="f.product.discountPer">{{ f.product.discountPer }}%</span>
               </div>
 
               <div class="product-size-row">
@@ -41,22 +37,23 @@
                 </div>
               </div>
             </div>
+          </div>
 
-            <div class="action-icons">
-              <i class="bi bi-bag" @click="addToCart(f.id)" :disabled="state.isSubmitting"></i>
-              <i class="bi bi-trash3" @click="removeFavorite(f.id)" :disabled="state.isSubmitting"></i>
-            </div>
+          <div class="action-icons">
+            <i class="bi bi-bag" @click="addToCart(f.id)" :disabled="state.isSubmitting"></i>
+            <i class="bi bi-trash3" @click="removeFavorite(f.id)" :disabled="state.isSubmitting"></i>
           </div>
         </li>
       </ul>
 
-      <button class="button btn-remove-all" type="button" @click="removeFavoriteAll"
-              :disabled="state.favorites.length === 0 && state.isSubmitting">전체 삭제
-      </button>
+      <div class="action-buttons">
+        <button class="btn-remove-all" type="button" @click="removeFavoriteAll"
+                :disabled="state.favorites.length === 0 && state.isSubmitting">전체 삭제
+        </button>
+      </div>
     </div>
-    <div v-else>
-      <p>관심 상품이 없습니다.</p>
-    </div>
+
+    <div class="content no-favorite-data" v-else>관심 상품이 없습니다.</div>
 
   </div>
 </template>
@@ -158,178 +155,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.favorite {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 800px;
-}
-
-.title {
-  display: flex; /* Flexbox 적용 */
-  align-items: center; /* 수직 중앙 정렬 */
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-.count-favorites {
-  display: inline-flex; /* 인라인 플렉스로 변경 */
-  align-items: center; /* 수직 중앙 정렬 */
-  justify-content: center; /* 수평 중앙 정렬 */
-  width: 25px;
-  height: 25px;
-  margin-left: 10px;
-  font-size: .75rem;
-  font-weight: normal;
-  color: #ffffff;
-  background-color: #000;
-}
-
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-ul li {
-  display: flex;
-  border-bottom: 1px solid #eee;
-}
-
-ul li img {
-  width: 150px;
-  height: 180px;
-}
-
-.favorite-product {
-  display: flex; /* Flexbox 적용 */
-  align-items: center; /* 수직 중앙 정렬 */
-  justify-content: space-between;
-  width: 100%;
-}
-
-.product-image {
-  position: relative;
-  flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
-  margin: 10px 20px 10px 20px;
-}
-
-.product-details {
-  flex-grow: 1; /* 가능한 모든 여유 공간을 차지하도록 설정 */
-}
-
-.action-icons {
-  align-items: center; /* 아이콘들을 수직 중앙에 위치시킵니다. */
-  flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
-  display: flex; /* 아이콘들을 수평으로 배치 */
-  gap: 20px; /* 아이콘 간 간격 */
-  margin: 10px 20px 10px 20px;
-}
-
-.product-title-row {
-  display: flex; /* Use flexbox for the title row */
-  align-items: center; /* Vertically center align items */
-  font-size: 0.9rem;
-  font-weight: bold;
-}
-
-.title-container, .discount-container {
-  display: flex;
-  align-items: center;
-}
-
-.title-container {
-  white-space: normal; /* 자동으로 줄바꿈 */
-}
-
-.discount-container {
-  margin-left: 0.2rem;
-  color: #dc3545;
-}
-
-.product-price-row {
-  font-size: 0.9rem;
-}
-
-.price-container {
-  display: flex; /* Use flexbox for the price container */
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.original-price {
-  color: #6c757d;
-}
-
-.original-price.sale {
-  text-decoration: line-through;
-}
-
-.discounted-price {
-  color: #dc3545;
-}
-
-.bi {
-  vertical-align: middle;
-  margin: 0;
-  padding: 0;
-}
-
-.button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  border-width: 0.0625rem;
-  font-size: .75rem;
-  font-weight: 700;
-  height: 3.2rem;
-  justify-content: center;
-  text-align: center;
-  transition-timing-function: cubic-bezier(.215, .61, .355, 1);
-  width: 100%;
-  margin-block: 10px;
-  border-radius: 5px;
-  border: none; /* 테두리 제거 */
-}
-
-.btn-remove-all {
-  background: linear-gradient(to bottom, #3a3a3a, #000000);
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-  transition-property: color, background-color;
-}
-
-.not-in-stock-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%; /* 오버레이가 이미지와 같은 너비를 가지도록 설정 */
-  height: 100%; /* 오버레이가 이미지와 같은 높이를 가지도록 설정 */
-  background: rgba(0, 0, 0, 0.4); /* 반투명 배경 적용 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
-}
-
-.not-in-stock {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: black;
-  color: white;
-  font-size: .85rem;
-  padding: 5px 8px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 130px;
-  text-align: center;
-  z-index: 2;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/favorite/favorite";
 </style>

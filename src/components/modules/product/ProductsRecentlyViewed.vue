@@ -58,6 +58,7 @@ import {onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import lib from "@/scripts/lib";
 import {useStore} from "vuex";
+import {isMobile} from "@/scripts/mixin";
 import SelectProductSize from "@/components/modules/favorite/SelectProductSizeModal.vue";
 
 export default {
@@ -69,8 +70,8 @@ export default {
     const selectedProductId = ref(null);
     const state = reactive({
       recentlyViewed: [],
-      page: {pageSize: 4, currentPage: 1, totalPages: 0},
-    })
+      page: {pageSize: isMobile()? 2: 4, currentPage: 1, totalPages: 0},
+    });
 
     const goToPage = (page) => {
       state.page.currentPage = page;
@@ -127,131 +128,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.recently-viewed-products {
-  padding-block: 20px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-inline: 15px;
-  margin-bottom: 20px;
-//max-width: 80%;
-}
-
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-//padding: 0 15px;
-}
-
-.item {
-  flex: 0 0 25%;
-  max-width: 25%;
-  padding: 15px;
-}
-
-.product {
-  border: 1px solid rgba(169, 169, 169, .3);
-}
-
-.image-container {
-  display: block;
-  width: 100%;
-  height: 350px;
-  background-size: cover;
-  background-position: center;
-}
-
-.detail-section {
-  flex: 1;
-  display: flex;
-  padding: 10px 15px;
-  justify-content: space-between;
-}
-
-.info-section {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.action-buttons {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.title-row {
-  display: flex; /* Use flexbox for the title row */
-  align-items: center; /* Vertically center align items */
-  font-size: 0.9rem;
-  font-weight: bold;
-}
-
-.discount-per {
-  display: inline;
-  align-items: center;
-  color: #dc3545;
-  margin-right: 0.2rem;
-}
-
-.name {
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 200px;
-}
-
-.pricing-row {
-  font-size: 0.9rem;
-}
-
-.price-container {
-  display: flex; /* Use flexbox for the price container */
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.original-price {
-  color: #6c757d;
-}
-
-.original-price.sale {
-  text-decoration: line-through;
-}
-
-.discounted-price {
-  color: #dc3545;
-}
-
-.pagination {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-inline: 15px;
-  gap: 0.1rem;
-  font-size: 0.9rem;
-}
-
-.pagination button {
-  border: none;
-  background-color: transparent;
-}
-
-.pagination span {
-  cursor: pointer;
-  color: gray;
-  margin: 0 2px;
-}
-
-.pagination .current-page {
-  color: black;
-  font-weight: bold;
-}
-
+<style lang="scss" scoped>
+@import "@/styles/modules/product/products-recently-viewed";
 </style>

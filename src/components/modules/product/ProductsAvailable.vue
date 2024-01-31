@@ -46,7 +46,7 @@
         </div>
       </div>
     </div>
-    <div v-else style="margin: 60px 0 0 15px">상품이 없습니다.</div>
+    <div class="content no-product-data" v-else>상품이 없습니다.</div>
 
     <SelectProductSize v-if="showSelectProductSizeModal" @close="showSelectProductSizeModal = false"
                        :show="showSelectProductSizeModal" :productId="selectedProductId" />
@@ -95,124 +95,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.available-products {
-  padding-block: 10px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-inline: 15px;
-}
-
-.content {
-  margin-top: 20px;
-}
-
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.item {
-  /* flex */
-  /* flex-grow: 아이템이 컨테이너 내에서 추가적으로 늘어나는 비율을 설정 */
-  /* flex-shrink: 아이템이 컨테이너 내에서 줄어드는 비율을 설정 */
-  /* flex-basis: 아이템의 기본 크기를 설정 */
-  flex: 0 0 25%;
-  max-width: 25%;
-  padding: 15px;
-}
-
-.product {
-  border: 1px solid rgba(169, 169, 169, .3);
-}
-
-.image-container {
-  display: block;
-  width: 100%;
-  height: 350px;
-  background-size: cover;
-  background-position: center;
-}
-
-.detail-section {
-  display: flex;
-  padding: 10px 15px;
-  justify-content: space-between;
-//background-color: #f7f7f7;
-}
-
-.info-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.action-buttons {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.title-row {
-  display: flex; /* Use flexbox for the title row */
-  align-items: center; /* Vertically center align items */
-  font-size: 0.9rem;
-  font-weight: bold;
-}
-
-.discount-per {
-  display: inline;
-  align-items: center;
-  color: #dc3545;
-  margin-right: 0.2rem;
-}
-
-.name {
-  display: inline;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 200px;
-}
-
-.pricing-row {
-  font-size: 0.9rem;
-}
-
-.price-container {
-  display: flex; /* Use flexbox for the price container */
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.original-price {
-  color: #6c757d;
-}
-
-.original-price.sale {
-  text-decoration: line-through;
-}
-
-.discounted-price {
-  color: #dc3545;
-}
-
-.btn-load-more {
-  position: relative;
-  display: flex;
-  align-items: center;
-  font-size: .75rem;
-  justify-content: center;
-  text-align: center;
-  height: 40px;
-  width: 150px;
-  margin: 5px auto;
-  border: none; /* 테두리 제거 */
-  background: linear-gradient(to bottom, #3a3a3a, #000000);
-  color: rgb(255, 255, 255);
-  transition-property: color, background-color;
-}
+<style lang="scss" scoped>
+@import "../../../styles/modules/product/products-available";
 </style>

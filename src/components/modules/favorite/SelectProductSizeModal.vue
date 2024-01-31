@@ -2,7 +2,7 @@
   <div class="modal-overlay" v-if="state.show"></div>
 
   <div class="modal-content" v-if="state.show">
-    <h4>{{ state.product.name }}</h4>
+    <span class="product-name">{{ state.product.name }}</span>
 
     <div class="product-sizes">
       <ul>
@@ -96,60 +96,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* 검은색의 70% 투명도 */
-  z-index: 999; /* 모달보다 하나 낮은 z-index */
-}
-
-.modal-content {
-  position: fixed;
-  top: 50%; /* 화면의 중앙에서 시작 */
-  left: 50%; /* 화면의 중앙에서 시작 */
-  transform: translate(-50%, -50%); /* 중앙 정렬을 위한 변환 */
-  z-index: 1000;
-  max-width: 500px;
-  padding: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  font-size: .75rem;
-}
-
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-ul li {
-  display: flex;
-  justify-content: space-between; /* size 내용은 왼쪽, heart icon 은 오른쪽으로 정렬합니다. */
-  align-items: center; /* 항목들을 수직으로 중앙 정렬합니다. */
-  border-bottom: 1px solid #eee;
-  padding-block: 5px;
-  padding-inline: 10px;
-}
-
-ul li i {
-  float: right;
-}
-
-.size-stock {
-  font-color: #888; /* 회색으로 설정 */
-}
-
-.actions {
-  display: flex;
-  justify-content: flex-end; /* 오른쪽 정렬 */
-  align-items: center; /* 수직 중앙 정렬 */
-  margin-top: 20px;
-}
-
-.close-text {
-  cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/favorite/select-product-size-modal";
 </style>

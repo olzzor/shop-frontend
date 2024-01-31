@@ -303,7 +303,7 @@ export default {
               status: contact.status
             }));
 
-        axios.post("/api/contact/update", args).then(() => {
+        axios.post("/api/contact/update/multiple", args).then(() => {
           alert('문의 내역이 성공적으로 변경되었습니다.');
           load();
 

@@ -31,12 +31,13 @@ const defaultRoutes = [
     {path: '/member/edit-profile', name: 'ProfileEdit', component: () => import('@/components/modules/account/ProfileEdit.vue')},
     {path: '/member/edit-address', name: 'AddressEdit', component: () => import('@/components/modules/account/AddressEdit.vue')},
     {path: '/member/change-password', name: 'ChangePassword', component: () => import('@/components/modules/account/PasswordChange.vue')},
+    {path: '/member/reset-password/:token', name: 'ResetPassword', component: () => import('@/components/modules/account/PasswordReset.vue')},
 
     {path: '/customer/contact-detail/:id', name: 'ContactDetail', component: () => import('@/components/modules/contact/ContactDetail.vue')},
     {path: '/support', name: 'Support', component: () => import('@/components/modules/support/Support.vue')},
     {path: '/customer/order-detail/:id', name: 'OrderDetailForCustomer', component: () => import('@/components/modules/order/OrderDetail.vue')},
 
-    {path: '/customer/contact-us', name: 'ContactUs', component: () => import('@/components/modules/support/ContactUs.vue')},
+    // {path: '/customer/contact-us', name: 'ContactUs', component: () => import('@/components/modules/support/ContactUs.vue')},
     // {path: '/customer/support', name: 'CustomerSupport', component: () => import('@/components/modules/support/CustomerSupport.vue')},
     {path: '/customer/FAQ', name: 'FrequentlyAskedQuestions', component: () => import('@/components/modules/support/FrequentlyAskedQuestions.vue')},
 
@@ -80,8 +81,8 @@ const adminRoutes = [
     },
 ];
 
-const USER_HOST = 'bridgeshop.com:3000';
-const ADMIN_HOST_NAME = 'admin.bridgeshop.com';
+const USER_HOST = 'localhost.test:3000';
+const ADMIN_HOST_NAME = 'admin.localhost.test';
 
 let routesToUse;
 

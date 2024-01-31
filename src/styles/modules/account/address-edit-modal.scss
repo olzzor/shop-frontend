@@ -1,0 +1,257 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* 검은색의 70% 투명도 */
+  z-index: 1; /* 모달보다 하나 낮은 z-index */
+}
+
+.modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  max-width: 600px;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+  .recipient-info {
+    margin-bottom: 20px;
+
+    .name-field, .phone-field {
+      display: flex; /* Use flex to align items in one line */
+      align-items: center; /* Vertically align items in the middle */
+      border: 1px solid #ccc; /* Add border around the container */
+      padding: 5px 10px; /* Add some padding inside the container */
+      border-radius: 5px; /* Optional: for rounded corners */
+      width: 100%;
+      margin-top: 10px;
+
+      .input-field {
+        border: none;
+        outline: none;
+        width: 100%;
+        height: 30px;
+        font-size: .75rem;
+
+        /* 웹킷 기반 브라우저(Chrome, Safari 등)의 자동완성 스타일을 덮어쓰기 위한 코드 */
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+          -webkit-box-shadow: 0 0 0 30px white inset !important;
+          box-shadow: 0 0 0 30px white inset !important;
+        }
+      }
+    }
+
+    .input-error {
+      border: 1px solid #dc3545;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: .75rem;
+    }
+  }
+
+  .address-info {
+    margin-bottom: 20px;
+
+    .address-label-container {
+      display: flex;
+      align-items: center;
+
+      .btn-search-address {
+        background-color: #000;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer; /* 마우스를 올렸을 때 커서 모양 변경 */
+        font-size: 0.8rem;
+        text-align: center;
+        width: 85px;
+        height: 28px;
+        line-height: 28px;
+        margin-left: 1rem;
+      }
+    }
+
+    .zipcode-field, .address1-field, .address2-field {
+      display: flex; /* Use flex to align items in one line */
+      align-items: center; /* Vertically align items in the middle */
+      border: 1px solid #ccc; /* Add border around the container */
+      padding: 5px 10px; /* Add some padding inside the container */
+      border-radius: 5px; /* Optional: for rounded corners */
+      width: 100%;
+      margin-top: 10px;
+
+      .input-field {
+        border: none;
+        outline: none;
+        width: 100%;
+        height: 30px;
+        font-size: .75rem;
+
+        /* 웹킷 기반 브라우저(Chrome, Safari 등)의 자동완성 스타일을 덮어쓰기 위한 코드 */
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+          -webkit-box-shadow: 0 0 0 30px white inset !important;
+          box-shadow: 0 0 0 30px white inset !important;
+        }
+      }
+    }
+
+    .zipcode-field, .address1-field {
+      background-color: #f1f1f1;
+    }
+
+    .input-error {
+      border: 1px solid #dc3545;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: .75rem;
+    }
+  }
+
+  .checkbox-wrapper {
+    font-size: .75rem;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 수직 중앙 정렬 */
+    margin-top: 10px;
+
+    .button {
+      position: relative;
+      display: flex;
+      align-items: center;
+      font-size: .75rem;
+      font-weight: 700;
+      height: 3.2rem;
+      width: 49%;
+      justify-content: center;
+      text-align: center;
+      transition-timing-function: cubic-bezier(.215, .61, .355, 1);
+      border-radius: 5px;
+      border: none;
+
+      &.btn-edit {
+        background: linear-gradient(to bottom, #3a3a3a, #000000);
+        color: rgb(255, 255, 255);
+        transition-property: color, background-color;
+        display: block;
+      }
+
+      &.btn-cancel {
+        background-color: white;
+        color: black;
+        border: 0.0625rem solid #000;
+        display: block;
+      }
+    }
+  }
+}
+
+@include mobile {
+  .modal-overlay {}
+
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+    font-size: .85rem;
+
+    .recipient-info {
+      margin-bottom: 15px;
+
+      .name-field, .phone-field {
+        padding: 5px 8px;
+        margin-top: 8px;
+
+        .input-field {
+          height: 25px;
+          font-size: .7rem;
+
+          /* 웹킷 기반 브라우저(Chrome, Safari 등)의 자동완성 스타일을 덮어쓰기 위한 코드 */
+          &:-webkit-autofill,
+          &:-webkit-autofill:hover,
+          &:-webkit-autofill:focus,
+          &:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 25px white inset !important;
+            box-shadow: 0 0 0 25px white inset !important;
+          }
+        }
+      }
+
+      .input-error {}
+      .error-message {
+        font-size: .65rem;
+        margin-top: 3px;
+      }
+    }
+
+    .address-info {
+      margin-bottom: 15px;
+
+      .address-label-container {
+        .btn-search-address {
+          font-size: 0.7rem;
+          width: 80px;
+          height: 23px;
+          line-height: 23px;
+        }
+      }
+
+      .zipcode-field, .address1-field, .address2-field {
+        padding: 5px 8px;
+        margin-top: 8px;
+
+        .input-field {
+          height: 25px;
+          font-size: .7rem;
+
+          /* 웹킷 기반 브라우저(Chrome, Safari 등)의 자동완성 스타일을 덮어쓰기 위한 코드 */
+          &:-webkit-autofill,
+          &:-webkit-autofill:hover,
+          &:-webkit-autofill:focus,
+          &:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 25px white inset !important;
+            box-shadow: 0 0 0 25px white inset !important;
+          }
+        }
+      }
+
+      .zipcode-field, .address1-field {}
+      .input-error {}
+      .error-message {
+        font-size: .65rem;
+        margin-top: 3px;
+      }
+    }
+
+    .checkbox-wrapper {
+      font-size: .7rem;
+    }
+
+    .actions {
+      margin-top: 8px;
+
+      .button {
+        font-size: .7rem;
+        font-weight: 500;
+        height: 2.5rem;
+        &.btn-edit {}
+        &.btn-cancel {}
+      }
+    }
+  }
+}

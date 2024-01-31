@@ -74,11 +74,11 @@ export default {
             case 'HANJIN':
                 return '한진 택배';
             case 'CU':
-                return 'CU 편의점';
+                return 'CU 편의점 택배';
             case 'KYUNG_DONG':
                 return '경동 택배';
             case 'GS_POSTBOX':
-                return 'GS 포스트박스';
+                return 'GS 편의점 택배';
             case 'OTHER':
                 return '기타';
             default:
@@ -176,7 +176,7 @@ export default {
     getShipmentStatusName(status) {
         switch (status) {
             case 'ACCEPTED':
-                return '배송 접수';
+                return '접수';
             case 'PREPARING':
                 return '배송 준비';
             case 'SHIPPING':
@@ -184,7 +184,7 @@ export default {
             case 'DELIVERED':
                 return '배송 완료';
             case 'CANCELED':
-                return '배송 취소';
+                return '취소';
             default:
                 return status;
         }

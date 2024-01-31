@@ -1,0 +1,203 @@
+.available-products {
+  padding-block: 10px;
+
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-inline: 15px;
+  }
+
+  .content {
+    margin-top: 20px;
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+
+      .item {
+        flex: 0 0 25%;
+        max-width: 25%;
+        padding: 15px;
+      }
+
+      .product {
+        border: 1px solid rgba(169, 169, 169, .3);
+
+        .image-container {
+          display: block;
+          width: 100%;
+          height: 350px;
+          background-size: cover;
+          background-position: center;
+
+          @media screen and (max-width: 390px) {
+            height: 150px;
+          }
+        }
+
+        .detail-section {
+          display: flex;
+          padding: 10px 15px;
+          justify-content: space-between;
+        }
+
+        .info-section {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+
+        .action-buttons {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+
+        .title-row {
+          display: flex;
+          align-items: center;
+          font-size: 0.9rem;
+          font-weight: bold;
+          max-width: 270px;
+
+          .discount-per {
+            display: inline;
+            align-items: center;
+            color: #dc3545;
+            margin-right: 0.2rem;
+          }
+
+          .name {
+            display: inline;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+        .pricing-row {
+          font-size: 0.9rem;
+
+          .price-container {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+
+            .original-price {
+              color: #6c757d;
+
+              &.sale {
+                text-decoration: line-through;
+              }
+            }
+
+            .discounted-price {
+              color: #dc3545;
+            }
+          }
+        }
+      }
+    }
+
+    &.no-product-data {
+      margin: 60px 0 0 15px;
+    }
+  }
+}
+
+@include tablet {
+  .available-products {
+    padding-block: 5px;
+    .title {
+      font-size: 15px;
+      margin: 0px 5px -15px 5px;
+    }
+    .content {
+      margin-top: 0px;
+      .grid {
+        .item {
+          flex: 0 0 33.3333%;
+          max-width: 33.3333%;
+          padding: 5px;
+          .product {
+            .image-container {
+              height: 200px;
+            }
+            .detail-section {
+              padding: 5px 7.5px;
+              .info-section {
+                .title-row {
+                  font-size: 0.6rem;
+                  max-width: 170px;
+                  .discount-per {}
+                  .name {}
+                }
+                .pricing-row {
+                  font-size: 0.6rem;
+                  .price-container {
+                    .original-price {}
+                    .discounted-price {}
+                  }
+                }
+              }
+              .action-buttons {
+                font-size: 12px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+@include mobile {
+  .available-products {
+    padding-block: 10px;
+    .title {
+      font-size: 15px;
+      margin: 0px 5px -15px 5px;
+    }
+    .content {
+      //margin-top: 50px;
+      .grid {
+        .item {
+          flex: 0 0 50%;
+          max-width: 50%;
+          padding: 5px;
+          .product {
+            .image-container {
+              height: 200px;
+            }
+            .detail-section {
+              padding: 5px 7.5px;
+              .info-section {
+                .title-row {
+                  font-size: 0.6rem;
+                  max-width: 140px;
+                  .discount-per {}
+                  .name {}
+                }
+                .pricing-row {
+                  font-size: 0.6rem;
+                  .price-container {
+                    .original-price {}
+                    .discounted-price {}
+                  }
+                }
+              }
+              .action-buttons {
+                font-size: 12px;
+              }
+            }
+          }
+        }
+      }
+
+      &.no-product-data {
+        font-size: .85rem;
+        margin: 80px 0 0 5px;
+      }
+    }
+  }
+}

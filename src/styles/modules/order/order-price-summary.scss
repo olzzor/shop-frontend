@@ -1,0 +1,49 @@
+.price-summary {
+  .title {
+    margin-bottom: 15px;
+  }
+
+  .content {
+    padding: 0 0 0 10px;
+
+    .total-product-amount, .total-discount-amount, .delivery-fee, .final-payment-amount {
+      font-size: .9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+
+      .label {
+        background-color: #000; /* 검정 배경 */
+        color: #FFF; /* 하얀 글씨 */
+        padding: 6px;
+      }
+
+      .price {
+        text-align: right;
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+@include mobile {
+  .price-summary {
+    .title {}
+
+    .content {
+      padding: 0 10px 0 10px;
+      .total-product-amount, .total-discount-amount, .delivery-fee, .final-payment-amount {
+        font-size: .7rem;
+        gap: 1.5px;
+
+        .label {
+          padding: 3px 6px;
+        }
+
+        .price {
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+}

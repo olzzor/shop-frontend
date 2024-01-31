@@ -136,67 +136,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.order {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1000px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-.content {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap; /* content가 넘칠 경우 다음 줄로 넘어가게 설정 */
-}
-
-.shipping-info {
-  flex: 1; /* 각각의 flex item이 동일한 너비를 차지하도록 설정 */
-}
-
-.price-summary {
-  width: 200px;
-}
-
-.action-buttons {
-  width: 100%; /* 전체 너비를 차지하게 설정 */
-  text-align: center; /* 버튼을 중앙에 배치 */
-}
-
-.button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  border-width: 0.0625rem;
-  font-size: .75rem;
-  font-weight: 700;
-  height: 3.2rem;
-  justify-content: center;
-  text-align: center;
-  transition-timing-function: cubic-bezier(.215, .61, .355, 1);
-  width: 100%;
-  margin-block: 10px;
-  border-radius: 5px;
-  border: none; /* 테두리 제거 */
-}
-
-.btn-payment {
-  background: linear-gradient(to bottom, #3a3a3a, #000000);
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-  transition-property: color, background-color;
-  margin-inline: auto;
-  display: block; /* block으로 설정하여 width를 제어합니다. */
-  width: 50%;
-}
-
+<style lang="scss" scoped>
+@import "@/styles/modules/order/order";
 </style>

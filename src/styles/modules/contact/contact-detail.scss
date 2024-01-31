@@ -1,0 +1,199 @@
+.contact-detail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 800px;
+
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .content {
+    font-size: .75rem;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        display: flex;
+        border-bottom: 1px solid #eee;
+
+        .contact {
+          display: flex; /* Flexbox 적용 */
+          justify-content: space-between;
+          flex-direction: column;
+          width: 100%;
+          padding: 10px 20px 10px 20px;
+
+          .contact-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* 아이템을 수직으로 중앙 정렬 */
+
+            .contact-title {
+              font-size: 1rem;
+              flex: 1;
+            }
+          }
+
+          .contact-body {
+            margin-block: 0.5rem;
+          }
+
+          .contact-footer {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            align-items: center; /* 아이콘들을 수직 중앙에 위치 */
+          }
+        }
+      }
+    }
+
+    .answer-container {
+      .content-field {
+        display: flex; /* Use flex to align items in one line */
+        align-items: center; /* Vertically align items in the middle */
+        border: 1px solid #ccc; /* Add border around the container */
+        padding: 5px 10px; /* Add some padding inside the container */
+        border-radius: 5px; /* Optional: for rounded corners */
+        width: 100%;
+        margin-top: 10px;
+
+        textarea.input-field {
+          height: 150px; /* 원하는 높이값으로 조정하세요 */
+        }
+
+        .input-field {
+          border: none;
+          outline: none;
+          width: 100%;
+          height: 30px;
+          font-size: .75rem;
+        }
+
+        /* 웹킷 기반 브라우저(Chrome, Safari 등)의 자동완성 스타일을 덮어쓰기 위한 코드 */
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+          -webkit-box-shadow: 0 0 0 30px white inset !important;
+          box-shadow: 0 0 0 30px white inset !important;
+        }
+      }
+
+      .error-message {
+        color: #dc3545;
+        font-size: .75rem;
+      }
+
+      .button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        font-size: .75rem;
+        font-weight: 700;
+        height: 3.2rem;
+        justify-content: center;
+        text-align: center;
+        transition-timing-function: cubic-bezier(.215, .61, .355, 1);
+        width: 100%;
+        margin-block: 5px;
+        border-radius: 5px;
+        border: none;
+        margin-top: 10px;
+
+        &.btn-answer {
+          background-color: black;
+          border-color: black;
+          color: white;
+          transition-property: color, background-color;
+        }
+      }
+    }
+  }
+}
+
+@include mobile {
+  .contact-detail {
+    margin-top: 90px;
+    margin-inline: 20px;
+
+    .title {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .content {
+      font-size: .7rem;
+
+      ul {
+        li {
+          .contact {
+            padding: 10px 10px 10px 10px;
+
+            .contact-header {
+              flex-direction: column; // Flexbox 방향을 세로로 변경
+              align-items: flex-start; // 수평 정렬을 시작 부분으로 변경
+
+              .contact-title {
+                font-size: .8rem;
+              }
+              .contact-inquirer {}
+            }
+
+            .contact-body {
+              margin-block: 0.5rem;
+            }
+
+            .contact-footer {}
+          }
+        }
+      }
+
+      .answer-container {
+        .content-field {
+          padding: 5px 10px; /* Add some padding inside the container */
+          margin-top: 10px;
+
+          textarea.input-field {
+            height: 150px; /* 원하는 높이값으로 조정하세요 */
+          }
+
+          .input-field {
+            height: 25px;
+            font-size: .7rem;
+          }
+
+          /* 웹킷 기반 브라우저(Chrome, Safari 등)의 자동완성 스타일을 덮어쓰기 위한 코드 */
+          .input-field:-webkit-autofill,
+          .input-field:-webkit-autofill:hover,
+          .input-field:-webkit-autofill:focus,
+          .input-field:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px white inset !important;
+            box-shadow: 0 0 0 30px white inset !important;
+          }
+        }
+
+        .error-message {
+          font-size: .65rem;
+          margin-top: 3px;
+        }
+
+        .button {
+          font-size: .7rem;
+          font-weight: 500;
+          height: 2.5rem;
+          &.btn-answer {}
+        }
+      }
+    }
+  }
+}

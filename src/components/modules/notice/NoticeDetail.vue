@@ -1,7 +1,6 @@
 <template>
   <div class="notice-detail">
-
-    <div class="title"><p></p></div>
+    <div class="title"></div>
 
     <div class="content">
       <div class="notice-title">
@@ -88,41 +87,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.notice-detail {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.notice-detail .title {
-}
-
-.notice-detail .content {
-  padding-inline: 15px;
-}
-
-.notice-detail .notice-title {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.notice-detail .notice-date {
-  color: darkgray;
-  margin-bottom: 15px;
-}
-
-.notice-detail .notice-content {
-  width: 100%;
-  padding: 20px;
-}
-
-.notice-detail .notice-content img {
-  max-width: 100%; /* 이미지의 최대 너비를 notice-content의 너비로 제한 */
-  height: auto; /* 높이를 자동으로 조절하여 이미지의 원래 비율을 유지 */
-}
-
+<style lang="scss" scoped>
+@import "@/styles/modules/notice/notice-detail";
 </style>

@@ -73,31 +73,6 @@ export default {
 }
 </script>
 
-<style scoped>
-
-.title {
-  margin-bottom: 15px;
-}
-
-.content {
-  padding: 0 0 0 10px;
-}
-
-.total-product-amount, .total-discount-amount, .delivery-fee, .final-payment-amount {
-  font-size: .9rem;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.label {
-  background-color: #000; /* 검정 배경 */
-  color: #FFF; /* 하얀 글씨 */
-  padding: 6px;
-}
-
-.price {
-  text-align: right;
-  margin-bottom: 8px;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/order/order-price-summary";
 </style>

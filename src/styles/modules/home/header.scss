@@ -1,0 +1,379 @@
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3rem;
+    width: 100%;
+    padding: 3px 15px;
+    background-color: #fff;
+
+    &-left {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      width: 20%;
+      gap: 20px;
+
+      .search-container {
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        input {
+          border: none;
+          outline: none;
+          border-bottom: 1px solid #545454;
+          width: 200px;
+          margin-left: 10px;
+          font-size: 0.8rem;
+          &::placeholder {
+            color: grey;
+          }
+        }
+
+        a {
+          position: absolute;
+          right: 0;
+          font-size: .9rem;
+        }
+      }
+    }
+
+    &-center {
+      display: flex;
+      align-items: center;
+      justify-content: center; // 내부 요소를 가운데 정렬
+      width: 60%;
+      padding-inline: 10px;
+      font-size: 0.8rem;
+    }
+
+    &-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 20%;
+      gap: 20px;
+    }
+  }
+
+  i {
+    color: black;
+
+    &.bi-person, &.bi-person-fill {
+      font-size: 1.3rem;
+      margin-left: -4px;
+    }
+  }
+
+  //.slide-fade-enter {
+  //  opacity: 0;
+  //  transform: translateY(calc(60vh - 3rem));
+  //}
+  //.slide-fade-enter-to {
+  //  transform: translateY(0);
+  //}
+  //.slide-fade-enter-active, .slide-fade-leave-active {
+  //  //transition: opacity 0.5s, transform 0.5s;
+  //  transition: opacity 0.5s ease;
+  //}
+  //.slide-fade-leave-to {
+  //  opacity: 0;
+  //  transform: translateY(calc(-60vh + 3rem));
+  //}
+
+  .menu-tooltip {
+    //overflow: hidden; // 높이가 0일 때 내용이 보이지 않도록 설정
+    //height: 0; // 초기 높이 설정
+
+    position: absolute;
+    top: 3rem;
+    left: 0;
+    width: 100vw;
+    height: calc(60vh - 3rem);
+    padding: 15px;
+    font-size: .8rem;
+    background-color: rgba(0, 0, 0, 0.8); // 투명한 검정색 배경
+    //background-color: #000;
+    z-index: 1;
+
+    &.show {
+      animation: expandDown 0.5s ease-out forwards;
+    }
+    &.hide { // TODO 생각대로 애니메이션 적용이 안됨. transform 시도하다 포기
+      animation: collapseUp 0.5s ease-out forwards;
+    }
+
+    &-content {
+      display: flex;
+      flex-direction: row; // 각 섹션 내의 링크들을 세로로 배치
+      width: 80%;
+      padding-inline: 10%;
+
+      div {
+        display: flex;
+        flex-direction: column; // 각 섹션 내의 링크들을 세로로 배치
+        align-items: start; // 섹션 내의 링크들을 왼쪽 정렬
+        margin-right: 20px; // 섹션 간 간격 설정
+        gap: 3px;
+        padding-inline: 10px;
+        font-size: 0.8rem;
+        height: 100%;
+        width: 180px;
+
+        a, router-link {
+          color: #fff;
+          text-decoration: none;
+
+          &:hover {
+            color: #fff;
+            font-weight: bold;
+          }
+        }
+
+        .category-title {
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+
+  .mypage-tooltip {
+    position: absolute;
+    top: 3rem;
+    right: 0;
+    width: 150px;
+    height: calc(60vh - 3rem);
+    background-color: rgba(0, 0, 0, 0.8); // 투명한 검정색 배경
+    color: #fff;
+    padding: 10px;
+    //box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    font-size: .8rem;
+
+    a, router-link {
+      text-decoration: none;
+      padding: 5px 0;
+
+      &:hover {
+        font-weight: bold;
+      }
+
+      &.link {
+        color: inherit;
+        text-decoration: none;
+        display: block;
+        padding: 10px 0;
+      }
+    }
+  }
+}
+
+@include mobile {
+  header {
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 3rem;
+      width: 100%;
+      padding: 3px 15px;
+      background-color: #fff;
+
+      &-left {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 20%;
+        gap: 20px;
+
+        .search-container {
+          display: flex;
+          align-items: center;
+          position: relative;
+
+          input {
+            border: none;
+            outline: none;
+            border-bottom: 1px solid #545454;
+            width: 200px;
+            &::placeholder {
+              font-size: 0.7rem;
+              color: grey;
+            }
+          }
+
+          a {
+            position: absolute;
+            right: 0;
+            font-size: .9rem;
+          }
+        }
+      }
+
+      &-center {
+        display: flex;
+        align-items: center;
+        justify-content: center; // 내부 요소를 가운데 정렬
+        width: 60%;
+        padding-inline: 10px;
+        font-size: 0.8rem;
+      }
+
+      &-right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 20%;
+        gap: 20px;
+      }
+    }
+
+    i {
+      color: black;
+
+      &.bi-person, &.bi-person-fill {
+        font-size: 1.3rem;
+        margin-left: -4px;
+      }
+    }
+
+    //.slide-fade-enter {
+    //  opacity: 0;
+    //  transform: translateY(calc(60vh - 3rem));
+    //}
+    //.slide-fade-enter-to {
+    //  transform: translateY(0);
+    //}
+    //.slide-fade-enter-active, .slide-fade-leave-active {
+    //  //transition: opacity 0.5s, transform 0.5s;
+    //  transition: opacity 0.5s ease;
+    //}
+    //.slide-fade-leave-to {
+    //  opacity: 0;
+    //  transform: translateY(calc(-60vh + 3rem));
+    //}
+
+    .menu-tooltip {
+      //overflow: hidden; // 높이가 0일 때 내용이 보이지 않도록 설정
+      //height: 0; // 초기 높이 설정
+
+      position: absolute;
+      height: calc(100vh - 3rem);
+      overflow-y: auto;
+      padding: 15px;
+      font-size: .7rem;
+
+      &.show {
+        animation: expandDownMobile 0.5s ease-out forwards;
+      }
+      &.hide { // TODO 생각대로 애니메이션 적용이 안됨. transform 시도하다 포기
+        animation: collapseUpMobile 0.5s ease-out forwards;
+      }
+
+      &-content {
+        flex-direction: column; // 각 섹션 내의 링크들을 세로로 배치
+        width: 80%;
+        padding-inline: 10%;
+
+        div {
+          margin-bottom: 20px; // 섹션 간 간격 설정
+          gap: 3px;
+          padding-inline: 10px;
+          font-size: 0.7rem;
+          width: 180px;
+
+          a, router-link {
+            color: #fff;
+            text-decoration: none;
+
+            &:hover {
+              color: #fff;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+
+    .mypage-tooltip {
+      position: absolute;
+      top: 3rem;
+      right: 0;
+      width: 150px;
+      height: calc(60vh - 3rem);
+      background-color: rgba(0, 0, 0, 0.8); // 투명한 검정색 배경
+      color: #fff;
+      padding: 10px;
+      //box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+      font-size: .8rem;
+
+      a, router-link {
+        text-decoration: none;
+        padding: 5px 0;
+
+        &:hover {
+          font-weight: bold;
+        }
+
+        &.link {
+          color: inherit;
+          text-decoration: none;
+          display: block;
+          padding: 10px 0;
+        }
+      }
+    }
+  }
+}
+
+@keyframes expandDown {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: calc(60vh - 3rem);
+    opacity: 1;
+  }
+}
+
+@keyframes expandDownMobile {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: calc(100vh - 3rem);
+    opacity: 1;
+  }
+}
+
+@keyframes collapseUp {
+  from {
+    height: calc(60vh - 3rem);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes collapseUpMobile {
+  from {
+    height: calc(100vh - 3rem);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}

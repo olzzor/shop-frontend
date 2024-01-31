@@ -28,7 +28,7 @@
             </div>
 
             <div class="product-details">
-              <b>{{ od.product.name }}</b><br>
+              {{ od.product.name }}<br>
               {{ od.productSize.size }}<br><br>
               {{ lib.getFormattedNumber(calculateItemTotalPrice(od))}}원 (수량: {{ od.quantity }})
             </div>
@@ -100,98 +100,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.order-detail {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 800px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.subtitle {
-  font-weight: bold;
-  margin-top: 10px;
-  margin-bottom: 0px;
-}
-
-.shipping-address, .payment-info {
-  font-size: 12px;
-  border-bottom: 1px solid #eee;
-  padding: 10px 20px 10px 20px;
-}
-
-.order-product {
-  font-size: 12px;
-  display: flex; /* Flexbox 적용 */
-  align-items: center; /* 수직 중앙 정렬 */
-  justify-content: space-between;
-  width: 100%;
-}
-
-.pricing-summary {
-  text-align: right; /* 우측 정렬 */
-  font-size: 12px;
-  font-weight: bold;
-  padding: 10px 20px 10px 20px;
-}
-
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-ul li {
-  display: flex;
-  border-bottom: 1px solid #eee;
-}
-
-ul li img {
-  width: 150px;
-  height: 180px;
-}
-
-.product-image {
-  flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
-  margin: 10px 20px 10px 20px;
-}
-
-.product-details {
-  flex-grow: 1;
-}
-
-.product-shipment {
-  align-items: center;
-  flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
-  margin: 10px 20px 10px 20px;
-}
-
-.shipment-status {
-  padding: 0.35em 0.65em;
-  border: 1px solid black; /* 테두리 추가 */
-  background-color: #e3e3e3;
-  color: black;
-  width: 6rem;
-  /* 내용 중앙 정렬 */
-  display: flex;
-  align-items: center; /* 수직 중앙 정렬 */
-  justify-content: center; /* 수평 중앙 정렬 */
-}
-
-.shipment-info {
-  margin-top: 10px;
-  /* 내용 중앙 정렬 */
-  display: flex;
-  align-items: center; /* 수직 중앙 정렬 */
-  justify-content: center; /* 수평 중앙 정렬 */
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/order/order-detail";
 </style>

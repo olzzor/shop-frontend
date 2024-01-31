@@ -62,6 +62,7 @@
 import {nextTick, onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import {useRoute} from "vue-router";
+import {isMobile, isTablet} from "@/scripts/mixin";
 
 export default {
   name: "EditReview",
@@ -151,7 +152,8 @@ export default {
       nextTick(() => {
         const textarea = document.querySelector('#review-content');
         textarea.style.height = '100px';
-        textarea.style.height = (textarea.scrollHeight < 200 ? textarea.scrollHeight : 200) + 'px'; // 최대 높이 제한 (약 10줄)
+        let maxHeight = isTablet() ? 180 : (isMobile() ? 150 : 200);
+        textarea.style.height = (textarea.scrollHeight < maxHeight ? textarea.scrollHeight : maxHeight) + 'px'; // 최대 높이 제한
       });
     };
 
@@ -261,140 +263,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.edit-review {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 100px;
-  margin-inline: auto;
-  max-width: 800px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.content {
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-}
-
-.input-label {
-  margin-right: 10px; /* 라벨과 입력 필드 사이의 간격 */
-  font-weight: bold; /* 라벨 텍스트를 굵게 표시 */
-  width: 100px; /* 라벨의 너비를 고정합니다. */
-  flex-shrink: 0;
-}
-
-.field-container {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 10px;
-}
-
-.field-content {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  margin-left: 10px; /* 라벨과의 간격 조절 */
-}
-
-.input-field {
-  margin-bottom: 10px;
-  border: none;
-  border-bottom: 1px solid #545454;
-  outline: none;
-  height: 30px;
-  background-color: transparent;
-}
-
-.review-images {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-}
-
-.image-box {
-  position: relative;
-  margin-right: 10px;
-}
-
-.review-image {
-  height: 150px;
-  float: left;
-}
-
-.btn-delete-image {
-  position: absolute;
-  right: 0;
-  top: 0;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.upload-box {
-  height: 150px;
-  width: 100px;
-  border: 1px solid lightgray;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  margin-bottom: 4px;
-}
-
-.upload-box p {
-  font-size: 20px;
-  color: darkgray;
-}
-
-.button-container {
-  display: flex;
-  justify-content: center; /* 수평 중앙 정렬 */
-}
-
-.btn-edit-review {
-  border: none;
-  border-radius: 5px;
-  font-size: .75rem;
-  font-weight: 700;
-  width: 70%;
-  height: 2.8125rem;
-  justify-content: center;
-  text-align: center;
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-  transition-property: color, background-color;
-}
-
-.stars {
-  display: flex;
-  cursor: pointer;
-}
-
-.filled-star-black {
-  font-size: 24px;
-  margin-right: 5px;
-}
-
-.filled-star-gray {
-  font-size: 24px;
-  margin-right: 5px;
-  color: lightgray;
-}
-
-.required {
-  color: #dc3545;
-}
-
-.message {
-  font-size: 12px;
-  margin-bottom: 5px;
-  color: darkgray;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/review/review-edit";
 </style>

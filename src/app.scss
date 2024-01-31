@@ -1,0 +1,45 @@
+/* 전체 페이지의 폰트 적용 */
+body, html {
+  font-family: 'GmarketSans', sans-serif;
+}
+
+/* @font-face 추가 */
+@font-face {
+  font-family: 'GmarketSans';
+  src: url('@/assets/fonts/GmarketSansOTF/GmarketSansMedium.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 최소 높이를 뷰포트의 높이로 설정 */
+  //justify-content: space-between;
+
+  > * {
+    flex-shrink: 0;
+  }
+
+  .router-view-wrapper {
+    flex-grow: 1;
+    padding: 0px 10% 20px 10%;
+    overflow: auto;
+  }
+
+  .footer-wrapper {
+    position: relative;
+    flex-grow: 0; /* 모든 자식 요소가 flex 컨테이너 내에서 줄어들지 않도록 함 */
+    width: 100%;
+  }
+}
+
+@include mobile {
+  .app {
+    > * {}
+    .router-view-wrapper {
+      padding: 0px 10px 10px 10px;
+    }
+    .footer-wrapper {}
+  }
+}

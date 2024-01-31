@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'http://bridgeshop.com:8080';
+export const API_BASE_URL = 'http://localhost.test:8080';
 export const OAUTH2_REDIRECT_URI = 'http://localhost.test:3000/oauth2/redirect'
 export const ACCESS_TOKEN = 'accessToken';
 

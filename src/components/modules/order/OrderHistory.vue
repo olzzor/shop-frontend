@@ -26,34 +26,24 @@
             </div>
 
             <div class="action-buttons">
-              <button class="button btn-edit-review" @click="editReview(order.review.id)" v-if="order.review">리뷰 수정
-              </button>
+              <button class="button btn-edit-review" @click="editReview(order.review.id)" v-if="order.review">리뷰 수정</button>
               <button class="button btn-write-review" @click="writeReview(order.id)" v-else>리뷰 작성</button>
-              <button class="button btn-order-confirm" @click="confirmOrder(order.id)"
-                      :disabled="!isConfirmable(order.status)">주문 확정
-              </button>
-              <button class="button btn-order-cancel" @click="cancelOrder(order.id)"
-                      :disabled="!isCancelable(order.status)">주문 취소
-              </button>
+              <button class="button btn-order-confirm" @click="confirmOrder(order.id)" :disabled="!isConfirmable(order.status)">주문 확정</button>
+              <button class="button btn-order-cancel" @click="cancelOrder(order.id)" :disabled="!isCancelable(order.status)">주문 취소</button>
             </div>
           </div>
         </li>
       </ul>
 
       <div class="pagination">
-        <button @click="goToPage(1)" :disabled="state.page.currentPage === 1"><i class="bi bi-chevron-double-left"></i>
-        </button>
-        <button @click="goToPage(state.page.currentPage - 1)" :disabled="state.page.currentPage === 1"><i
-            class="bi bi-chevron-left"></i></button>
+        <button @click="goToPage(1)" :disabled="state.page.currentPage === 1"><i class="bi bi-chevron-double-left"></i></button>
+        <button @click="goToPage(state.page.currentPage - 1)" :disabled="state.page.currentPage === 1"><i class="bi bi-chevron-left"></i></button>
         <span>{{ state.page.currentPage }} / {{ state.page.totalPages }}</span>
-        <button @click="goToPage(state.page.currentPage + 1)"
-                :disabled="state.page.currentPage === state.page.totalPages"><i class="bi bi-chevron-right"></i>
-        </button>
-        <button @click="goToPage(state.page.totalPages)" :disabled="state.page.currentPage === state.page.totalPages"><i
-            class="bi bi-chevron-double-right"></i></button>
+        <button @click="goToPage(state.page.currentPage + 1)" :disabled="state.page.currentPage === state.page.totalPages"><i class="bi bi-chevron-right"></i></button>
+        <button @click="goToPage(state.page.totalPages)" :disabled="state.page.currentPage === state.page.totalPages"><i class="bi bi-chevron-double-right"></i></button>
       </div>
     </div>
-    <div v-else>주문 이력이 없습니다.</div>
+    <div class="content no-order-data" v-else>주문 이력이 없습니다.</div>
   </div>
 </template>
 
@@ -109,10 +99,6 @@ export default {
     const getTotalQuantity = (orderDetails) => {
       return orderDetails.reduce((sum, detail) => sum + detail.quantity, 0);
     };
-    //
-    // const getTotalPrice = (orderDetails) => {
-    //   return orderDetails.reduce((sum, detail) => sum + detail.unitPrice, 0);
-    // };
 
     const getReturnDate = (date) => {
       return dayjs(date).add(7, 'days').format('YYYY-MM-DD');
@@ -150,113 +136,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.order-history {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 100px;
-  margin-inline: auto;
-  max-width: 800px;
-}
-
-.title {
-  display: flex; /* Flexbox 적용 */
-  align-items: center; /* 수직 중앙 정렬 */
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-.order {
-  font-size: 12px;
-  display: flex; /* Flexbox 적용 */
-  align-items: center; /* 수직 중앙 정렬 */
-  justify-content: space-between;
-  width: 100%;
-}
-
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-ul li {
-  display: flex;
-  border-bottom: 1px solid #eee;
-}
-
-ul li img {
-  width: 150px;
-  height: 180px;
-}
-
-.order-image {
-  flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
-  margin: 10px 20px 10px 20px;
-}
-
-.order-details {
-  flex-grow: 1;
-}
-
-.action-buttons {
-  align-items: center; /* 아이콘들을 수직 중앙에 위치시킵니다. */
-  flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
-  margin: 10px 20px 10px 20px;
-}
-
-.button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  border-width: 0.0625rem;
-  font-size: .75rem;
-  width: 100px;
-  justify-content: center;
-  text-align: center;
-  transition-timing-function: cubic-bezier(.215, .61, .355, 1);
-}
-
-.btn-write-review {
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-  height: 2.3rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
-.btn-edit-review {
-  border-color: black;
-  color: black;
-  height: 2.3rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
-.btn-order-confirm {
-  background-color: transparent;
-  border-color: rgb(0, 0, 0);
-  height: 1.7rem;
-  margin-bottom: 4px;
-}
-
-.btn-order-cancel {
-  background-color: transparent;
-  border-color: rgb(0, 0, 0);
-  height: 1.7rem;
-}
-
-.pagination {
-  font-size: 12px;
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
-}
-
-.pagination button {
-  border: none;
-  background-color: transparent;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/order/order-history";
 </style>

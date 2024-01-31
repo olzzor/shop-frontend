@@ -74,32 +74,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.modal-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  max-width: 500px;
-  padding: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  font-size: .75rem;
-}
-
-.notice-image img {
-  max-width: 100%; /* 이미지의 너비를 조정 */
-  height: auto; /* 이미지의 높이를 조정 */
-}
-
-.actions {
-  display: flex;
-  justify-content: space-between; /* 체크박스는 왼쪽, 닫기 버튼은 오른쪽으로 */
-  align-items: center; /* 수직 중앙 정렬 */
-  margin-top: 20px;
-}
-
-.close-text {
-  cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/notice/notice-modal";
 </style>

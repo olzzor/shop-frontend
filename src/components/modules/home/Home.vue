@@ -7,8 +7,8 @@
 
   <div class="notice-modal-overlay" v-if="state.showNoticeModalOverlay"></div>
   <div class="notice" v-for="(n, idx) in state.notices" :key="n.id">
-  <NoticeModal :notice="n" :show="state.currentNoticeModalIndex === idx"
-               @showOverlay="handleShowNoticeModalOverlay" @close="handleNoticeModalClose" />
+    <NoticeModal :notice="n" :show="state.currentNoticeModalIndex === idx"
+                 @showOverlay="handleShowNoticeModalOverlay" @close="handleNoticeModalClose" />
   </div>
 </template>
 
@@ -147,34 +147,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.home {
-  padding-block: 20px;
-}
-
-.btn-load-more {
-  position: relative;
-  display: flex;
-  align-items: center;
-  font-size: .75rem;
-  justify-content: center;
-  text-align: center;
-  height: 40px;
-  width: 150px;
-  margin: 5px auto;
-  border: none; /* 테두리 제거 */
-  background: linear-gradient(to bottom, #3a3a3a, #000000);
-  color: rgb(255, 255, 255);
-  transition-property: color, background-color;
-}
-
-.notice-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* 검은색의 70% 투명도 */
-  z-index: 999; /* 모달보다 하나 낮은 z-index */
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/home/home";
 </style>

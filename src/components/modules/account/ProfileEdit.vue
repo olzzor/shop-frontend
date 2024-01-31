@@ -32,6 +32,7 @@
         <!--        <div class="error-message" v-if="state.errorMessage.password">{{ state.errorMessage.password }}</div>-->
 
         <button class="button btn-edit" type="submit" :disabled="state.isSubmitting">변경하기</button>
+        <button class="button btn-withdraw" type="button" @click="withdraw">탈퇴하기</button>
       </form>
     </div>
   </div>
@@ -41,6 +42,7 @@
 import {computed, onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import store from "@/scripts/store";
+import router from "@/scripts/router";
 
 export default {
   name: "ProfileEdit",
@@ -127,6 +129,20 @@ export default {
       }
     }
 
+    const withdraw = () => {
+      const message = '회원 탈퇴를 진행하시면 모든 개인 데이터 및 주문 내역이 영구적으로 삭제됩니다. 정말로 탈퇴하시겠습니까?';
+
+      if (window.confirm(message)) {
+        axios.post("/api/user/withdraw").then(() => {
+          alert('탈퇴되었습니다.');
+          store.commit('setToken', 0);
+          store.commit('setAccountId', 0);
+          store.commit('setAccountRole', '');
+          router.push({path: "/"});
+        });
+      }
+    };
+
     onMounted(load);
 
     return {
@@ -134,101 +150,12 @@ export default {
       passwordFieldType, passwordIconClass,
       togglePasswordVisibility,
       editProfile,
+      withdraw,
     }
   },
 }
 </script>
 
-<style scoped>
-.profile-edit {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 500px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.input-field {
-  border: none;
-  outline: none;
-  width: 100%;
-  height: 30px;
-  font-size: .75rem;
-}
-
-/* 웹킷 기반 브라우저(Chrome, Safari 등)의 자동완성 스타일을 덮어쓰기 위한 코드 */
-.input-field:-webkit-autofill,
-.input-field:-webkit-autofill:hover,
-.input-field:-webkit-autofill:focus,
-.input-field:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
-  box-shadow: 0 0 0 30px white inset !important;
-}
-
-.email-field, .name-field, .phone-number-field, .password-field {
-  display: flex; /* Use flex to align items in one line */
-  align-items: center; /* Vertically align items in the middle */
-  border: 1px solid #ccc; /* Add border around the container */
-  padding: 5px 10px; /* Add some padding inside the container */
-  border-radius: 5px; /* Optional: for rounded corners */
-  width: 100%;
-  margin-top: 10px;
-}
-
-.email-field {
-  background-color: #f1f1f1; /* 필드 자체의 배경색 */
-}
-
-.password-field .bi {
-  margin: 0 10px; /* Add some space around the icons */
-  color: #545454;
-}
-
-.password-field input {
-  flex-grow: 1; /* Allow the input to take up the available space */
-  border: none; /* Remove default border of input field */
-  padding: 0; /* Remove default padding of input field */
-}
-
-.button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  border-width: 0.0625rem;
-  font-size: .75rem;
-  font-weight: 700;
-  height: 3.2rem;
-  justify-content: center;
-  text-align: center;
-  transition-timing-function: cubic-bezier(.215, .61, .355, 1);
-  width: 100%;
-  margin-block: 5px;
-  border-radius: 5px;
-  border: none;
-  margin-top: 10px;
-}
-
-.btn-edit {
-  background: linear-gradient(to bottom, #3a3a3a, #000000);
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-  transition-property: color, background-color;
-}
-
-.input-error {
-  border: 1px solid #dc3545;
-}
-
-.error-message {
-  color: #dc3545;
-  font-size: .75rem;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/account/profile-edit";
 </style>

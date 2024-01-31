@@ -1,0 +1,184 @@
+.shipping-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+
+  .title {}
+  .content {
+
+    .input-field {
+      border: none;
+      outline: none;
+      width: 100%;
+      height: 30px;
+      font-size: .75rem;
+
+      /* 웹킷 기반 브라우저(Chrome, Safari 등)의 자동완성 스타일을 덮어쓰기 위한 코드 */
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus,
+      &:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 30px white inset !important;
+        box-shadow: 0 0 0 30px white inset !important;
+      }
+    }
+    .input-error {
+      border: 1px solid #dc3545;
+    }
+    .error-message {
+      color: #dc3545;
+      font-size: .75rem;
+    }
+
+    .contact-info, .recipient-info, .address-info {
+      margin-block: 20px;
+    }
+
+    .contact-info {
+      .email-field {
+        display: flex; /* Use flex to align items in one line */
+        align-items: center; /* Vertically align items in the middle */
+        border: 1px solid #ccc; /* Add border around the container */
+        padding: 5px 10px; /* Add some padding inside the container */
+        border-radius: 5px; /* Optional: for rounded corners */
+        width: 100%;
+        margin-top: 10px;
+      }
+    }
+
+    .recipient-info {
+      .btn-set-default-address {
+        background-color: #000; /* 버튼의 배경색 */
+        color: #fff; /* 글자색 */
+        border: none; /* 테두리 제거 */
+        border-radius: 5px; /* 둥근 모서리 */
+        cursor: pointer; /* 마우스를 올렸을 때 커서 모양 변경 */
+        font-size: 0.8rem;
+        text-align: center;
+        width: 120px;
+        height: 28px;
+        line-height: 28px;
+        margin-left: 1rem;
+      }
+
+      .name-field, .phone-field {
+        display: flex; /* Use flex to align items in one line */
+        align-items: center; /* Vertically align items in the middle */
+        border: 1px solid #ccc; /* Add border around the container */
+        padding: 5px 10px; /* Add some padding inside the container */
+        border-radius: 5px; /* Optional: for rounded corners */
+        width: 100%;
+        margin-top: 10px;
+      }
+    }
+
+    .address-info {
+      .address-label-container {
+        display: flex;
+        align-items: center;
+
+        .btn-search-address {
+          background-color: #000; /* 버튼의 배경색 */
+          color: #fff; /* 글자색 */
+          border: none; /* 테두리 제거 */
+          border-radius: 5px; /* 둥근 모서리 */
+          cursor: pointer; /* 마우스를 올렸을 때 커서 모양 변경 */
+          font-size: 0.8rem;
+          text-align: center;
+          width: 85px;
+          height: 28px;
+          line-height: 28px;
+          margin-left: 1rem;
+        }
+      }
+
+      .zipcode-field, .address1-field, .address2-field {
+        display: flex; /* Use flex to align items in one line */
+        align-items: center; /* Vertically align items in the middle */
+        border: 1px solid #ccc; /* Add border around the container */
+        padding: 5px 10px; /* Add some padding inside the container */
+        border-radius: 5px; /* Optional: for rounded corners */
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .zipcode-field, .address1-field {
+        background-color: #f1f1f1; /* 필드 자체의 배경색 */
+      }
+    }
+  }
+}
+
+@include mobile {
+  .shipping-info {
+    .title {}
+    .content {
+
+      .input-field {
+        width: 100%;
+        height: 25px;
+        font-size: .7rem;
+
+        /* 웹킷 기반 브라우저(Chrome, Safari 등)의 자동완성 스타일을 덮어쓰기 위한 코드 */
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+          -webkit-box-shadow: 0 0 0 25px white inset !important;
+          box-shadow: 0 0 0 25px white inset !important;
+        }
+      }
+      .input-error {}
+      .error-message {
+        font-size: .65rem;
+        margin-top: 3px;
+      }
+
+      .contact-info, .recipient-info, .address-info {
+        margin-block: 10px;
+      }
+
+      .contact-info {
+        .email-field {
+          padding: 5px 8px;
+          margin-top: 8px;
+        }
+      }
+
+      .recipient-info {
+        .btn-set-default-address {
+          font-size: 0.7rem;
+          width: 110px;
+          height: 25px;
+          line-height: 25px;
+        }
+
+        .name-field, .phone-field {
+          padding: 5px 8px; /* Add some padding inside the container */
+          margin-top: 8px;
+        }
+      }
+
+      .address-info {
+        .address-label-container {
+          display: flex;
+          align-items: center;
+
+          .btn-search-address {
+            font-size: 0.7rem;
+            width: 75px;
+            height: 25px;
+            line-height: 25px;
+          }
+        }
+
+        .zipcode-field, .address1-field, .address2-field {
+          padding: 5px 8px;
+          margin-top: 8px;
+        }
+
+        .zipcode-field, .address1-field {}
+      }
+    }
+  }
+}

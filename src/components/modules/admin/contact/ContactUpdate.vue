@@ -42,7 +42,6 @@ import {onMounted, reactive} from "vue";
 import {useRoute} from "vue-router";
 import axios from "axios";
 import lib from "@/scripts/lib";
-import router from "@/scripts/router";
 
 export default {
   name: 'ContactUpdate',
@@ -66,12 +65,13 @@ export default {
       const args = JSON.parse(JSON.stringify(state.form));
       axios.post('/api/contact/answer', args).then(() => {
         window.alert('답변되었습니다.');
-        router.push({path: "/"});
+        load();
       });
     };
 
     const load = () => {
       axios.get(`/api/contact/detail/${contactId}`).then(({data}) => {
+        state.contacts = [];
         for (let d of data) {
           state.contacts.push(d);
         }

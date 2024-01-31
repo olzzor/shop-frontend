@@ -277,7 +277,7 @@ export default {
               adminFlag: user.adminFlag
             }));
 
-        axios.post("/api/user/update", args).then(() => {
+        axios.post("/api/user/update/multiple", args).then(() => {
           alert('유저 정보가 변경되었습니다.');
           load();
 

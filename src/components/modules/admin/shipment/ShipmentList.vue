@@ -173,7 +173,7 @@ export default {
   name: 'ShipmentList',
   components: {},
   setup() {
-    const tableHeaders = ['택배사', '송장 번호', '배송 상태', '수령인', '연락처', '배송지', '주문 번호', '주문 상품', '배송 정보 입력 날짜', '배송 정보 수정 날짜'];
+    const tableHeaders = ['택배사', '송장번호', '배송상태', '수령인', '연락처', '배송지', '주문번호', '주문상품', '배송정보 입력날짜', '배송정보 수정날짜'];
     const sortKey = ['orderNumber', 'courier', 'trackingNumber', 'status', 'regDate', 'modDate'];
     const courierCompanies = lib.courierCompanies;
     const shipmentStatuses = lib.shipmentStatuses;
@@ -330,13 +330,16 @@ export default {
               status: shipment.status
             }));
 
-        axios.post("/api/shipment/update", args).then(() => {
+        axios.post("/api/shipment/update/multiple", args).then(() => {
           alert('배송 내역이 성공적으로 변경되었습니다.');
           load();
 
         }).catch(error => {
           if (error.response) {
             switch (error.response.status) {
+              case 400:
+                window.alert(error.response.data.message);
+                break;
               case 401:
                 window.alert(error.response.data.message);
                 break;

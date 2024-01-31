@@ -72,6 +72,7 @@ export default {
     const contactTypes = lib.contactTypes;
 
     const state = reactive({
+      isSubmitting: false,
       show: true,
       form: {inquirerEmail: "", inquirerName: "", orderNumber: "", type: "", title: "", content: "",},
       errorMessage: {},
@@ -133,6 +134,8 @@ export default {
     };
 
     const inquiry = () => {
+      state.isSubmitting = true;
+
       if (checkInput()) {
         axios.post('/api/contact/inquiry', state.form).then(() => {
           window.alert('문의되었습니다.');
@@ -140,12 +143,27 @@ export default {
           emit('updated');
 
         }).catch(error => {
-          if (error.response && error.response.status === 401) {
-            window.alert('로그인 후 문의해주세요.');
+          if (error.response) {
+            switch (error.response.status) {
+              case 400: // BAD_REQUEST
+                window.alert(error.response.data.message);
+                break;
+              case 500: // INTERNAL_SERVER_ERROR
+                window.alert(error.response.data.message);
+                break;
+              default:
+                window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+            }
           } else {
-            window.alert('문의 중 오류가 발생했습니다. 다시 시도해주세요.');
+            window.alert("오류가 발생했습니다. 다시 시도해주세요.");
           }
+
+        }).finally(() => {
+          state.isSubmitting = false;
         });
+
+      } else {
+        state.isSubmitting = false;
       }
     };
 
@@ -173,7 +191,11 @@ export default {
       emit('close');
     };
 
-    onMounted(load);
+    onMounted(() => {
+      if (store.state.account.id) { // 로그인한 사용자의 경우에만 사용자 정보를 불러옴
+        load();
+      }
+    });
 
     return {
       store, lib,
@@ -184,132 +206,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* 검은색의 70% 투명도 */
-  z-index: 999; /* 모달보다 하나 낮은 z-index */
-}
-
-.modal-content {
-  position: fixed;
-  top: 50%; /* 화면의 중앙에서 시작 */
-  left: 50%; /* 화면의 중앙에서 시작 */
-  transform: translate(-50%, -50%); /* 중앙 정렬을 위한 변환 */
-  z-index: 1000;
-  max-width: 600px;
-  padding: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.input-field {
-  border: none;
-  outline: none;
-  width: 100%;
-  height: 30px;
-  font-size: .75rem;
-}
-
-/* 웹킷 기반 브라우저(Chrome, Safari 등)의 자동완성 스타일을 덮어쓰기 위한 코드 */
-.input-field:-webkit-autofill,
-.input-field:-webkit-autofill:hover,
-.input-field:-webkit-autofill:focus,
-.input-field:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
-  box-shadow: 0 0 0 30px white inset !important;
-}
-
-.select-field {
-  border: none;
-  outline: none;
-  width: 100%;
-  height: 30px;
-  font-size: .75rem;
-}
-
-.default-option {
-  color: #757587; /* placeholder 색상 */
-}
-
-.inquirer-email-field, .inquirer-name-field, .order-number-field, .title-field, .content-field {
-  display: flex; /* Use flex to align items in one line */
-  align-items: center; /* Vertically align items in the middle */
-  border: 1px solid #ccc; /* Add border around the container */
-  padding: 5px 10px; /* Add some padding inside the container */
-  border-radius: 5px; /* Optional: for rounded corners */
-  width: 100%;
-  margin-top: 10px;
-}
-
-.type-field {
-  display: flex; /* Use flex to align items in one line */
-  align-items: center; /* Vertically align items in the middle */
-  border: 1px solid #ccc; /* Add border around the container */
-  padding: 5px 8px; /* Add some padding inside the container */
-  border-radius: 5px; /* Optional: for rounded corners */
-  width: 100%;
-  margin-top: 10px;
-}
-
-.content-field textarea.input-field {
-  height: 150px; /* 원하는 높이값으로 조정하세요 */
-}
-
-.announce-message {
-  margin-top: 10px;
-  font-size: .75rem;
-}
-
-.actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center; /* 수직 중앙 정렬 */
-  margin-top: 10px;
-}
-
-.button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  font-size: .75rem;
-  font-weight: 700;
-  height: 3.2rem;
-  width: 49%;
-  justify-content: center;
-  text-align: center;
-  transition-timing-function: cubic-bezier(.215, .61, .355, 1);
-  border-radius: 5px;
-  border: none;
-}
-
-.btn-inquiry {
-  background-color: black;
-  border-color: black;
-  color: white;
-  transition-property: color, background-color;
-}
-
-.btn-cancel {
-  background-color: white;
-  color: black;
-  border: 0.0625rem solid #000;
-  display: block;
-}
-
-.input-error {
-  border: 1px solid #dc3545;
-}
-
-.error-message {
-  color: #dc3545;
-  font-size: .75rem;
-}
-
-a {
-  color: #000000;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/contact/contact-us-modal";
 </style>

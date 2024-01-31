@@ -1,8 +1,6 @@
 <template>
   <div class="cart">
-    <div class="title">
-      장바구니
-    </div>
+    <div class="title">장바구니</div>
 
     <div class="content">
       <div v-if="state.cartProducts.length > 0">
@@ -23,12 +21,8 @@
                   <div class="product-details">
                     <div class="details-wrapper">
                       <div class="product-title-row">
-                        <div class="title-container">
-                          {{ cp.product.name }}
-                        </div>
-                        <div class="discount-container" v-if="cp.product.discountPer">
-                          <span>{{ cp.product.discountPer }}%</span>↓
-                        </div>
+                        <span class="title-container">{{ cp.product.name }}</span>
+                        <span class="discount-container" v-if="cp.product.discountPer">{{ cp.product.discountPer }}%↓</span>
                       </div>
 
                       <div class="product-size-row">
@@ -47,51 +41,54 @@
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <div class="product-subtotal">
-                    <div class="subtotal-quantity-container">
-                      <label>수량</label>
-                      <div class="label-content">
-                        <select class="select-field" v-model="cp.quantity" @change="updateQuantity(cp)">
-                          <option v-for="quantity in quantities" :key="quantity" :value="quantity">
-                            {{ quantity }}
-                          </option>
-                        </select>
-                      </div>
+                <div class="product-subtotal">
+                  <div class="subtotal-quantity-container">
+                    <label>수량</label>
+                    <div class="label-content">
+                      <select class="select-field" v-model="cp.quantity" @change="updateQuantity(cp)">
+                        <option v-for="quantity in 10" :key="quantity" :value="quantity"
+                                :disabled="quantity > cp.productSize.quantity">
+                          {{ quantity }}{{ quantity > cp.productSize.quantity ? ' (재고 없음)' : '' }}
+                        </option>
+                      </select>
                     </div>
+                  </div>
 
-                    <div class="subtotal-coupon-container">
-                      <label>쿠폰</label>
-                      <div class="label-content">
-                        <select class="select-field" v-model="cp.selectedCoupon" @change="updateCoupon(cp)">
-                          <option v-for="ac in cp.availableCoupons" :key="ac.id" :value="ac.id">
-                            {{ ac.name }}
-                          </option>
-                        </select>
-                      </div>
+                  <div class="subtotal-coupon-container">
+                    <label>쿠폰</label>
+                    <div class="label-content">
+                      <select class="select-field" v-model="cp.selectedCoupon" @change="updateCoupon(cp)">
+                        <option v-for="ac in cp.availableCoupons" :key="ac.id" :value="ac.id">
+                          {{ ac.name }}
+                        </option>
+                      </select>
                     </div>
+                  </div>
 
-                    <div class="subtotal-price-container">
-                      <label>소계</label>
-                      <div class="label-content">
-                        <span>{{ lib.getFormattedNumber(price.getFinalDiscountedPrice(cp) * cp.quantity) }}원</span><br>
-                        <small v-if="price.getFinalDiscountPrice(cp) > 0" class="discount-text">
-                          (할인 금액 <span class="amount">{{ lib.getFormattedNumber(price.getFinalDiscountPrice(cp) * cp.quantity) }}원</span>)
-                        </small>
-                      </div>
+                  <div class="subtotal-price-container">
+                    <label>소계</label>
+                    <div class="label-content">
+                      <span>{{ lib.getFormattedNumber(price.getFinalDiscountedPrice(cp) * cp.quantity) }}원</span><br>
+                      <small v-if="price.getFinalDiscountPrice(cp) > 0" class="discount-text">
+                        (할인 금액 <span class="amount">{{ lib.getFormattedNumber(price.getFinalDiscountPrice(cp) * cp.quantity) }}원</span>)
+                      </small>
                     </div>
+                  </div>
 
-                    <div class="action-icons">
-                      <i class="bi bi-heart-fill" v-if="cp.favoriteInfo.favorite"  @click="removeFavorite(cp.favoriteInfo.id)" :disabled="state.isSubmitting"></i>
-                      <i class="bi bi-heart" v-else @click="addFavorite(cp.productSize.id)" :disabled="state.isSubmitting"></i>
-                      <i class="bi bi-trash3" @click="removeFromCart(cp.id)" :disabled="state.isSubmitting"></i>
-                    </div>
+                  <div class="action-icons">
+                    <i class="bi bi-heart-fill" v-if="cp.favoriteInfo.favorite"  @click="removeFavorite(cp.favoriteInfo.id)" :disabled="state.isSubmitting"></i>
+                    <i class="bi bi-heart" v-else @click="addFavorite(cp.productSize.id)" :disabled="state.isSubmitting"></i>
+                    <i class="bi bi-trash3" @click="removeFromCart(cp.id)" :disabled="state.isSubmitting"></i>
                   </div>
                 </div>
               </li>
             </ul>
+
             <div class="alert-message">
-             <p v-if="hasUnavailableProducts">주문 불가능한 상품이 존재합니다.</p>
+              <p v-if="hasUnavailableProducts">주문 불가능한 상품이 존재합니다.</p>
+              <p v-if="hasOverQuantityProducts">주문 수량이 재고를 초과하는 상품이 존재합니다.</p>
             </div>
           </div>
 
@@ -107,9 +104,7 @@
         </div>
       </div>
 
-      <div v-else>
-        <p>장바구니가 비어있습니다.</p>
-      </div>
+      <div class="content no-cart-data" v-else>장바구니가 비어있습니다.</div>
 
     </div>
   </div>
@@ -128,7 +123,6 @@ export default {
   name: 'Cart',
   components: {PriceSummary},
   setup() {
-    const quantities = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const state = reactive({
       isSubmitting: false,
       cartProducts: [],
@@ -138,6 +132,10 @@ export default {
     // 장바구니에 판매 중이지 않은 상품이 있는지 확인
     const hasUnavailableProducts = computed(() => {
       return state.cartProducts.some(cp => cp.product.status !== 'ON_SALE');
+    });
+    // 장바구니 상품의 수량이 판매가능한 재고인지 확인
+    const hasOverQuantityProducts = computed(() => {
+      return state.cartProducts.some(cp => cp.quantity > cp.productSize.quantity);
     });
 
     const load = () => {
@@ -227,8 +225,18 @@ export default {
     };
 
     const checkout = () => {
+      let errorMessages = [];
+
       if (hasUnavailableProducts.value) {
-        window.alert('주문 불가능한 상품이 존재합니다.');
+        errorMessages.push("주문 불가능한 상품이 존재합니다.");
+      }
+
+      if (hasOverQuantityProducts.value) {
+        errorMessages.push("주문 수량이 재고를 초과하는 상품이 존재합니다.");
+      }
+
+      if (errorMessages.length > 0) {
+        window.alert(errorMessages.join("\n"));
       } else {
         router.push({name: 'Order', query: {cartProducts: state.cartProducts}});
       }
@@ -238,8 +246,7 @@ export default {
 
     return {
       lib, price,
-      state, quantities,
-      hasUnavailableProducts,
+      state, hasUnavailableProducts, hasOverQuantityProducts,
       updateQuantity, updateCoupon,
       addFavorite, removeFavorite, removeFromCart, checkout,
     };
@@ -247,243 +254,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.cart {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1000px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch; /* 자식 요소들이 전체 너비를 차지하도록 설정 */
-}
-
-.product-list {
-  display: flex; /* 새로 추가된 컨테이너에 flex 적용 */
-}
-
-.product-info {
-  flex-grow: 1; /* 가능한 모든 여유 공간을 차지하도록 설정 */
-  margin-right: 20px; /* price-summary와의 간격을 조정 */
-}
-
-.price-summary {
-  width: 200px;
-  flex-shrink: 0; /* 요약 부분의 크기가 줄어들지 않도록 설정 */
-}
-
-.actions {
-  width: 100%; /* 전체 너비를 차지하게 설정 */
-  text-align: center; /* 버튼을 중앙에 배치 */
-  margin-top: 20px; /* 상단 간격 추가 */
-}
-
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-ul li {
-  display: flex;
-  border-bottom: 1px solid #eee;
-}
-
-ul li img {
-  width: 150px;
-  height: 180px;
-}
-
-.cart-product {
-  display: flex; /* Flexbox 적용 */
-  align-items: flex-start; /* 상단 정렬 */
-  justify-content: space-between;
-  width: 100%;
-}
-
-.product-details {
-  flex-grow: 1; /* 가능한 모든 여유 공간을 차지하도록 설정 */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding-block: 30px;
-}
-
-.details-wrapper {
-  justify-content: flex-start;
-}
-
-.product-subtotal {
-  display: flex;
-  flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
-  flex-direction: column;
-  width: 170px;
-  height: 100%;
-  padding-block: 30px;
-  margin-inline: 20px;
-}
-
-.product-title-row {
-  display: flex; /* Use flexbox for the title row */
-  align-items: center; /* Vertically center align items */
-  font-size: 0.9rem;
-  font-weight: bold;
-}
-
-.title-container, .discount-container {
-  display: flex;
-  align-items: center;
-}
-
-.title-container {
-  white-space: normal; /* 자동으로 줄바꿈 */
-}
-
-.discount-container {
-  margin-left: 0.2rem;
-  color: #dc3545;
-}
-
-.product-price-row {
-  font-size: 0.9rem;
-}
-
-.price-container {
-  display: flex; /* Use flexbox for the price container */
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.original-price {
-  color: darkgray;
-}
-
-.original-price.sale {
-  text-decoration: line-through;
-}
-
-.discounted-price {
-  color: #dc3545;
-}
-
-.subtotal-quantity-container, .subtotal-coupon-container, .subtotal-price-container {
-  display: flex;
-  flex-direction: row;
-}
-
-.action-icons {
-  align-self: flex-end; /* 오른쪽 정렬 */
-  margin-top: auto;
-  display: flex; /* 아이콘들을 수평으로 배치 */
-  gap: 10px; /* 아이콘 간 간격 */
-}
-
-label {
-  flex: 0 0 45px; /* 라벨의 너비를 50px로 고정 */
-}
-
-.label-content {
-  flex-grow: 1; /* 콘텐츠가 나머지 공간을 모두 차지하도록 설정 */
-}
-
-.select-field {
-  border-color: darkgray; /* 회색 테두리 적용 */
-  border-radius: 4px; /* 모서리 둥글게 처리 */
-  flex-grow: 1; /* 셀렉트 박스가 나머지 공간을 모두 차지하도록 설정 */
-  width: 100%; /* 셀렉트 박스의 너비를 100%로 설정 */
-}
-
-.discount-text {
-  color: darkgray; /* 회색으로 설정 */
-}
-
-.discount-text .amount {
-  color: black; /* 검정으로 설정 */
-}
-
-.bi {
-  vertical-align: middle;
-  margin: 0;
-  padding: 0;
-}
-
-.product-image {
-  position: relative;
-  flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
-  margin: 10px 20px;
-}
-
-.button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  border-width: 0.0625rem;
-  font-size: .75rem;
-  font-weight: 700;
-  height: 3.2rem;
-  justify-content: center;
-  text-align: center;
-  transition-timing-function: cubic-bezier(.215, .61, .355, 1);
-  width: 100%;
-  margin-block: 10px;
-  border-radius: 5px;
-  border: none; /* 테두리 제거 */
-}
-
-.btn-checkout {
-  background: linear-gradient(to bottom, #3a3a3a, #000000);
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-  transition-property: color, background-color;
-  margin-inline: auto;
-  display: block; /* block으로 설정하여 width를 제어합니다. */
-  width: 50%;
-}
-
-.not-in-stock-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%; /* 오버레이가 이미지와 같은 너비를 가지도록 설정 */
-  height: 100%; /* 오버레이가 이미지와 같은 높이를 가지도록 설정 */
-  background: rgba(0, 0, 0, 0.4); /* 반투명 배경 적용 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1;
-}
-
-.not-in-stock {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: black;
-  color: white;
-  font-size: .85rem;
-  padding: 5px 8px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 130px;
-  text-align: center;
-  z-index: 2;
-}
-
-.alert-message {
-  color: #dc3545;
-  text-align: right;
-  margin-top: 10px;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/cart/cart";
 </style>

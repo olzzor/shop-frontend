@@ -1,0 +1,31 @@
+@import "variables";
+
+// 출처: https://gist.github.com/gokulkrishh/242e68d1ee94ad05f488
+
+// Device = Most of the Smartphones Mobiles (portrait)
+// Screen = Up to 758px
+@mixin mobile {
+  @media (max-width: #{$breakpoint-tablet}){
+    @content;
+  }
+}
+
+// Device = Tablets, Ipads (landscape),
+// Screen = Between 759px to 1024px
+@mixin tablet {
+  @media (max-width: #{$breakpoint-desktop}){
+    @content;
+  }
+}
+
+// Device = Desktops
+// Screen = 1025px end above
+@mixin desktop {
+  @media (min-width : #{$breakpoint-desktop}){
+    @content;
+  }
+}
+
+@mixin test {
+  @content;
+}

@@ -21,7 +21,7 @@
         </li>
       </ul>
     </div>
-    <div v-else>사용 가능한 쿠폰이 없습니다.</div>
+    <div class="content no-coupon-data" v-else>사용 가능한 쿠폰이 없습니다.</div>
   </div>
 </template>
 
@@ -62,56 +62,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.coupon-list {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 600px;
-}
-
-.title {
-  display: flex;
-  justify-content: space-between;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.content {
-  font-size: .75rem;
-}
-
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-ul.coupons li {
-  border: 1px solid #ccc; /* 선의 색상과 두께 조절 */
-  border-radius: 5px; /* Optional: for rounded corners */
-  padding: 10px 20px; /* 선과 내용 사이의 간격 조절 */
-  margin-bottom: 10px; /* 아래 요소와의 간격 조절 */
-}
-
-.coupon-header {
-  display: flex;
-  justify-content: space-between; /* 버튼들을 좌우로 정렬 */
-  width: 100%; /* 컨테이너의 너비를 최대로 설정 */
-  margin-top: 10px; /* 버튼 컨테이너와 그 위의 요소와의 간격 설정 */
-}
-
-.coupon-header span {
-  font-size: 1.2em; /* 글자 크기 변경 */
-  font-weight: bold; /* 글자 굵기 변경 */
-}
-
-.coupon-details {
-  margin-block: 5px; /* 버튼 컨테이너와 그 위의 요소와의 간격 설정 */
-}
-
+<style lang="scss" scoped>
+@import "@/styles/modules/coupon/coupon-list";
 </style>

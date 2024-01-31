@@ -29,7 +29,7 @@ export default {
       const formData = new FormData();
       formData.append('image', blob);
 
-      axios.post('/api/file-upload/image', formData, {
+      axios.post('/api/toast-ui/image-upload', formData, {
         headers: {'upload-type': props.uploadType}
 
       }).then((res) => {

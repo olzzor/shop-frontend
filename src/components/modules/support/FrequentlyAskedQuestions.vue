@@ -1,8 +1,11 @@
 <template>
   <div class="frequently-asked-questions">
-    <div class="title">자주 묻는 질문</div>
-    <div class="content">
+    <div class="title">
+      <span>자주 묻는 질문</span>
+      <button class="btn-contact-us" type="button" @click="state.showContactUsModal = true">+ 1:1 문의하기</button>
+    </div>
 
+    <div class="content">
       <div v-for="section in faqData" :key="section.title" class="sections">
         <div class="section">{{ section.title }}</div>
 
@@ -18,16 +21,24 @@
         </div>
       </div>
     </div>
+
+    <ContactUsModal v-if="state.showContactUsModal" :show="state.showContactUsModal"
+                    @close="state.showContactUsModal = false" @updated="load" />
   </div>
 </template>
 
 <script>
 import {reactive} from "vue";
+import ContactUsModal from "@/components/modules/contact/ContactUsModal.vue";
 
 export default {
   name: "FrequentlyAskedQuestions",
-  components: {},
+  components: {ContactUsModal},
   setup() {
+    const state = reactive({
+      showContactUsModal: false,
+    });
+
     const faqData = reactive([
       {
         title: "주문 및 결제",
@@ -99,58 +110,13 @@ export default {
     };
 
     return {
-      faqData,
+      state, faqData,
       toggleQuestion, isQuestionOpen
     };
   }
 }
 </script>
 
-<style scoped>
-.frequently-asked-questions {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  padding-inline: 15px;
-}
-
-.content {
-  padding-inline: 15px;
-}
-
-.sections {
-  margin-block: 20px;
-}
-
-.section {
-  text-decoration: underline; /* 텍스트에 밑줄 추가 */
-  text-underline-offset: 0.2em; /* 밑줄 오프셋을 조정 */
-  margin-bottom: 10px;
-  font-size: 1rem;
-}
-
-.question {
-  background-color: #F5F5F5;
-  padding: 10px;
-  margin-bottom: 10px;
-  cursor: pointer;
-  font-size: 0.75rem;
-}
-
-.question .bi {
-  float: right;
-}
-
-.answer {
-  margin-bottom: 10px;
-  padding-inline: 10px;
-  font-size: 0.75rem;
-}
-
+<style lang="scss" scoped>
+@import "@/styles/modules/support/frequently-asked-questions";
 </style>

@@ -1,0 +1,59 @@
+.support {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 90px;
+  margin-inline: auto;
+  max-width: 1000px;
+
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    //padding-inline: 15px;
+  }
+
+  .content {
+    //padding-inline: 15px;
+    //display: flex;
+    //justify-content: space-between;
+
+    //.contact-us {
+    //  flex: 0 0 40%;
+    //  margin-right: 1%; /* 오른쪽 마진 추가 */
+    //}
+
+    //.FAQ {
+    //  flex: 0 0 60%;
+    //}
+  }
+}
+
+@include mobile {
+  .support {
+    margin-top: 60px;
+    margin-inline: 10px;
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      //padding-inline: 15px;
+    }
+
+    .content {
+      //padding-inline: 15px;
+      //display: flex;
+      //justify-content: space-between;
+
+      //.contact-us {
+      //  flex: 0 0 40%;
+      //  margin-right: 1%; /* 오른쪽 마진 추가 */
+      //}
+
+      //.FAQ {
+      //  flex: 0 0 60%;
+      //}
+    }
+  }
+}
