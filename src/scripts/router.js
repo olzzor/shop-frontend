@@ -81,8 +81,10 @@ const adminRoutes = [
     },
 ];
 
-const USER_HOST = 'localhost.test:3000';
-const ADMIN_HOST_NAME = 'admin.localhost.test';
+// const USER_HOST = 'localhost.test:3000';
+// const ADMIN_HOST_NAME = 'admin.localhost.test';
+const USER_HOST = 'bridgeshop.kro.kr:3000';
+const ADMIN_HOST_NAME = 'admin.bridgeshop.kro.kr';
 
 let routesToUse;
 

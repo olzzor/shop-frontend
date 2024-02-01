@@ -27,7 +27,8 @@ export default {
 
   setup() {
     const route = useRoute();
-    const isAdminPath = computed(() => window.location.hostname === 'admin.localhost.test');
+    // const isAdminPath = computed(() => window.location.hostname === 'admin.localhost.test');
+    const isAdminPath = computed(() => window.location.hostname === 'admin.bridgeshop.kro.kr');
     const isHomePage = computed(() => route.path === '/');
     const hasSearchQuery = computed(() => Boolean(route.query.search));
 

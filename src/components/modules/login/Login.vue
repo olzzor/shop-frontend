@@ -226,7 +226,8 @@ export default {
     const loginGoogle = () => {
       const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
       const clientId = '249788645467-l89t277l0rno4a4pd16jt43mrccd2i3d.apps.googleusercontent.com';
-      const redirectUri = 'http://localhost.test:3000/login/google';
+      // const redirectUri = 'http://localhost.test:3000/login/google';
+      const redirectUri = 'http://bridgeshop.kro.kr:3000/login/google';
       const scope = 'email profile';
 
       const loginUrl = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
@@ -236,7 +237,8 @@ export default {
     const loginNaver = () => {
       const authUrl = 'https://nid.naver.com/oauth2.0/authorize';
       const clientId = 'lRrQyVJfr2_5u5M3vh7R';
-      const redirectUri = 'http://localhost.test:3000/login/naver';
+      // const redirectUri = 'http://localhost.test:3000/login/naver';
+      const redirectUri = 'http://bridgeshop.kro.kr:3000/login/naver';
 
       const loginUrl = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=1234`;
       showSocialLoginPopup(loginUrl)
@@ -245,7 +247,8 @@ export default {
     const loginKakao = () => {
       const authUrl = 'https://kauth.kakao.com/oauth/authorize';
       const clientId = 'bc70bff5016b07be7a2c35517831835f';
-      const redirectUri = 'http://localhost.test:3000/login/kakao';
+      // const redirectUri = 'http://localhost.test:3000/login/kakao';
+      const redirectUri = 'http://bridgeshop.kro.kr:3000/login/kakao';
       const scope = 'account_email birthday gender profile_nickname profile_image';
 
       const loginUrl = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
@@ -255,7 +258,8 @@ export default {
     const loginFacebook = () => {
       const authUrl = 'https://www.facebook.com/v12.0/dialog/oauth';
       const clientId = '3561230307461014';
-      const redirectUri = 'http://localhost.test:3000/login/facebook';
+      // const redirectUri = 'http://localhost.test:3000/login/facebook';
+      const redirectUri = 'http://bridgeshop.kro.kr:3000/login/facebook';
       const scope = 'email';
 
       const loginUrl = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;

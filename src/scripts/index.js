@@ -1,5 +1,7 @@
-export const API_BASE_URL = 'http://localhost.test:8080';
-export const OAUTH2_REDIRECT_URI = 'http://localhost.test:3000/oauth2/redirect'
+// export const API_BASE_URL = 'http://localhost.test:8080';
+// export const OAUTH2_REDIRECT_URI = 'http://localhost.test:3000/oauth2/redirect'
+export const API_BASE_URL = 'http://bridgeshop.kro.kr.test:8080';
+export const OAUTH2_REDIRECT_URI = 'http://bridgeshop.kro.kr:3000/oauth2/redirect'
 export const ACCESS_TOKEN = 'accessToken';
 
 export const getAuthUrl = (provider) => `${API_BASE_URL}/oauth2/authorize/${provider}?redirect_uri=${OAUTH2_REDIRECT_URI}`;
