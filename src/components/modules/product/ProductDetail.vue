@@ -95,7 +95,7 @@
 <!--      </div>-->
     </div>
 
-    <div v-if="state.product.status !== 'ON_SALE'" class="not-in-stock-overlay">
+    <div class="not-in-stock-overlay" v-if="!isLoading && state.product.status !== 'ON_SALE'">
       <div class="not-in-stock">NOT IN STOCK</div>
     </div>
   </div>
@@ -108,6 +108,7 @@ import {useRoute} from "vue-router";
 import axios from "axios";
 import lib from "@/scripts/lib";
 import price from "@/scripts/price";
+import router from "@/scripts/router";
 
 export default {
   name: "ProductDetail",
@@ -120,6 +121,7 @@ export default {
     const route = useRoute();
     const store = useStore();
     const productId = route.params.id;
+    const isLoading = ref(true); // 로딩 상태 초기화
     const isFavorite = ref(false);
     const favoriteId = ref(0);
     const imageListRef = ref(null);
@@ -264,13 +266,33 @@ export default {
     };
 
     const load = () => {
+      isLoading.value = true; // 상품 정보 요청 전 로딩 상태를 true로 설정
+
       axios.get(`/api/product/${productId}`).then(({data}) => {
         if (data.productSizes && data.productSizes.length === 1) {
           state.selectedSizeId = data.productSizes[0].id;
         }
+
         state.product = data;
         recordRecentlyViewedProduct();
         checkFavorite();
+
+      }).catch(error => {
+        let errorMessage = "오류가 발생했습니다. 다시 시도해주세요.";
+
+        if (error.response) {
+          switch (error.response.status) {
+            case 404:
+              errorMessage = error.response.data.message;
+              break;
+          }
+        }
+
+        window.alert(errorMessage); // 오류 메시지를 사용자에게 알림
+        router.back(); // 이전 페이지로 이동
+
+      }).finally(() => {
+        isLoading.value = false; // 요청 완료 후 로딩 상태를 false로 설정
       });
     };
 
@@ -326,7 +348,7 @@ export default {
 
     return {
       lib, price,
-      route, state, isFavorite, imageListRef,
+      route, state, isLoading, isFavorite, imageListRef,
       scrollImageList,
       decrementQuantity, incrementQuantity,
       addFavorite, removeFavorite, checkFavorite,

@@ -1,20 +1,27 @@
 <!-- Slider.vue -->
 <template>
   <div class="slider">
-    <div class="slider-content" v-if="state.sliders.length > 0 && state.sliders[currentSlide]" :key="currentSlide">
-      <router-link :to="{ name: 'NoticeDetail', params: { id: state.sliders[currentSlide].id }}">
-        <img :src="`${state.sliders[currentSlide].noticeSliderImage.fileUrl}`" :alt="state.sliders[currentSlide].title" />
-      </router-link>
-    </div>
+    <div class="title"></div>
 
-    <!-- 페이지네이션 바는 슬라이더가 한 개 이상일 때만 표시 -->
-    <div class="pagination" v-if="state.sliders.length > 1">
-      <div class="bar-container" :style="'--slider-count: ' + state.sliders.length">
-        <div v-for="(slider, index) in state.sliders" :key="index" class="bar" @click="setSlide(index)">
-          <div :class="{ fill: currentSlide === index }"></div>
+    <div class="content" v-if="state.sliders.length > 0">
+      <div class="slider">
+        <div class="slider-image" v-if="state.sliders.length > 0 && state.sliders[currentSlide]" :key="currentSlide">
+          <router-link :to="{ name: 'NoticeDetail', params: { id: state.sliders[currentSlide].id }}">
+            <img :src="`${state.sliders[currentSlide].noticeSliderImage.fileUrl}`" :alt="state.sliders[currentSlide].title" />
+          </router-link>
+        </div>
+
+        <!-- 페이지네이션 바는 슬라이더가 한 개 이상일 때만 표시 -->
+        <div class="pagination" v-if="state.sliders.length > 1">
+          <div class="bar-container" :style="'--slider-count: ' + state.sliders.length">
+            <div v-for="(slider, index) in state.sliders" :key="index" class="bar" @click="setSlide(index)">
+              <div :class="{ fill: currentSlide === index }"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    <div class="content no-slider-data" v-else></div>
   </div>
 </template>
 
