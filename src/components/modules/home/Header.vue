@@ -2,7 +2,8 @@
   <header>
     <div class="navbar">
       <div class="navbar-left">
-        <div @mouseenter="showMenuTooltip = true" @mouseleave="handleIconMouseLeave('menu')">
+        <div @click="toggleMenuTooltip"
+             @mouseenter="showMenuTooltip = true" @mouseleave="handleIconMouseLeave('menu')">
           <i class="bi bi-list"></i>
         </div>
 
@@ -21,7 +22,7 @@
       <div class="navbar-center">
         <!-- 로고 -->
         <div class="logo-container" v-if="!isMobile() || (isMobile() && !isSearchInputVisible)">
-          <router-link to="/"><img src="/img/icons/logo.png" alt="BRIDGE MALL" /></router-link>
+          <router-link to="/" @click="resetHomePageState"><img src="/img/icons/logo.png" alt="BRIDGE MALL" /></router-link>
         </div>
       </div>
 
@@ -43,7 +44,8 @@
         </router-link>
 
         <!-- 내 계정 -->
-        <div v-if="$store.state.account.id" @mouseenter="showMyPageTooltip = true" @mouseleave="handleIconMouseLeave('mypage')">
+        <div v-if="$store.state.account.id" @click="toggleMyPageTooltip"
+             @mouseenter="showMyPageTooltip = true" @mouseleave="handleIconMouseLeave('mypage')">
           <i :class="isMyPage ? 'bi bi-person-fill' : 'bi bi-person'"></i>
         </div>
         <router-link v-else to="/login">
@@ -135,8 +137,16 @@ export default {
 
     let tooltipTimeout = null;
 
-    const toggleSearchInput = () => { // 추가
+    const toggleSearchInput = () => {
       isSearchInputVisible.value = !isSearchInputVisible.value;
+    };
+
+    const toggleMenuTooltip = () => {
+      showMenuTooltip.value = !showMenuTooltip.value;
+    };
+
+    const toggleMyPageTooltip = () => {
+      showMyPageTooltip.value = !showMyPageTooltip.value;
     };
 
     const handleIconMouseLeave = (iconType) => {
@@ -186,7 +196,6 @@ export default {
       router.push(path);
     };
 
-
     const logout = () => {
       if (window.confirm('로그아웃하시겠습니까?')) {
         axios.post("/api/user/logout").then(() => {
@@ -197,14 +206,19 @@ export default {
       }
     };
 
+    const resetHomePageState = () => {
+      sessionStorage.removeItem('productPageState');
+      sessionStorage.removeItem('scrollPosition');
+    };
+
     return {
       isFavoritePage, isCartPage, isMyPage,
       selectedContent, searchQuery, isSearchInputVisible,
       showMenuTooltip, showMyPageTooltip,
-      handleIconMouseLeave, handleTooltipMouseEnter, handleTooltipMouseLeave,
-      toggleSearchInput, search, navigateTo,
-      logout,
       isMobile,
+      handleIconMouseLeave, handleTooltipMouseEnter, handleTooltipMouseLeave,
+      toggleSearchInput, toggleMenuTooltip, toggleMyPageTooltip,
+      search, navigateTo, logout, resetHomePageState,
     };
   }
 }

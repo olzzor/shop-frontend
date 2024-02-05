@@ -130,10 +130,9 @@ export default {
 
     onMounted(() => { // 페이지 load 및 상태 복원
       const savedState = JSON.parse(sessionStorage.getItem('productPageState'));
-      const savedScrollPosition = sessionStorage.getItem('scrollPosition');
-
       savedState ? Object.assign(state, savedState) : load();
 
+      const savedScrollPosition = sessionStorage.getItem('scrollPosition');
       if (savedScrollPosition) { // 0.2초 후에 스크롤 이동
         setTimeout(() => window.scrollTo(0, parseInt(savedScrollPosition)), 200);
       }

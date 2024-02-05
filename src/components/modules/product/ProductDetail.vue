@@ -95,7 +95,7 @@
 <!--      </div>-->
     </div>
 
-    <div class="not-in-stock-overlay" v-if="!isLoading && state.product.status !== 'ON_SALE'">
+    <div class="not-in-stock-overlay" v-if="!state.isLoading && state.product.status !== 'ON_SALE'">
       <div class="not-in-stock">NOT IN STOCK</div>
     </div>
   </div>
@@ -105,6 +105,7 @@
 import {onMounted, reactive, ref, watch} from "vue";
 import {useStore} from 'vuex';
 import {useRoute} from "vue-router";
+import {isMobile} from "@/scripts/mixin";
 import axios from "axios";
 import lib from "@/scripts/lib";
 import price from "@/scripts/price";
@@ -121,11 +122,11 @@ export default {
     const route = useRoute();
     const store = useStore();
     const productId = route.params.id;
-    const isLoading = ref(true); // 로딩 상태 초기화
     const isFavorite = ref(false);
     const favoriteId = ref(0);
     const imageListRef = ref(null);
     const state = reactive({
+      isLoading: true,
       isSubmitting: false,
       product: {},
       selectedImageIndex: 0, selectedSizeId: 0, selectedQuantity: 1,
@@ -133,8 +134,11 @@ export default {
 
     const scrollImageList = (direction) => {
       if (imageListRef.value) {
-        const scrollAmount = 120; // 하나의 이미지 높이
-        imageListRef.value.scrollTop += scrollAmount * direction;
+        if (isMobile()) {
+          imageListRef.value.scrollLeft += 84 * direction;
+        } else {
+          imageListRef.value.scrollTop += 104 * direction;
+        }
       }
     };
 
@@ -266,7 +270,7 @@ export default {
     };
 
     const load = () => {
-      isLoading.value = true; // 상품 정보 요청 전 로딩 상태를 true로 설정
+      state.isLoading = true; // 상품 정보 요청 전 로딩 상태를 true로 설정
 
       axios.get(`/api/product/${productId}`).then(({data}) => {
         if (data.productSizes && data.productSizes.length === 1) {
@@ -292,7 +296,7 @@ export default {
         router.back(); // 이전 페이지로 이동
 
       }).finally(() => {
-        isLoading.value = false; // 요청 완료 후 로딩 상태를 false로 설정
+        state.isLoading = false; // 요청 완료 후 로딩 상태를 false로 설정
       });
     };
 
@@ -348,7 +352,7 @@ export default {
 
     return {
       lib, price,
-      route, state, isLoading, isFavorite, imageListRef,
+      route, state, isFavorite, imageListRef,
       scrollImageList,
       decrementQuantity, incrementQuantity,
       addFavorite, removeFavorite, checkFavorite,

@@ -26,13 +26,9 @@
         .image-container {
           display: block;
           width: 100%;
-          height: 350px;
+          aspect-ratio: 10 / 11;
           background-size: cover;
           background-position: center;
-
-          @media screen and (max-width: 390px) {
-            height: 150px;
-          }
         }
 
         .detail-section {
@@ -110,10 +106,10 @@
     padding-block: 5px;
     .title {
       font-size: 15px;
-      margin: 0px 5px -15px 5px;
+      margin: 0 5px -15px 5px;
     }
     .content {
-      margin-top: 0px;
+      margin-top: 0;
       .grid {
         .item {
           flex: 0 0 33.3333%;
@@ -121,7 +117,6 @@
           padding: 5px;
           .product {
             .image-container {
-              height: 200px;
             }
             .detail-section {
               padding: 5px 7.5px;
@@ -156,7 +151,7 @@
     padding-block: 10px;
     .title {
       font-size: 15px;
-      margin: 0px 5px -15px 5px;
+      margin: 0 5px -15px 5px;
     }
     .content {
       //margin-top: 50px;
@@ -167,7 +162,6 @@
           padding: 5px;
           .product {
             .image-container {
-              height: 200px;
             }
             .detail-section {
               padding: 5px 7.5px;

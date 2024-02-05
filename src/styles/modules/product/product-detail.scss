@@ -37,6 +37,7 @@
 
           .image-list {
             overflow-y: hidden;
+            gap: 4px;
           }
 
           .image-container {
@@ -45,7 +46,6 @@
             height: 96px;
             background-size: cover;
             background-position: center;
-            margin-bottom: 4px;
           }
 
           .image-list-navigation {
@@ -58,6 +58,7 @@
 
             .button {
               margin: 0;
+              width: calc((100% - 1px)/2);
               height: 100%;
               background-color: darkgray;
               color: white;
@@ -260,29 +261,30 @@
 
           .image-wrapper {
             flex-direction: row;
+            width: 100%;
             height: 100px;
-            margin: 0px;
+            margin: 0;
 
             .image-list {
               display: flex;
               flex-direction: row;
-              //overflow-x: auto;
-              //overflow-x: hidden;
+              overflow-x: auto;
             }
 
             .image-container {
               width: 80px;
               height: 96px;
-              margin-right: 4px;
             }
 
             .image-list-navigation {
               height: 96px;
               flex-direction: column;
-              .button {}
+              .button {
+                width: 100%;
+                height: calc((100% - 1px)/2);
+              }
               .divider {
                 height: 1px;
-                width: 100%;
               }
             }
           }

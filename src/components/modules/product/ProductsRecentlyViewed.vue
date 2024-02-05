@@ -58,7 +58,7 @@ import {onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import lib from "@/scripts/lib";
 import {useStore} from "vuex";
-import {isMobile} from "@/scripts/mixin";
+import {isMobile, isTablet} from "@/scripts/mixin";
 import SelectProductSize from "@/components/modules/favorite/SelectProductSizeModal.vue";
 
 export default {
@@ -70,7 +70,7 @@ export default {
     const selectedProductId = ref(null);
     const state = reactive({
       recentlyViewed: [],
-      page: {pageSize: isMobile()? 2: 4, currentPage: 1, totalPages: 0},
+      page: {pageSize: isMobile()? 2: isTablet()? 3: 4, currentPage: 1, totalPages: 0},
     });
 
     const goToPage = (page) => {
