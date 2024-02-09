@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import {marked} from "marked";
 
 export default {
-    authProviders: ['LOCAL', 'NAVER', 'KAKAO', 'GOOGLE'],
+    authProviders: ['LOCAL', 'NAVER', 'KAKAO', 'GOOGLE', 'FACEBOOK'],
     categoryCodes: ['tops', 'shirts', 'sweats', 'knits', 'pants', 'jeans', 'skirts', 'outer', 'headwear', 'footwear', 'accessories'],
     courierCompanies: ['CJ_LOGISTICS', 'LOTTE', 'KOREA_POST', 'LOGEN', 'HANJIN', 'CU', 'KYUNG_DONG', 'GS_POSTBOX', 'OTHER'],
 

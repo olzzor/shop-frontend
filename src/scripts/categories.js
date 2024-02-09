@@ -3,7 +3,6 @@ import {onMounted} from "vue";
 
 let categories = [];
 
-
 onMounted(async () => {
     const response = await axios.get("/api/categories/get");
     categories = response.data;

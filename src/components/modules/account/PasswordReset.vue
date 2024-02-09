@@ -91,8 +91,11 @@ export default {
         };
 
         axiosInstance.post("/api/user/reset-password", args).then(() => {
-          router.push({path: "/"});
           window.alert("비밀번호가 재설정되었습니다.");
+          router.push({path: "/"});
+
+        }).catch(() => {
+          // axiosInstance 에서 처리
 
         }).finally(() => {
           state.isSubmitting = false;

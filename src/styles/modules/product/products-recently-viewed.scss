@@ -43,7 +43,7 @@
             .title-row {
               display: flex;
               align-items: center;
-              font-size: 0.9rem;
+              font-size: 0.75rem;
               font-weight: bold;
               max-width: 270px;
 
@@ -64,7 +64,7 @@
             }
 
             .pricing-row {
-              font-size: 0.9rem;
+              font-size: 0.85rem;
 
               .price-container {
                 display: flex;
@@ -150,13 +150,13 @@
               padding: 5px 7.5px;
               .info-section {
                 .title-row {
-                  font-size: 0.6rem;
+                  font-size: 0.65rem;
                   max-width: 170px;
                   .discount-per {}
                   .name {}
                 }
                 .pricing-row {
-                  font-size: 0.6rem;
+                  font-size: 0.7rem;
                   .price-container {
                     .original-price {}
                     .discounted-price {}
@@ -201,7 +201,7 @@
               padding: 5px 7.5px;
               .info-section {
                 .title-row {
-                  font-size: 0.6rem;
+                  font-size: 0.55rem;
                   max-width: 140px;
                   .discount-per {}
                   .name {}

@@ -96,8 +96,11 @@ export default {
 
       if (checkInput()) {
         axiosInstance.post("/api/user/change-password", state.form).then(() => {
-          router.push({path: "/"});
           window.alert("비밀번호가 변경되었습니다.");
+          router.push({path: "/"});
+
+        }).catch(() => {
+          // axiosInstance 에서 처리
 
         }).finally(() => {
           state.isSubmitting = false;

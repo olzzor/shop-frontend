@@ -31,7 +31,7 @@
         <router-link v-if="$store.state.account.id" to="/favorite">
           <i :class="isFavoritePage ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
         </router-link>
-        <router-link v-else :to="{ path: '/login', query: { redirect: 'favorite' } }">
+        <router-link v-else :to="{ path: '/login', query: { redirect: '/favorite' } }">
           <i class="bi bi-heart"></i>
         </router-link>
 
@@ -39,7 +39,7 @@
         <router-link v-if="$store.state.account.id" to="/cart">
           <i :class="isCartPage ? 'bi bi-bag-fill' : 'bi bi-bag'"></i>
         </router-link>
-        <router-link v-else :to="{ path: '/login', query: { redirect: 'cart' } }">
+        <router-link v-else :to="{ path: '/login', query: { redirect: '/cart' } }">
           <i class="bi bi-bag"></i>
         </router-link>
 

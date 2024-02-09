@@ -116,7 +116,6 @@
 
           <td>{{ lib.getFormattedDate(user.regDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
           <td>{{ lib.getFormattedDate(user.modDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
-<!--          <td><input type="button" value="삭제하기" @click="deleteAccount(user.id)" :disabled="!state.isModify[idx].value" /></td>-->
         </tr>
         </tbody>
       </table>
@@ -300,15 +299,6 @@ export default {
       }
     };
 
-    const deleteAccount = (userId) => {
-      if (window.confirm('해당 유저를 삭제하시겠습니까?')) {
-        axios.post(`/api/user/delete/${userId}`).then(() => {
-          alert('성공적으로 삭제되었습니다.');
-          load();
-        });
-      }
-    };
-
     const goToPage = (page) => {
       state.page.currentPage = page;
       state.onclickSearchCondition ? getSearchedList() : getFullList();
@@ -325,7 +315,7 @@ export default {
       tableHeaders, authProviders, state,
       downloadCSV, toggleSelectAll,
       searchCondition, searchFull, clearSearchConditions,
-      modify, deleteAccount, changeUsers, goToPage
+      modify, changeUsers, goToPage
     }
   }
 }

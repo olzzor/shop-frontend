@@ -57,8 +57,11 @@ export default {
 
       if (checkInput()) {
         axiosInstance.post("/api/user/find-password", state.form).then(() => {
-          alert("입력하신 이메일로 비밀번호 재설정 안내 메일이 발송되었습니다. 비밀번호를 재설정 후 다시 로그인해주세요.");
+          window.alert("입력하신 이메일로 비밀번호 재설정 안내 메일이 발송되었습니다. 비밀번호를 재설정 후 다시 로그인해주세요.");
           router.push('/login');
+
+        }).catch(() => {
+          // axiosInstance 에서 처리
 
         }).finally(() => {
           state.isSubmitting = false;

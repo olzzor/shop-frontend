@@ -3,8 +3,10 @@
     <div class="title">로그인</div>
     <div class="content">
 
+      <!-- 로컬 로그인 -->
       <form @submit.prevent="login">
         <div class="local-login">
+          <!-- 이메일 입력란 -->
           <div class="email-field" :class="{ 'input-error': state.errorMessage.email }">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 37.000000 43.000000" preserveAspectRatio="xMidYMid meet">
               <g transform="translate(0.000000,43.000000) scale(0.100000,-0.100000)" fill="#545454" stroke="none">
@@ -17,6 +19,7 @@
           </div>
           <div class="error-message" v-if="state.errorMessage.email">{{ state.errorMessage.email }}</div>
 
+          <!-- 비밀번호 입력란 -->
           <div class="password-field" :class="{ 'input-error': state.errorMessage.password }">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 36.000000 40.000000" preserveAspectRatio="xMidYMid meet">
               <g transform="translate(0.000000,40.000000) scale(0.100000,-0.100000)" fill="#545454" stroke="none">
@@ -33,7 +36,9 @@
           </div>
           <div class="error-message" v-if="state.errorMessage.password">{{ state.errorMessage.password }}</div>
 
+          <!-- 옵션 -->
           <div class="extra-options">
+            <!-- 이메일 저장 -->
             <div>
               <label class="checkbox-wrapper" @click="state.saveEmail = !state.saveEmail">
                 <i v-if="state.saveEmail" class="bi bi-check-square-fill"></i>
@@ -41,22 +46,22 @@
                 이메일 저장
               </label>
             </div>
+            <!-- 비밀번호 찾기 -->
             <div class="links">
               <router-link to="/login/find-password" class="link">비밀번호 찾기</router-link>
             </div>
           </div>
 
+          <!-- 버튼 -->
           <button class="button btn-login" type="submit">로그인</button>
           <button class="button btn-signup" type="button" @click="signup">회원 가입하기</button>
         </div>
       </form>
 
+      <!-- 소셜 로그인: 구글 -->
       <div class="social-login">
         <button class="button btn-login-google" @click="loginGoogle">
           <div class="google-icon-wrapper">
-<!--            <svg width="50" height="50" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">-->
-<!--              <path d="M19.76 10.77L19.67 10.42H12.23V13.58H16.68C16.4317 14.5443 15.8672 15.3974 15.0767 16.0029C14.2863 16.6084 13.3156 16.9313 12.32 16.92C11.0208 16.9093 9.77254 16.4135 8.81999 15.53C8.35174 15.0685 7.97912 14.5191 7.72344 13.9134C7.46777 13.3077 7.33407 12.6575 7.33 12C7.34511 10.6795 7.86792 9.41544 8.79 8.47002C9.7291 7.58038 10.9764 7.08932 12.27 7.10002C13.3779 7.10855 14.4446 7.52101 15.27 8.26002L17.47 6.00002C16.02 4.70638 14.1432 3.9941 12.2 4.00002C11.131 3.99367 10.0713 4.19793 9.08127 4.60115C8.09125 5.00436 7.19034 5.59863 6.43 6.35002C4.98369 7.8523 4.16827 9.85182 4.15152 11.9371C4.13478 14.0224 4.918 16.0347 6.34 17.56C7.12784 18.3449 8.06422 18.965 9.09441 19.3839C10.1246 19.8029 11.2279 20.0123 12.34 20C13.3484 20.0075 14.3479 19.8102 15.2779 19.42C16.2078 19.0298 17.0488 18.4549 17.75 17.73C19.1259 16.2171 19.8702 14.2347 19.83 12.19C19.8408 11.7156 19.8174 11.2411 19.76 10.77Z" fill="#000000"/>-->
-<!--            </svg>-->
             <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 52 54" preserveAspectRatio="xMidYMid meet">
               <g transform="translate(0.000000,54.000000) scale(0.100000,-0.100000)" fill="#545454" stroke="none">
                 <path d="M184 517 c-49 -19 -99 -57 -124 -94 l-23 -34 34 -29 c40 -35 55 -37 64 -10 10 32 71 72 118 77 27 3 57 -1 82 -11 l39 -16 33 32 c18 17 33 35 33 38 0 4 -19 17 -42 30 -49 28 -164 37 -214 17z" />
@@ -68,6 +73,7 @@
           <div class="icon-text-wrapper">구글 로그인</div>
         </button>
 
+        <!-- 소셜 로그인: 네이버 -->
         <button class="button btn-login-naver" @click="loginNaver">
           <div class="naver-icon-wrapper">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512">
@@ -78,6 +84,7 @@
           <div class="icon-text-wrapper">네이버 로그인</div>
         </button>
 
+        <!-- 소셜 로그인: 카카오 -->
         <button class="button btn-login-kakao" @click="loginKakao">
           <div class="kakao-icon-wrapper">
             <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 50.000000 48.000000" preserveAspectRatio="xMidYMid meet">
@@ -90,6 +97,7 @@
           <div class="icon-text-wrapper">카카오 로그인</div>
         </button>
 
+        <!-- 소셜 로그인: 페이스북 -->
         <button class="button btn-login-facebook" @click="loginFacebook">
           <div class="facebook-icon-wrapper">
             <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27"
@@ -116,6 +124,7 @@ import axios from "axios";
 import store from "@/scripts/store";
 import router from "@/scripts/router";
 import {useRoute} from "vue-router";
+import {syncLocalStorageWithDB} from "@/scripts/localStorage";
 
 export default {
   name: "Login",
@@ -126,7 +135,7 @@ export default {
       saveEmail: false,
       form: {email: "", password: ""},
       errorMessage: {},
-    })
+    });
 
     const passwordFieldType = computed(() => passwordVisible.value ? 'text' : 'password');
     const passwordIconClass = computed(() => passwordVisible.value ? 'bi-eye-fill' : 'bi-eye-slash-fill');
@@ -136,36 +145,26 @@ export default {
     };
 
     onMounted(() => {
-
-      // 메시지 이벤트 리스너 추가
-      window.addEventListener('message', (event) => {
-        if (event.data.type === 'socialLoginSuccess') {
-          store.commit('setAccountId', event.data.userId);
-          store.commit('setAccountRole', event.data.userRole);
-          router.push({path: "/"});
-        }
-      });
+      // // 메시지 이벤트 리스너 추가 ※ 소셜 로그인이 별도의 팝업 또는 다른 창에서 진행될 경우 필요
+      // window.addEventListener('message', (event) => {
+      //   if (event.data.type === 'socialLoginSuccess') {
+      //     store.commit('setAccountId', event.data.userId);
+      //     store.commit('setAccountRole', event.data.userRole);
+      //     router.push({path: "/"});
+      //   }
+      // });
 
       const savedEmail = localStorage.getItem('savedEmail');
-
-      if (savedEmail) {
-        // savedEmail 가 있다면 아이디 입력 폼과 savedEmail 를 설정
+      if (savedEmail) { // savedEmail 가 있다면 아이디 입력 폼과 savedEmail 를 설정
         state.form.email = savedEmail;
         state.saveEmail = true;
       }
-    });
 
-    // 로컬 스토리지의 recentlyViewedProducts 를 DB에 삽입하는 함수
-    const syncLocalStorageWithDB = () => {
-      const recentlyViewedProducts = JSON.parse(localStorage.getItem('recentlyViewedProducts') || '[]');
-
-      if (recentlyViewedProducts.length > 0) {
-        axios.post("/api/recently-viewed-product/sync", recentlyViewedProducts).then(() => {
-          // 성공적으로 DB에 저장되면 로컬 스토리지에서 제거
-          localStorage.removeItem('recentlyViewedProducts');
-        });
+      const redirectPath = route.query.redirect;
+      if (redirectPath) {
+        sessionStorage.setItem('redirectPath', redirectPath);
       }
-    }
+    });
 
     // 회원 가입 페이지로 이동하는 함수
     const signup = () => {
@@ -205,7 +204,7 @@ export default {
           store.commit('setAccountId', data.id);
           store.commit('setAccountRole', data.role);
 
-          // saveEmail 가 true 이면 로컬 스토리지에 아이디 저장
+          // 이메일 저장 체크 박스가 선택된 경우, 로컬 스토리지에 해당 이메일 주소 저장
           if (state.saveEmail) {
             localStorage.setItem('savedEmail', state.form.email);
           }
@@ -213,57 +212,83 @@ export default {
           syncLocalStorageWithDB();
           window.alert("로그인하였습니다.");
 
-          // 로그인 성공 시, redirect query parameter 를 확인하여 해당 경로로 리다이렉트 (기본적으로 홈 페이지로 리다이렉트)
-          const redirect = route.query.redirect || '/';
-          router.push({path: redirect});
+          // 리다이렉션 처리 (기본적으로 홈 페이지로 리다이렉트하되, 세션 스토리지에 저장된 경로가 있으면 해당 경로로 리다이렉트)
+          const redirectPath = sessionStorage.getItem('redirectPath') || '/';
+          sessionStorage.removeItem('redirectPath');
+          router.push({path: redirectPath});
 
-        }).catch(() => {
-          window.alert("로그인 정보가 존재하지 않습니다.");
+        }).catch(error => {
+          if (error.response) {
+            switch (error.response.status) {
+              case 401: // UNAUTHORIZED
+                window.alert(error.response.data.message);
+                break;
+              case 404: // NOT_FOUND
+                window.alert(error.response.data.message);
+                break;
+              default:
+                window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+            }
+          } else {
+            window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+          }
         });
       }
     }
 
+    const generateRandomState = () => {
+      const validChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let array = new Uint8Array(20); // Uint8Array 타입의 배열 생성
+      window.crypto.getRandomValues(array); // 배열을 안전한 난수로 채움
+      array = array.map(x => validChars.charCodeAt(x % validChars.length)); // 배열의 각 요소를 validChars 문자열의 인덱스로 변환하여 ASCII 코드를 가져옴
+      return String.fromCharCode.apply(null, array); // ASCII 코드 배열을 문자열로 변환하여 반환
+    };
+
     const loginGoogle = () => {
       const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
       const clientId = '249788645467-l89t277l0rno4a4pd16jt43mrccd2i3d.apps.googleusercontent.com';
-      // const redirectUri = 'http://localhost.test:3000/login/google';
-      const redirectUri = 'http://bridgeshop.kro.kr:3000/login/google';
+      // const redirectUri = 'https://bridgeshop.dev:3000/social-login?provider=google';
+      const redirectUri = 'http://bridgeshop.kro.kr:3000/social-login?provider=google';
       const scope = 'email profile';
 
       const loginUrl = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
-      showSocialLoginPopup(loginUrl)
+      showSocialLoginPopup(loginUrl);
     };
 
     const loginNaver = () => {
       const authUrl = 'https://nid.naver.com/oauth2.0/authorize';
       const clientId = 'lRrQyVJfr2_5u5M3vh7R';
-      // const redirectUri = 'http://localhost.test:3000/login/naver';
-      const redirectUri = 'http://bridgeshop.kro.kr:3000/login/naver';
+      // const redirectUri = 'https://bridgeshop.dev:3000/social-login?provider=naver';
+      const redirectUri = 'http://bridgeshop.kro.kr:3000/social-login?provider=naver';
+      const state = generateRandomState(); // 난수 생성
 
-      const loginUrl = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=1234`;
-      showSocialLoginPopup(loginUrl)
+      const loginUrl = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${state}`;
+      showSocialLoginPopup(loginUrl);
+
+      // // 현재 페이지에서 소셜 로그인 URL로 리다이렉트
+      // window.location.href = loginUrl;
     };
 
     const loginKakao = () => {
       const authUrl = 'https://kauth.kakao.com/oauth/authorize';
       const clientId = 'bc70bff5016b07be7a2c35517831835f';
-      // const redirectUri = 'http://localhost.test:3000/login/kakao';
-      const redirectUri = 'http://bridgeshop.kro.kr:3000/login/kakao';
-      const scope = 'account_email birthday gender profile_nickname profile_image';
+      // const redirectUri = 'https://bridgeshop.dev:3000/social-login?provider=kakao';
+      const redirectUri = 'http://bridgeshop.kro.kr:3000/social-login?provider=kakao';
+      const scope = 'profile_nickname profile_image account_email';
 
       const loginUrl = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
-      showSocialLoginPopup(loginUrl)
+      showSocialLoginPopup(loginUrl);
     };
 
     const loginFacebook = () => {
       const authUrl = 'https://www.facebook.com/v12.0/dialog/oauth';
       const clientId = '3561230307461014';
-      // const redirectUri = 'http://localhost.test:3000/login/facebook';
-      const redirectUri = 'http://bridgeshop.kro.kr:3000/login/facebook';
+      // const redirectUri = 'https://bridgeshop.dev:3000/social-login?provider=facebook';
+      const redirectUri = 'http://bridgeshop.kro.kr:3000/social-login?provider=facebook';
       const scope = 'email';
 
       const loginUrl = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
-      showSocialLoginPopup(loginUrl)
+      showSocialLoginPopup(loginUrl);
     };
 
     const showSocialLoginPopup = (url) => {
@@ -276,12 +301,12 @@ export default {
 
       let popupOptions = `height=${popupHeight},width=${popupWidth},left=${popupX},top=${popupY},scrollbars=yes,resizable=yes`;
 
-      openPopup(url, popupOptions)
-      return false
+      openPopup(url, popupOptions);
+      return false;
     };
 
     const openPopup = (url, options) => {
-      window.open(url, '_blank', options);
+      window.open(url, '_self', options); // _blank -> _self 으로 타겟 변경
     };
 
     return {
