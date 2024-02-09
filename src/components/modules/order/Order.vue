@@ -91,6 +91,7 @@ export default {
 
         IMP.request_pay({ // param
           pg: "html5_inicis",
+          m_redirect_url: "https://www.myservice.com/payments/complete/mobile",
           pay_method: "card",
           merchant_uid: new Date().getTime(), // 상점에서 관리하는 주문 번호를 전달
           name: "주문명: 테스트",
