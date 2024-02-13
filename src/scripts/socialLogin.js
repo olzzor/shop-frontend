@@ -21,8 +21,8 @@ export default function useSocialLogin() {
             syncLocalStorageWithDB();
             window.alert("로그인하였습니다.");
 
-            // 리다이렉션 처리 (기본적으로 홈 페이지로 리다이렉트하되, 세션 스토리지에 저장된 경로가 있으면 해당 경로로 리다이렉트)
-            const redirectPath = sessionStorage.getItem('redirectPath') || '/';
+            // 리디렉션 처리
+            const redirectPath = sessionStorage.getItem('redirectPath');
             sessionStorage.removeItem('redirectPath');
             router.push({path: redirectPath});
 
@@ -36,9 +36,9 @@ export default function useSocialLogin() {
 
             // window.close();
 
-        }).catch(error => {
+        }).catch(() => {
             window.alert("로그인에 실패하였습니다. 다시 시도해주세요.");
-            console.log('error', error);
+            router.push({path: "/login"});
         });
     }
 

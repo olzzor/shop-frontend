@@ -31,7 +31,7 @@
         <router-link v-if="$store.state.account.id" to="/favorite">
           <i :class="isFavoritePage ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
         </router-link>
-        <router-link v-else :to="{ path: '/login', query: { redirect: '/favorite' } }">
+        <router-link v-else to="/login" @click.prevent="setRedirectPathToLogin('/favorite')">
           <i class="bi bi-heart"></i>
         </router-link>
 
@@ -39,7 +39,7 @@
         <router-link v-if="$store.state.account.id" to="/cart">
           <i :class="isCartPage ? 'bi bi-bag-fill' : 'bi bi-bag'"></i>
         </router-link>
-        <router-link v-else :to="{ path: '/login', query: { redirect: '/cart' } }">
+        <router-link v-else to="/login" @click.prevent="setRedirectPathToLogin('/cart')">
           <i class="bi bi-bag"></i>
         </router-link>
 
@@ -48,7 +48,7 @@
              @mouseenter="showMyPageTooltip = true" @mouseleave="handleIconMouseLeave('mypage')">
           <i :class="isMyPage ? 'bi bi-person-fill' : 'bi bi-person'"></i>
         </div>
-        <router-link v-else to="/login">
+        <router-link v-else to="/login" @click.prevent="setRedirectPathToLogin('/')">
           <i class="bi bi-person"></i>
         </router-link>
       </div>
@@ -176,6 +176,11 @@ export default {
       }
     };
 
+    // 로그인 페이지로 리디렉션하기 전에 redirectPath 설정
+    const setRedirectPathToLogin = (path) => {
+      sessionStorage.setItem('redirectPath', path);
+    };
+
     const search = () => {
       const query = searchQuery.value;
       // router.push({ path: "/", query: { search: query } });
@@ -212,13 +217,13 @@ export default {
     };
 
     return {
+      isMobile,
       isFavoritePage, isCartPage, isMyPage,
       selectedContent, searchQuery, isSearchInputVisible,
       showMenuTooltip, showMyPageTooltip,
-      isMobile,
-      handleIconMouseLeave, handleTooltipMouseEnter, handleTooltipMouseLeave,
       toggleSearchInput, toggleMenuTooltip, toggleMyPageTooltip,
-      search, navigateTo, logout, resetHomePageState,
+      handleIconMouseLeave, handleTooltipMouseEnter, handleTooltipMouseLeave,
+      setRedirectPathToLogin, search, navigateTo, logout, resetHomePageState,
     };
   }
 }

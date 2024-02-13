@@ -8,6 +8,7 @@ const defaultRoutes = [
     {path: '/product/:id', name: 'ProductDetail', component: () => import('@/components/modules/product/ProductDetail.vue')},
     {path: '/cart', name: 'Cart', component: () => import('@/components/modules/cart/Cart.vue')},
     {path: '/order', name: 'Order', component: () => import('@/components/modules/order/Order.vue')},
+    {path: '/order/redirect/iamport', name: 'OrderRedirectIamport', component: () => import('@/components/modules/order/OrderRedirectIamport.vue')},
     {path: '/favorite', name: 'Favorite', component: () => import('@/components/modules/favorite/Favorite.vue')},
     {path: '/recently-viewed-products', name: 'ProductsRecentlyViewed', component: () => import('@/components/modules/product/ProductsRecentlyViewed.vue')},
     {path: '/sign-up', name: 'SignUp', component: () => import('@/components/modules/account/SignUp.vue')},

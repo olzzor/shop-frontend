@@ -123,13 +123,11 @@ import {computed, onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import store from "@/scripts/store";
 import router from "@/scripts/router";
-import {useRoute} from "vue-router";
 import {syncLocalStorageWithDB} from "@/scripts/localStorage";
 
 export default {
   name: "Login",
   setup() {
-    const route = useRoute();
     const passwordVisible = ref(false);
     const state = reactive({
       saveEmail: false,
@@ -158,11 +156,6 @@ export default {
       if (savedEmail) { // savedEmail 가 있다면 아이디 입력 폼과 savedEmail 를 설정
         state.form.email = savedEmail;
         state.saveEmail = true;
-      }
-
-      const redirectPath = route.query.redirect;
-      if (redirectPath) {
-        sessionStorage.setItem('redirectPath', redirectPath);
       }
     });
 
@@ -212,8 +205,8 @@ export default {
           syncLocalStorageWithDB();
           window.alert("로그인하였습니다.");
 
-          // 리다이렉션 처리 (기본적으로 홈 페이지로 리다이렉트하되, 세션 스토리지에 저장된 경로가 있으면 해당 경로로 리다이렉트)
-          const redirectPath = sessionStorage.getItem('redirectPath') || '/';
+          // 리디렉션 처리
+          const redirectPath = sessionStorage.getItem('redirectPath');
           sessionStorage.removeItem('redirectPath');
           router.push({path: redirectPath});
 
