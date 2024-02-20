@@ -55,7 +55,7 @@
     </div>
 
     <!-- 메뉴 툴팁 -->
-    <transition name="slide-fade">
+<!--    <transition name="slide-fade">-->
     <div v-if="showMenuTooltip" class="menu-tooltip" :class="showMenuTooltip ? 'show' : 'hide'"
          @mouseenter="handleTooltipMouseEnter" @mouseleave="handleTooltipMouseLeave('menu')">
       <div class="menu-tooltip-content">
@@ -96,7 +96,7 @@
 
       </div>
     </div>
-    </transition>
+<!--    </transition>-->
 
     <!-- 마이 페이지 툴팁 -->
     <div v-if="showMyPageTooltip" class="mypage-tooltip" @mouseenter="handleTooltipMouseEnter"

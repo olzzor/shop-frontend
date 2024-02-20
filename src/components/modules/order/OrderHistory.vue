@@ -17,7 +17,15 @@
                 주문 상세
               </router-link>
               <br><br>
-              주문 상태 : {{ lib.getOrderStatusName(order.status) }}<br>
+              주문 상태 : {{ lib.getOrderStatusName(order.status) }}
+              <span v-if="order.status === 'PAYMENT_PENDING'">
+                ({{ getDepositDeadline(order.regDate) }}까지 입금)
+                <i class="bi bi-box-arrow-up-right" @click="openDirectDepositAnnounceModal(state.regDate)"></i>
+                <DirectDepositAnnounceModal v-if="state.directDepositAnnounceModal.show"
+                                            :show="state.directDepositAnnounceModal.show"
+                                            :deadline="state.directDepositAnnounceModal.deadline"
+                                            @close=closeDirectDepositAnnounceModal />
+              </span><br>
               주문 번호 : {{ order.orderNumber }}<br>
               구매 상품 : {{ order.orderDetails[0].product.name }} 포함 총 {{ getTotalQuantity(order.orderDetails) }}건<br>
               구매 금액 : {{ lib.getFormattedNumber(order.paymentAmount) }}원<br>
@@ -53,16 +61,29 @@ import axios from "axios";
 import lib from "@/scripts/lib";
 import router from "@/scripts/router";
 import dayjs from 'dayjs';
+import DirectDepositAnnounceModal from "@/components/modules/order/OrderDirectDepositAnnounceModal.vue";
 
 export default {
   name: 'OrderHistory',
+  components: {DirectDepositAnnounceModal},
   setup() {
     const tableHeaders = ['주문 번호', '수령인', '배송 주소', '결제 수단', '결제 금액', '구입 항목', '주문 상태', '주문 날짜'];
 
     const state = reactive({
       orders: [],
       page: {pageSize: 3, currentPage: 1, totalPages: 0},
+      directDepositAnnounceModal: { show: false, deadline: ''}
     });
+
+    const openDirectDepositAnnounceModal = (regDate) => {
+      state.directDepositAnnounceModal.deadline = getDepositDeadline(regDate);
+      state.directDepositAnnounceModal.show = true;
+    };
+
+    const closeDirectDepositAnnounceModal = () => {
+      state.directDepositAnnounceModal.deadline = '';
+      state.directDepositAnnounceModal.show = false;
+    };
 
     const writeReview = (orderId) => {
       router.push({name: 'WriteReview', params: {orderId: orderId}});
@@ -78,8 +99,8 @@ export default {
     };
 
     const isCancelable = (status) => {
-      // 주문 상태가 '주문 접수', '주문 확인' 인 경우, 주문을 취소할 수 있음
-      return status === 'ORDER_RECEIVED' || status === 'ORDER_CONFIRMED';
+      // 주문 상태가 '결제 대기', '주문 접수', '주문 확인' 인 경우, 주문을 취소할 수 있음
+      return status === 'PAYMENT_PENDING' || status === 'ORDER_RECEIVED' || status === 'ORDER_CONFIRMED';
     };
 
     /** 페이지 변경 */
@@ -98,6 +119,10 @@ export default {
 
     const getTotalQuantity = (orderDetails) => {
       return orderDetails.reduce((sum, detail) => sum + detail.quantity, 0);
+    };
+
+    const getDepositDeadline = (date) => {
+      return dayjs(date).add(24, 'hours').format('YYYY-MM-DD HH:mm');
     };
 
     const getReturnDate = (date) => {
@@ -127,9 +152,10 @@ export default {
     return {
       lib,
       state, tableHeaders,
+      openDirectDepositAnnounceModal, closeDirectDepositAnnounceModal,
       writeReview, editReview,
       isConfirmable, isCancelable, goToPage,
-      getTotalQuantity, getReturnDate,
+      getTotalQuantity, getDepositDeadline, getReturnDate,
       confirmOrder, cancelOrder
     }
   }

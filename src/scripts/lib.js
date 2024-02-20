@@ -12,7 +12,7 @@ export default {
     noticeTypes: ['INFORMATION', 'COMMUNITY', 'PROMOTION', 'MAINTENANCE', 'ALERT'],
 
     productStatuses: ['ON_SALE', 'TEMP_OUT_OF_STOCK', 'OUT_OF_STOCK'],
-    orderStatuses: ['ORDER_RECEIVED', 'ORDER_CONFIRMED', 'ORDER_FINALIZED', 'SHIPMENT_PREPARING', 'CANCEL_REQUESTED', 'CANCEL_COMPLETED'],
+    orderStatuses: ['PAYMENT_PENDING', 'ORDER_RECEIVED', 'ORDER_CONFIRMED', 'ORDER_FINALIZED', 'SHIPMENT_PREPARING', 'CANCEL_REQUESTED', 'CANCEL_COMPLETED'],
     shipmentStatuses: ['ACCEPTED', 'PREPARING', 'SHIPPING', 'DELIVERED', 'CANCELED'],
     contactStatuses: ['UNANSWERED', 'ANSWERED', 'CLOSED'],
     couponStatuses: ['NEW', 'ACTIVE', 'USED', 'EXPIRED', 'DEACTIVATED'],
@@ -156,6 +156,8 @@ export default {
 
     getOrderStatusName(status) {
         switch (status) {
+            case 'PAYMENT_PENDING':
+                return '결제 대기';
             case 'ORDER_RECEIVED':
                 return '주문 접수';
             case 'ORDER_CONFIRMED':

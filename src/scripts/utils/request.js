@@ -19,6 +19,7 @@ service.interceptors.request.use(
         Promise.reject(error)
     }
 )
+
 // HTTP 응답 인터셉터
 service.interceptors.response.use(response => {
         return response

@@ -93,7 +93,7 @@
           </div>
 
           <div class="price-summary">
-            <PriceSummary :cartProducts="state.cartProducts" />
+            <PriceSummary />
           </div>
         </div>
 
@@ -228,17 +228,17 @@ export default {
       let errorMessages = [];
 
       if (hasUnavailableProducts.value) {
-        errorMessages.push("주문 불가능한 상품이 존재합니다.");
+        errorMessages.push('주문 불가능한 상품이 존재합니다.');
       }
 
       if (hasOverQuantityProducts.value) {
-        errorMessages.push("주문 수량이 재고를 초과하는 상품이 존재합니다.");
+        errorMessages.push('주문 수량이 재고를 초과하는 상품이 존재합니다.');
       }
 
       if (errorMessages.length > 0) {
         window.alert(errorMessages.join("\n"));
       } else {
-        router.push({name: 'Order', query: {cartProducts: state.cartProducts}});
+        router.push({name: 'Order'});
       }
     };
 

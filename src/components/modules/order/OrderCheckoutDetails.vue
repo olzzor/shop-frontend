@@ -1,5 +1,5 @@
 <template>
-  <div class="shipping-info">
+  <div class="checkout-details">
     <div class="title"></div>
 
     <div class="content">
@@ -56,6 +56,18 @@
         </div>
         <div class="error-message" v-if="state.errorMessage.address2">{{ state.errorMessage.address2 }}</div>
       </div>
+
+      <div class="payment-methods">
+        <label for="paymentMethod">결제 수단 선택</label>
+        <div class="payment-methods-field" :class="{ 'input-error': state.errorMessage.paymentMethod }">
+          <div class="payment-method" v-for="pg in pgs" :key="pg.value">
+            <input type="radio" v-model="state.form.paymentMethod" :value="pg.value" name="paymentMethod" />
+            <img v-if="pg.logo" class="payment-logo" :src="pg.logo" :alt="pg.label" />
+            <span v-else>{{ pg.label }}</span>
+          </div>
+        </div>
+        <div class="error-message" v-if="state.errorMessage.paymentMethod">{{ state.errorMessage.paymentMethod }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -63,13 +75,18 @@
 <script>
 import {onMounted, reactive} from "vue";
 import axios from "axios";
+import {PGS} from "@/scripts/iamport";
 
 export default {
-  name: "ShippingInfo",
+  name: "CheckoutDetails",
   setup(props, {emit}) {
+    const pgs = PGS.concat([
+      { value: 'direct_bank', label: '무통장입금', logo: '' },
+    ]);
+
     const state = reactive({
       defaultAddress: {},
-      form: {email: "", name: "", zipCode: "", province: "", city: "", address1: "", address2: "", phone: "",},
+      form: {email: "", name: "", zipCode: "", province: "", city: "", address1: "", address2: "", phone: "", paymentMethod: "",},
       errorMessage: {},
       isApartment: false,
     })
@@ -93,7 +110,7 @@ export default {
       }).open();
     };
 
-    const getAddress = () => {
+    const getCheckoutDetails = () => {
       return {
         email: state.form.email,
         name: state.form.name,
@@ -103,6 +120,7 @@ export default {
         address1: state.form.address1,
         address2: state.form.address2,
         phone: state.form.phone,
+        paymentMethod: state.form.paymentMethod,
       }
     };
 
@@ -161,6 +179,11 @@ export default {
         result = false;
       }
 
+      if (!state.form.paymentMethod) {
+        state.errorMessage.paymentMethod = "결제 수단을 선택해주세요.";
+        result = false;
+      }
+
       return result;
     };
 
@@ -184,8 +207,8 @@ export default {
     onMounted(load);
 
     return {
-      state,
-      setDefaultAddress, searchAddress, getAddress,
+      pgs, state,
+      setDefaultAddress, searchAddress, getCheckoutDetails,
       checkInput, invokeOrder
     };
   }
@@ -193,5 +216,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/modules/order/order-shipping-info";
+@import "@/styles/modules/order/order-checkout-details";
 </style>

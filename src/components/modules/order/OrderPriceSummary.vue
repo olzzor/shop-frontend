@@ -60,9 +60,8 @@ export default {
 
     const finalPaymentAmount = computed(() => {
       const amount = totalProductAmount.value - totalDiscountAmount.value + deliveryFee.value;
-      emit('update-price', amount);
+      emit('payment-amount', amount);
       return amount;
-      // return totalProductAmount.value - totalDiscountAmount.value + deliveryFee.value;
     });
 
     return {

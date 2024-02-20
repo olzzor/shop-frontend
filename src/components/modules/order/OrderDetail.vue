@@ -7,7 +7,7 @@
       <p class="subtitle">결제 수단</p>
       <div class="payment-info">
         {{ state.order.paymentMethod }}<br>
-        <span v-if="state.order.cardNumber"> {{ state.order.cardNumber }}</span><br>
+        <span v-if="state.order.cardNumber"> {{ state.order.cardNumber }}<br></span>
       </div>
 
       <p class="subtitle">배송지</p>

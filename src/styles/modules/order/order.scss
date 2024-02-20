@@ -18,7 +18,7 @@
     justify-content: space-between;
     flex-wrap: wrap; /* content가 넘칠 경우 다음 줄로 넘어가게 설정 */
 
-    .shipping-info {
+    .checkout-details {
       flex: 1; /* 각각의 flex item이 동일한 너비를 차지하도록 설정 */
     }
 
@@ -71,7 +71,7 @@
       font-size: .8rem;
       flex-direction: column;
 
-      .shipping-info {}
+      .checkout-details {}
 
       .price-summary {
         align-self: flex-end;

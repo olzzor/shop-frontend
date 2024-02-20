@@ -43,7 +43,7 @@
         <tr>
           <td class="table-title">상품 명</td>
           <td>{{ state.product.name }}</td>
-          <td><input type="text" class="input-field" v-model="state.form.product.name"></td>
+          <td><input type="text" class="input-field" v-model="state.form.product.name" /></td>
         </tr>
 
         <tr>
@@ -57,8 +57,8 @@
             <div class="size-inputs-scrollable">
               <div v-for="(size, index) in state.form.sizes" :key="'after-' + index" class="product-size-after">
                 {{ size.size }}:&nbsp;
-                <input type="number" class="input-field quantity-input" v-model="size.adjustmentQuantity"
-                       placeholder="재고 수량"/>
+                <input type="number" class="input-field quantity-input" placeholder="재고 수량"
+                       v-model="size.adjustmentQuantity" />
               </div>
             </div>
           </td>
@@ -67,25 +67,32 @@
         <tr>
           <td class="table-title">설명</td>
           <td v-html="lib.convertLineBreaks(state.product.detail)"></td>
-          <td><textarea class="input-field" id="product-detail" v-model="state.form.product.detail" @input="autoGrow"/></td>
+          <td><textarea class="input-field" id="product-detail"
+                        v-model="state.form.product.detail" @input="autoGrow" /></td>
         </tr>
 
         <tr>
           <td class="table-title">가격</td>
           <td>{{ lib.getFormattedNumber(state.product.price) }}원</td>
-          <td><input type="text" class="input-field" v-model="state.form.product.price" :disabled="state.product.status === 'ON_SALE'"></td>
+          <td>
+            <input type="number" class="input-field" min="1" placeholder="가격"
+                   v-model="state.form.product.price" :disabled="state.product.status === 'ON_SALE'" />
+            <div class="error-message" v-if="state.errorMessage.price">{{ state.errorMessage.price }}</div>
+          </td>
         </tr>
 
         <tr>
           <td class="table-title">할인율</td>
           <td>{{ lib.getFormattedNumber(state.product.discountPer) }}%</td>
-          <td><input type="text" class="input-field" v-model="state.form.product.discountPer" :disabled="state.product.status === 'ON_SALE'"></td>
+          <td>
+            <input type="number" class="input-field" min="0" max="99" placeholder="할인율"
+                   v-model="state.form.product.discountPer" :disabled="state.product.status === 'ON_SALE'" />
+            <div class="error-message" v-if="state.errorMessage.discountPer">{{ state.errorMessage.discountPer }}</div>
+          </td>
         </tr>
 
         <tr>
-          <td class="table-title">
-            이미지
-          </td>
+          <td class="table-title">이미지</td>
           <td>
             <div class="image">
               <div class="image-box" v-for="(pf, index) in state.product.productImages" :key="index">
@@ -114,9 +121,8 @@
           <td>
             <select class="select-field" v-model="state.form.product.status">
               <option disabled value="">판매 상태</option>
-              <option v-for="status in productStatuses" :key="status" :value="status">{{
-                  lib.getProductStatusName(status)
-                }}
+              <option v-for="status in productStatuses" :key="status" :value="status">
+                {{ lib.getProductStatusName(status) }}
               </option>
             </select>
           </td>
@@ -154,6 +160,7 @@ export default {
         sizes: [],
         files: [],
       },
+      errorMessage: {},
     });
 
     const showImage = (fileUrl) => {
@@ -188,25 +195,50 @@ export default {
       state.form.files.splice(index, 1);
     };
 
+    const checkInput = () => {
+      let result = true;
+      state.errorMessage = {};
+
+      if (state.form.product.price == null || state.form.product.price === '') {
+        state.errorMessage.price = "가격을 입력해주세요.";
+        result = false;
+      } else if (state.form.product.price < 1) {
+        state.errorMessage.price = "가격은 1 이상의 값이어야 합니다.";
+        result = false;
+      }
+
+      if (state.form.product.discountPer == null || state.form.product.discountPer === '') {
+        state.errorMessage.discountPer = "할인율을 입력해주세요.";
+        result = false;
+      } else if (state.form.product.discountPer < 0 || state.form.product.discountPer >= 100) {
+        state.errorMessage.discountPer = "할인율은 0 이상 100 미만의 값이어야 합니다.";
+        result = false;
+      }
+
+      return result;
+    };
+
     const updateProduct = async () => {
-      const formData = new FormData();
+      if (checkInput()) {
+        const formData = new FormData();
 
-      formData.append('product', JSON.stringify(state.form.product));
-      formData.append('sizes', JSON.stringify(state.form.sizes));
-      state.form.files.forEach(file => {
-        formData.append('files', file);
-      });
+        formData.append('product', JSON.stringify(state.form.product));
+        formData.append('sizes', JSON.stringify(state.form.sizes));
+        state.form.files.forEach(file => {
+          formData.append('files', file);
+        });
 
-      axios.post('/api/product/update/single', formData, {
-        headers: {'Content-Type': 'multipart/form-data'}
+        axios.post('/api/product/update/single', formData, {
+          headers: {'Content-Type': 'multipart/form-data'}
 
-      }).then(() => {
-        window.alert('변경되었습니다.');
-        load();
+        }).then(() => {
+          window.alert('변경되었습니다.');
+          load();
 
-      }).catch(() => {
-        window.alert('상품의 상세 내용 변경에 실패하였습니다.');
-      });
+        }).catch(() => {
+          window.alert('상품의 상세 내용 변경에 실패하였습니다.');
+        });
+      }
     };
 
     const load = () => {
@@ -270,143 +302,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.product-update {
-  padding-inline: 30px;
-}
-
-.title {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.title p {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.content {
-  font-size: 12px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  border: 1px solid #e3e3e3;
-  padding-left: 5px;
-}
-
-th {
-  border: none;
-  border-bottom: 1px solid #e3e3e3;
-  text-align: center;
-}
-
-th:nth-child(1) {
-  width: 10%;
-}
-
-th:nth-child(2), th:nth-child(3) {
-  width: 45%;
-}
-
-tr {
-  height: 40px;
-}
-
-tbody .table-title {
-  background-color: #e3e3e3;
-  border-color: white;
-}
-
-.input-field, .select-field {
-  margin-bottom: 5px;
-  border: none;
-  border-bottom: 1px solid #545454;
-  outline: none;
-  width: 100%;
-  height: 30px;
-  background-color: transparent;
-}
-
-/* 웹킷 기반 브라우저(Chrome, Safari 등)의 자동완성 스타일을 덮어쓰기 위한 코드 */
-.input-field:-webkit-autofill,
-.input-field:-webkit-autofill:hover,
-.input-field:-webkit-autofill:focus,
-.input-field:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
-  box-shadow: 0 0 0 30px white inset !important;
-}
-
-.product-size-before, .product-size-after {
-  align-items: center;
-  display: inline-flex; /* 가로로 배열 */
-  margin-right: 10px; /* 각 입력란 사이의 간격 */
-}
-
-.quantity-input {
-  width: 70px;
-}
-
-.image {
-  position: relative;
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-}
-
-.image-box {
-  position: relative;
-  margin-right: 6px;
-  margin-block: 4px;
-}
-
-.product-image {
-  height: 150px;
-  float: left;
-}
-
-.btn-delete-image {
-  position: absolute;
-  right: 0;
-  top: 0;
-  background-color: black;
-  color: white;
-  border: none; /* 입체적인 테두리 제거 */
-  box-shadow: none; /* 그림자 효과 제거 */
-  text-shadow: none; /* 텍스트 그림자 효과 제거 */
-  outline: none; /* 선택 시 나타나는 외곽선 제거 */
-}
-
-.upload-box {
-  height: 150px;
-  width: 100px;
-  border: 1px solid #e3e3e3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  margin-block: 4px;
-}
-
-.upload-box p {
-  font-size: 24px;
-  color: #ccc;
-}
-
-.btn-update {
-  border-width: 0.0625rem;
-  font-size: .75rem;
-  font-weight: 700;
-  width: 150px;
-  height: 30px;
-  background-color: rgb(0, 0, 0);
-  border-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-  transition-property: color, background-color;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/admin/product/product-update";
 </style>

@@ -52,5 +52,8 @@ const store = createStore({
 store.watch((state) => state.account.id, (newId, oldId) => {
     console.log('Account ID changed:', oldId, '=>', newId);
 });
+store.watch((state) => state.account.role, (newRole, oldRole) => {
+    console.log('Account ROLE changed:', oldRole, '=>', newRole);
+});
 
 export default store;

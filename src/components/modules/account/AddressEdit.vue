@@ -79,7 +79,7 @@ export default {
         state.addresses = data;
         console.log(state.addresses);
       });
-    }
+    };
 
     onMounted(load);
 

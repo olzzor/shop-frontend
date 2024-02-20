@@ -11,25 +11,16 @@
         </span>
       </p>
 
-      <div class="button-area">
-        <div class="search-btn">
-          <button type="button" class="btn-search-condition" @click="searchCondition">
-            조건 검색
-          </button>
-          <button type="button" class="btn-search-full" @click="searchFull">
-            전체 검색
-          </button>
-          <button type="button" class="btn-clear-search" @click="clearSearchConditions">
-            조건 초기화
-          </button>
+      <div class="action-buttons">
+        <div class="action-buttons-left">
+          <button class="button btn-search-condition" @click="searchCondition">조건 검색</button>
+          <button class="button btn-search-full" @click="searchFull">전체 검색</button>
+          <button class="button btn-clear-search" @click="clearSearchConditions">조건 초기화</button>
         </div>
-        <div class="download-btn">
-          <button type="button" class="btn-csv-download" @click="downloadCSV">
-            CSV 다운로드 <i class="bi bi-download"></i>
-          </button>
-          <button type="button" class="btn-change-products" @click="changeProducts">
-            변경하기
-          </button>
+
+        <div class="action-buttons-right">
+          <button class="button btn-csv-download" @click="downloadCSV">CSV 다운로드 <i class="bi bi-download"></i></button>
+          <button class="button btn-change-products" @click="changeProducts">변경하기</button>
         </div>
       </div>
 
@@ -383,175 +374,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.product-list {
-  padding-inline: 30px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.content {
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-}
-
-.column-check-box, .column-no {
-  width: 25px;
-  text-align: center; /* 수평 가운데 정렬 */
-}
-.column-product-category {
-  width: 150px;
-}
-.column-product-size {
-  width: 180px;
-}
-.column-product-image, .column-product-price, .column-product-discount-per {
-  width: 110px;
-}
-.column-product-price input, .column-product-discount-per input {
-  width: calc(100% - 20px);
- }
-.column-product-price::after, .column-product-discount-per::after {
-  content: attr(data-unit);
-  margin-left: 5px; /* 인풋 필드와 단위 사이의 간격 조정 */
-}
-.column-product-reg-date, .column-product-mod-date {
-  width: 170px;
-}
-.column-product-status {
-  width: 120px;
-}
-
-.product-image {
-  flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
-  margin: 5px 10px;
-}
-.product-image img{
-  width: 100px;
-  height: 100px;
-}
-
-table {
-  border: 1px solid #e3e3e3;
-  width: 100%;
-  border-collapse: collapse;
-}
-table th, table td {
-  border: 1px solid #e3e3e3;
-  padding-inline: 5px;
-}
-thead > tr:first-child {
-  background-color: #e3e3e3;
-}
-thead tr:nth-child(2) th {
-  position: relative; /* 부모 요소에 대한 위치를 지정 */
-}
-.input-field, .select-field {
-  width: 100%;
-  height: 25px;
-}
-.input-field.date {
-  width: 75px;
-}
-.date-cell {
-  display: flex;
-}
-
-.sort-icons {
-  //display: inline-block;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.button-area {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.btn-search-full {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  transition-timing-function: cubic-bezier(.215, .61, .355, 1);
-  margin-right: 5px;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.btn-search-condition {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  transition-timing-function: cubic-bezier(.215, .61, .355, 1);
-  margin-right: 5px;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.btn-clear-search {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-
-.btn-csv-download {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 10rem;
-  justify-content: center;
-  text-align: center;
-  transition-timing-function: cubic-bezier(.215, .61, .355, 1);
-  margin-right: 5px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-
-.btn-change-products {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.pagination {
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
-}
-
-.pagination button {
-  border: none;
-  background-color: transparent;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/admin/product/product-list";
 </style>

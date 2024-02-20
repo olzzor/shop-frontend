@@ -1,8 +1,8 @@
 import {useRoute} from 'vue-router';
+import {syncLocalStorageWithDB} from "@/scripts/localStorage";
 import axios from "axios";
 import router from "@/scripts/router";
 import store from "@/scripts/store";
-import {syncLocalStorageWithDB} from "@/scripts/localStorage";
 
 export default function useSocialLogin() {
     const route = useRoute();  // useRoute 훅을 사용합니다.
