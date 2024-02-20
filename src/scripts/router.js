@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory} from "vue-router/dist/vue-router";
-import {checkAdminRoleFromServer} from "@/scripts/util/auth";
+import {checkAdminRoleFromServer} from "@/scripts/utils/auth";
 import testDaumAPI from "@/components/bk/TestDaumAPI.vue";
 
 const defaultRoutes = [
