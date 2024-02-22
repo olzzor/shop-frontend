@@ -69,7 +69,7 @@ export default {
     };
 
     const login = () => {
-      router.push({path: "/login"});
+      router.push({name: 'Login'});
     };
 
     const checkInput = () => {
@@ -81,34 +81,34 @@ export default {
       state.errorMessage = {};
 
       if (state.form.name.length === 0) {
-        state.errorMessage.name = "이름을 입력해주세요.";
+        state.errorMessage.name = '이름을 입력해주세요.';
         result = false;
       } else if (state.form.name.length > 10) {
-        state.errorMessage.name = "이름은 10자 이하로 입력해주세요.";
+        state.errorMessage.name = '이름은 10자 이하로 입력해주세요.';
         result = false;
       }
 
       if (state.form.email.length === 0) {
-        state.errorMessage.email = "이메일을 입력해주세요.";
+        state.errorMessage.email = '이메일을 입력해주세요.';
         result = false;
       } else if (!EMAIL_PATTERN.test(state.form.email)) {
-        state.errorMessage.email = "유효한 이메일을 입력해주세요.";
+        state.errorMessage.email = '유효한 이메일을 입력해주세요.';
         result = false;
       }
 
       if (state.form.password.length === 0) {
-        state.errorMessage.password = "비밀번호를 입력해주세요.";
+        state.errorMessage.password = '비밀번호를 입력해주세요.';
         result = false;
       } else if (!PASSWORD_PATTERN.test(state.form.password)) {
-        state.errorMessage.password = "비밀번호는 8자 이상으로, 대문자, 소문자, 숫자, 특수 문자를 포함해야 합니다.";
+        state.errorMessage.password = '비밀번호는 8자 이상으로, 대문자, 소문자, 숫자, 특수 문자를 포함해야 합니다.';
         result = false;
       }
 
       if (state.form.passwordConfirm.length === 0) {
-        state.errorMessage.passwordConfirm = "비밀번호를 재입력해주세요.";
+        state.errorMessage.passwordConfirm = '비밀번호를 재입력해주세요.';
         result = false;
       } else if (state.form.password !== state.form.passwordConfirm) {
-        state.errorMessage.passwordConfirm = "비밀번호가 일치하지 않습니다.";
+        state.errorMessage.passwordConfirm = '비밀번호가 일치하지 않습니다.';
         result = false;
       }
 
@@ -119,25 +119,16 @@ export default {
       state.isSubmitting = true;
 
       if (checkInput()) {
-        axios.post("/api/user/signup", state.form).then(() => {
-          window.alert("계정 생성에 성공하였습니다.");
+        axios.post('/api/user/signup', state.form).then(() => {
+          window.alert('계정 생성에 성공하였습니다.');
           login();
 
         }).catch(error => {
           if (error.response) {
-            switch (error.response.status) {
-              case 400:
-                window.alert(error.response.data.message);
-                break;
-              case 409:
-                window.alert(error.response.data.message);
-                break;
-              default:
-                window.alert("오류가 발생했습니다. 다시 시도해주세요.");
-            }
+            const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+            window.alert(errorMessage);
           } else {
-            // 네트워크 오류 또는 기타 오류를 처리하는 로직
-            window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+            window.alert('오류가 발생했습니다. 다시 시도해주세요.');
           }
 
         }).finally(() => {

@@ -83,7 +83,7 @@ export default {
         const args = JSON.parse(JSON.stringify(state.form));
         axios.post('/api/contact/answer', args).then(() => {
           window.alert('답변되었습니다.');
-          router.push({path: "/"});
+          router.push({name: 'Home'});
         });
       }
     };

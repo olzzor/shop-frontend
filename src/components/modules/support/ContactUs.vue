@@ -131,7 +131,7 @@ export default {
       if (checkInput()) {
         axios.post('/api/contact/inquiry', state.form).then(() => {
           window.alert('문의되었습니다.');
-          router.push({path: "/"});
+          router.push({name: 'Home'});
 
         }).catch(() => {
           window.alert('문의 중 오류가 발생했습니다. 다시 시도해주세요.');

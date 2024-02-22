@@ -144,18 +144,10 @@ export default {
 
         }).catch(error => {
           if (error.response) {
-            switch (error.response.status) {
-              case 400: // BAD_REQUEST
-                window.alert(error.response.data.message);
-                break;
-              case 500: // INTERNAL_SERVER_ERROR
-                window.alert(error.response.data.message);
-                break;
-              default:
-                window.alert("오류가 발생했습니다. 다시 시도해주세요.");
-            }
+            const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+            window.alert(errorMessage);
           } else {
-            window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+            window.alert('오류가 발생했습니다. 다시 시도해주세요.');
           }
 
         }).finally(() => {
@@ -173,15 +165,10 @@ export default {
 
       }).catch(error => {
         if (error.response) {
-          switch (error.response.status) {
-            case 404:
-              window.alert(error.response.data.message);
-              break;
-            default:
-              window.alert("오류가 발생했습니다. 다시 시도해주세요.");
-          }
+          const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+          window.alert(errorMessage);
         } else {
-          window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+          window.alert('오류가 발생했습니다. 다시 시도해주세요.');
         }
       });
     };
