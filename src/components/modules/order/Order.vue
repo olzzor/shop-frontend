@@ -100,8 +100,8 @@ export default {
         buyer_tel: checkoutDetailsInfo.phone, // 구매자 전화번호
         buyer_addr: checkoutDetailsInfo.address2 ? `${checkoutDetailsInfo.address1} ${checkoutDetailsInfo.address2}` : checkoutDetailsInfo.address1, // 구매자 주소
         buyer_postcode: checkoutDetailsInfo.zipCode, // 구매자 우편번호
-        m_redirect_url: "https://bridgeshop.dev:3000/order/redirect/iamport",
-        // m_redirect_url: "http://bridgeshop.kro.kr:3000/order/redirect/iamport",
+        // m_redirect_url: "https://bridgeshop.dev:3000/order/redirect/iamport",
+        m_redirect_url: "http://bridgeshop.kro.kr:3000/order/redirect/iamport",
 
       }, rsp => { // callback
         console.log(rsp);
@@ -109,16 +109,16 @@ export default {
 
         if (rsp.success) {
           axios.post(`/api/payment/payment-gateway/${imp_uid}`).then(() => {
-            window.alert("결제가 완료되었습니다.");
+            window.alert('결제가 완료되었습니다.');
 
           }).finally(() => {
             state.isSubmitting = false;
-            router.push({path: "/member/order-history"});
+            router.push({name: 'OrderHistory'});
           });
 
         } else {
           state.isSubmitting = false;
-          window.alert("결제에 실패했습니다." + "\n에러 코드 : " + rsp.error_code + "\n에러 메시지 : " + rsp.error_msg);
+          window.alert('결제에 실패했습니다.' + '\n에러 코드 : ' + rsp.error_code + '\n에러 메시지 : ' + rsp.error_msg);
         }
       });
     };
@@ -138,16 +138,16 @@ export default {
 
       axios.post(`/api/payment/direct-deposit`, payload).then(() => {
         window.alert("주문이 접수되었습니다.");
-        router.push({path: "/member/order-history"});
+        router.push({name: 'OrderHistory'});
 
       }).catch(error => {
         if (error.response) {
-          const errorMessage = error.response.data.message || "오류가 발생했습니다. 다시 시도해주세요.";
+          const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
           window.alert(errorMessage);
         } else {
-          window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+          window.alert('오류가 발생했습니다. 다시 시도해주세요.');
         }
-        router.push({path: "/member/order"});
+        router.push({name: 'Order'});
 
       }).finally(() => {
         state.isSubmitting = false;
@@ -160,7 +160,7 @@ export default {
     };
 
     const load = () => {
-      axios.get("/api/cart/get").then(({data}) => {
+      axios.get('/api/cart/get').then(({data}) => {
         state.cartProducts = data.map(cp => {
           cp.selectedCoupon = cp.coupon ? cp.coupon.id : null;
           cp.availableCoupons = []; // 각 상품마다 사용 가능한 쿠폰 목록
@@ -175,7 +175,7 @@ export default {
           };
         });
 
-        axios.post("/api/coupon/list/available", payload).then(({data}) => {
+        axios.post('/api/coupon/list/available', payload).then(({data}) => {
           state.cartProducts.forEach(cp => {
             cp.availableCoupons = data.find(d => d.cartProductId === cp.id).coupons;
           });

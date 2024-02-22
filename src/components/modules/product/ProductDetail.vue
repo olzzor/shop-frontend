@@ -168,21 +168,10 @@ export default {
 
           }).catch(error => {
             if (error.response) {
-              switch (error.response.status) {
-                case 400:
-                  window.alert(error.response.data.message);
-                  break;
-                case 404:
-                  window.alert(error.response.data.message);
-                  break;
-                case 409:
-                  window.alert(error.response.data.message);
-                  break;
-                default:
-                  window.alert("오류가 발생했습니다. 다시 시도해주세요.");
-              }
+              const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+              window.alert(errorMessage);
             } else {
-              window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+              window.alert('오류가 발생했습니다. 다시 시도해주세요.');
             }
 
           }).finally(() => {
@@ -282,17 +271,12 @@ export default {
         checkFavorite();
 
       }).catch(error => {
-        let errorMessage = "오류가 발생했습니다. 다시 시도해주세요.";
-
         if (error.response) {
-          switch (error.response.status) {
-            case 404:
-              errorMessage = error.response.data.message;
-              break;
-          }
+          const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+          window.alert(errorMessage);
+        } else {
+          window.alert('오류가 발생했습니다. 다시 시도해주세요.');
         }
-
-        window.alert(errorMessage); // 오류 메시지를 사용자에게 알림
         router.back(); // 이전 페이지로 이동
 
       }).finally(() => {
@@ -319,18 +303,10 @@ export default {
 
           }).catch(error => {
             if (error.response) {
-              switch (error.response.status) {
-                case 400:
-                  window.alert(error.response.data.message);
-                  break;
-                case 404:
-                  window.alert(error.response.data.message);
-                  break;
-                default:
-                  window.alert("오류가 발생했습니다. 다시 시도해주세요.");
-              }
+              const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+              window.alert(errorMessage);
             } else {
-              window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+              window.alert('오류가 발생했습니다. 다시 시도해주세요.');
             }
 
           }).finally(() => {

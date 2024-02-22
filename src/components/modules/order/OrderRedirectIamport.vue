@@ -28,29 +28,21 @@ export default {
       const imp_uid = route.query.imp_uid; // URL에서 imp_uid 값을 추출
 
       axios.post(`/api/payment/payment-gateway/mobile/${imp_uid}`).then(() => {
-        window.alert("결제가 완료되었습니다.");
-        router.push({path: "/member/order-history"});
+        window.alert('결제가 완료되었습니다.');
+        router.push({name: 'OrderHistory'});
 
       }).catch(error => {
         if (error.response) {
-          switch (error.response.status) {
-            case 400: // BAD_REQUEST
-              window.alert(error.response.data.message);
-              break;
-            case 500: // INTERNAL_SERVER_ERROR
-              window.alert(error.response.data.message);
-              break;
-            default:
-              window.alert("오류가 발생했습니다. 다시 시도해주세요.");
-          }
+          const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+          window.alert(errorMessage);
         } else {
-          window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+          window.alert('오류가 발생했습니다. 다시 시도해주세요.');
         }
-        router.push({path: "/cart"});
+        router.push({name: 'Cart'});
 
       }).finally(() => {
         // state.isSubmitting = false;
-        // router.push({path: "/member/order-history"});
+        // router.push({name: 'OrderHistory'});
       });
     };
 
