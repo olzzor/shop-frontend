@@ -19,6 +19,7 @@ import axios from "axios";
 import AvailableProducts from "@/components/modules/product/ProductsAvailable.vue";
 import RecentlyViewedProducts from "@/components/modules/product/ProductsRecentlyViewed.vue";
 import NoticeModal from "@/components/modules/notice/NoticeModal.vue";
+import {isMobile, isTablet} from "@/scripts/mixin";
 
 export default {
   name: "Home",
@@ -28,7 +29,7 @@ export default {
     const state = reactive({
       isSearched: false,
       products: [],
-      page: {pageSize: 4, currentPage: 1, totalPages: 0},
+      page: {pageSize: isMobile()? 2: isTablet()? 3: 4, currentPage: 1, totalPages: 0},
       notices: [],
       currentNoticeModalIndex: 0,
       showNoticeModalOverlay: false, // 복수 공지 모달의 오버레이 중첩 예방을 위해 추가
@@ -128,10 +129,12 @@ export default {
       next();
     });
 
-    onMounted(() => { // 페이지 load 및 상태 복원
+    onMounted(() => {
+      // 페이지 로드
       const savedState = JSON.parse(sessionStorage.getItem('productPageState'));
       savedState ? Object.assign(state, savedState) : load();
 
+      // 스크롤 상태 복원
       const savedScrollPosition = sessionStorage.getItem('scrollPosition');
       if (savedScrollPosition) { // 0.2초 후에 스크롤 이동
         setTimeout(() => window.scrollTo(0, parseInt(savedScrollPosition)), 200);

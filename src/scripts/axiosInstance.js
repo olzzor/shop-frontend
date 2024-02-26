@@ -32,18 +32,10 @@ instance.interceptors.response.use(
     (error) => {
         if (requestCounter > 0) requestCounter--;  // 에러 시 카운터 감소
         if (error.response) {
-            switch (error.response.status) {
-                case 400:
-                case 401:
-                case 404:
-                case 409:
-                    window.alert(error.response.data.message);
-                    break;
-                default:
-                    window.alert("오류가 발생했습니다. 다시 시도해주세요.");
-            }
+            const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+            window.alert(errorMessage);
         } else {
-            window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+            window.alert('오류가 발생했습니다. 다시 시도해주세요.');
         }
         return Promise.reject(error);
     }

@@ -148,7 +148,7 @@ export default {
       //   if (event.data.type === 'socialLoginSuccess') {
       //     store.commit('setAccountId', event.data.userId);
       //     store.commit('setAccountRole', event.data.userRole);
-      //     router.push({path: "/"});
+      //     router.push({name: 'Home'});
       //   }
       // });
 
@@ -161,7 +161,7 @@ export default {
 
     // 회원 가입 페이지로 이동하는 함수
     const signup = () => {
-      router.push({path: "/sign-up"});
+      router.push({name: 'SignUp'});
     };
 
     const checkInput = () => {
@@ -212,18 +212,10 @@ export default {
 
         }).catch(error => {
           if (error.response) {
-            switch (error.response.status) {
-              case 401: // UNAUTHORIZED
-                window.alert(error.response.data.message);
-                break;
-              case 404: // NOT_FOUND
-                window.alert(error.response.data.message);
-                break;
-              default:
-                window.alert("오류가 발생했습니다. 다시 시도해주세요.");
-            }
+            const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+            window.alert(errorMessage);
           } else {
-            window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+            window.alert('오류가 발생했습니다. 다시 시도해주세요.');
           }
         });
       }

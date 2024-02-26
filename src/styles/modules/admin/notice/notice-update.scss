@@ -1,0 +1,101 @@
+.notice-update {
+  padding-inline: 30px;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    p {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .btn-update {
+      border-width: 0.0625rem;
+      font-size: .75rem;
+      font-weight: 700;
+      width: 150px;
+      height: 30px;
+      background-color: rgb(0, 0, 0);
+      border-color: rgb(0, 0, 0);
+      color: rgb(255, 255, 255);
+      transition-property: color, background-color;
+    }
+  }
+
+  .content {
+    font-size: 12px;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      thead {
+        tr {
+          height: 40px;
+
+          th {
+            text-align: center;
+            border: none;
+            border-bottom: 1px solid #e3e3e3;
+            padding-left: 5px;
+
+            &:nth-child(1), &:nth-child(2) {
+              width: 5%;
+            }
+
+            &:nth-child(3), &:nth-child(4) {
+              width: 45%;
+            }
+          }
+        }
+      }
+
+      tbody {
+        tr {
+          height: 40px;
+
+          td {
+            border: 1px solid #e3e3e3;
+            padding-left: 5px;
+
+            &.table-title {
+              background-color: #e3e3e3;
+              border-color: white;
+            }
+
+            .input-field, .select-field {
+              margin-bottom: 5px;
+              border: none;
+              border-bottom: 1px solid #545454;
+              outline: none;
+              width: 100%;
+              height: 30px;
+              background-color: transparent;
+            }
+
+            .image {
+              position: relative;
+              //display: inline-block;
+              display: flex;
+              overflow-x: auto; /* 이미지가 넘칠 경우 좌우 스크롤 */
+              white-space: nowrap; /* 행 내부에서 줄바꿈 방지 */
+
+              .image-box {
+                position: relative;
+                margin-right: 6px;
+                margin-block: 4px;
+
+                .notice-image {
+                  height: 150px;
+                  float: left;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

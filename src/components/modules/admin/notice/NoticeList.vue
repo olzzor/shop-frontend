@@ -13,22 +13,22 @@
 
       <div class="button-area">
         <div class="search-btn">
-          <button type="button" class="btn-search-full" @click="searchFull">
+          <button type="button" class="button btn-search-full" @click="searchFull">
             전체 검색
           </button>
-          <button type="button" class="btn-search-condition" @click="searchCondition">
+          <button type="button" class="button btn-search-condition" @click="searchCondition">
             조건 검색
           </button>
-          <button type="button" class="btn-clear-search" @click="clearSearchConditions">
+          <button type="button" class="button btn-clear-search" @click="clearSearchConditions">
             조건 초기화
           </button>
         </div>
 
         <div class="download-btn">
-          <button type="button" class="btn-csv-download" @click="downloadCSV">
+          <button type="button" class="button btn-csv-download" @click="downloadCSV">
             CSV 다운로드 <i class="bi bi-download"></i>
           </button>
-          <button type="button" class="btn-change-notices" @click="changeNotices">
+          <button type="button" class="button btn-change-notices" @click="changeNotices">
             변경하기
           </button>
         </div>
@@ -115,7 +115,7 @@
           </td>
 
           <td class="column-no">
-            <router-link :to="{ name: 'NoticeUpdate', params: { id: n.id }}">{{ idx + 1 }}</router-link>
+            <router-link :to="{ name: 'AdminNoticeUpdate', params: { id: n.id }}">{{ idx + 1 }}</router-link>
           </td>
 
           <td class="column-notice-type">
@@ -351,18 +351,10 @@ export default {
 
         }).catch(error => {
           if (error.response) {
-            switch (error.response.status) {
-              case 401:
-                window.alert(error.response.data.message);
-                break;
-              case 404:
-                window.alert(error.response.data.message);
-                break;
-              default:
-                window.alert("오류가 발생했습니다. 다시 시도해주세요.");
-            }
+            const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+            window.alert(errorMessage);
           } else {
-            window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+            window.alert('오류가 발생했습니다. 다시 시도해주세요.');
           }
         });
       }
@@ -389,174 +381,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.notice-list {
-  padding-inline: 30px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.content {
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-}
-
-.column-check-box, .column-no {
-  width: 25px;
-  text-align: center; /* 수평 가운데 정렬 */
-}
-
-.column-notice-type {
-  width: 130px;
-}
-
-.column-notice-main-image, .column-notice-slider-image, .column-notice-modal-image {
-  width: 110px;
-}
-
-.column-notice-status, .column-notice-modal, .column-notice-slider {
-  width: 100px;
-}
-
-.column-notice-reg-date, .column-notice-mod-date {
-  width: 170px;
-}
-
-.notice-main-image, .notice-slider-image, .notice-modal-image {
-  flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
-  margin: 5px 10px;
-}
-
-.notice-main-image img, .notice-slider-image img, .notice-modal-image img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover; /* 이미지가 부모 요소를 완전히 채우도록 설정 (이미지 비율 유지) */
-  object-position: center center; /* 이미지를 가운데로 정렬 (이미지가 부모 요소를 넘칠 경우, 넘치는 부분은 중앙을 기준으로 hidden) */
-}
-
-table {
-  border: 1px solid #e3e3e3;
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table th, table td {
-  border: 1px solid #e3e3e3;
-  padding-inline: 5px;
-}
-
-thead > tr:first-child {
-  background-color: #e3e3e3;
-}
-
-thead tr:nth-child(2) th {
-  position: relative; /* 부모 요소에 대한 위치를 지정 */
-}
-
-.input-field, .select-field {
-  width: 100%;
-  height: 25px;
-}
-
-.date {
-  width: 70px;
-}
-
-.date-cell {
-  display: flex;
-}
-
-.sort-icons {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.button-area {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.btn-search-full {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.btn-search-condition {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.btn-clear-search {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-
-.btn-csv-download {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 10rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-
-.btn-change-notices {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.pagination {
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
-}
-
-.pagination button {
-  border: none;
-  background-color: transparent;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/admin/notice/notice-list";
 </style>

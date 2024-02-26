@@ -31,7 +31,7 @@
       display: flex;
       flex-direction: row;
       border-bottom: 1px solid #e3e3e3;
-      margin-block: 2px;
+      margin-block: 3px;
       //align-items: flex-start; // 요소들을 컨테이너의 시작점(왼쪽)에 맞춥니다.
 
       .input-container {
@@ -110,12 +110,12 @@
     }
 
     .input-field, .select-field {
-      margin-bottom: 10px;
-      border: none;
-      border-bottom: 1px solid #545454;
-      outline: none;
       height: 30px;
       background-color: transparent;
+      outline: none;
+      border: none;
+      border-bottom: 1px solid #545454;
+      margin-bottom: 5px;
     }
 
     .input-field {
@@ -138,6 +138,7 @@
     .error-message {
       color: #dc3545;
       font-size: .75rem;
+      margin-bottom: 5px;
     }
   }
 }

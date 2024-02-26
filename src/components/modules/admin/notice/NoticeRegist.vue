@@ -6,31 +6,45 @@
     </div>
 
     <div class="content">
+      <!-- 구분 선택 -->
       <div class="type-container">
         <label for="notice-type" class="input-label">구분</label>
-        <select id="notice-type" class="select-field" v-model="state.form.notice.type">
-          <option value="" disabled>구분</option>
-          <option v-for="nt in noticeTypes" :key="nt" :value="nt">
-            {{ nt }}
-          </option>
-        </select>
+        <div class="select-container">
+          <select id="notice-type" class="select-field" v-model="state.form.notice.type">
+            <option value="" disabled>구분</option>
+            <option v-for="nt in noticeTypes" :key="nt" :value="nt">
+              {{ nt }}
+            </option>
+          </select>
+          <div class="error-message" v-if="state.errorMessage.type">{{ state.errorMessage.type }}</div>
+        </div>
       </div>
 
+      <!-- 메인이미지 업로드 -->
       <div class="main-image-container">
         <label for="notice-main-image" class="input-label">메인 이미지</label>
-        <input type="file" id="notice-main-image" class="file-input" accept="image/*" @change="handleMainImageUpload"/>
+        <div class="input-container">
+          <input type="file" id="notice-main-image" class="file-input" accept="image/*" @change="handleMainImageUpload"/>
+          <div class="error-message" v-if="state.errorMessage.mainImage">{{ state.errorMessage.mainImage }}</div>
+        </div>
       </div>
 
+      <!-- 제목 입력 -->
       <div class="title-container">
         <label for="notice-title" class="input-label">제목</label>
-        <input type="text" id="notice-title" class="input-field" v-model="state.form.notice.title" placeholder="제목">
+        <div class="input-container">
+          <input type="text" id="notice-title" class="input-field" v-model="state.form.notice.title" placeholder="제목">
+          <div class="error-message" v-if="state.errorMessage.title">{{ state.errorMessage.title }}</div>
+        </div>
       </div>
 
+      <!-- 내용 입력 -->
       <div class="content-container">
         <label for="notice-content" class="input-label">내용</label>
         <ToastUIEditorComponent id="notice-content" v-model="editorContent" :uploadType="'notices'"/>
       </div>
 
+      <!-- 상태 선택 -->
       <div class="status-container">
         <label for="notice-status" class="input-label">상태</label>
         <select id="notice-status" class="select-field" v-model="state.form.notice.status">
@@ -41,34 +55,42 @@
         </select>
       </div>
 
+      <!-- 슬라이더 표시 유무 선택 및 이미지 업로드 -->
       <div class="show-in-slider-container">
         <label for="notice-show-in-slider" class="input-label">슬라이더 표시</label>
-        <!-- state.form.notice.isSliderImage 현재 값을 select 요소의 값에 바인딩 -->
-        <!-- 선택된 값이 'true' 문자열인 경우 state.form.notice.isSliderImage true로 설정하고, 그렇지 않은 경우 false로 설정 -->
-        <select id="notice-show-in-slider" class="select-field"
-                :value="state.form.notice.isSliderImage"
-                @change="state.form.notice.isSliderImage = ($event.target.value === 'true')">
-          <option value="" disabled>슬라이더 표시</option>
-          <option value=true>표시</option>
-          <option value=false>비표시</option>
-        </select>
-        <input type="file" id="notice-show-in-slider-image" class="file-input" accept="image/*"
-               @change="handleSliderImageUpload" :disabled="!state.form.notice.isSliderImage"/>
+        <div class="input-container">
+          <!-- state.form.notice.isSliderImage 현재 값을 select 요소의 값에 바인딩 -->
+          <!-- 선택된 값이 'true' 문자열인 경우 state.form.notice.isSliderImage true로 설정하고, 그렇지 않은 경우 false로 설정 -->
+          <select id="notice-show-in-slider" class="select-field"
+                  :value="state.form.notice.isSliderImage"
+                  @change="state.form.notice.isSliderImage = ($event.target.value === 'true')">
+            <option value="" disabled>슬라이더 표시</option>
+            <option value=true>표시</option>
+            <option value=false>비표시</option>
+          </select>
+          <input type="file" id="notice-show-in-slider-image" class="file-input" accept="image/*"
+                 @change="handleSliderImageUpload" :disabled="!state.form.notice.isSliderImage"/>
+          <div class="error-message" v-if="state.errorMessage.sliderImage">{{ state.errorMessage.sliderImage }}</div>
+        </div>
       </div>
 
+      <!-- 모달 표시 유무 선택 및 이미지 업로드 -->
       <div class="show-in-modal-container">
         <label for="notice-show-in-modal" class="input-label">모달 표시</label>
-        <!-- state.form.notice.isModalImage 현재 값을 select 요소의 값에 바인딩 -->
-        <!-- 선택된 값이 'true' 문자열인 경우 state.form.notice.isModalImage true로 설정하고, 그렇지 않은 경우 false로 설정 -->
-        <select id="notice-show-in-modal" class="select-field"
-                :value="state.form.notice.isModalImage"
-                @change="state.form.notice.isModalImage = ($event.target.value === 'true')">
-          <option value="" disabled>모달 표시</option>
-          <option value=true>표시</option>
-          <option value=false>비표시</option>
-        </select>
-        <input type="file" id="notice-show-in-modal-image" class="file-input" accept="image/*"
-               @change="handleModalImageUpload" :disabled="!state.form.notice.isModalImage"/>
+        <div class="input-container">
+          <!-- state.form.notice.isModalImage 현재 값을 select 요소의 값에 바인딩 -->
+          <!-- 선택된 값이 'true' 문자열인 경우 state.form.notice.isModalImage true로 설정하고, 그렇지 않은 경우 false로 설정 -->
+          <select id="notice-show-in-modal" class="select-field"
+                  :value="state.form.notice.isModalImage"
+                  @change="state.form.notice.isModalImage = ($event.target.value === 'true')">
+            <option value="" disabled>모달 표시</option>
+            <option value=true>표시</option>
+            <option value=false>비표시</option>
+          </select>
+          <input type="file" id="notice-show-in-modal-image" class="file-input" accept="image/*"
+                 @change="handleModalImageUpload" :disabled="!state.form.notice.isModalImage"/>
+          <div class="error-message" v-if="state.errorMessage.modalImage">{{ state.errorMessage.modalImage }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -93,7 +115,8 @@ export default {
       form: {
         notice: {type: '', title: '', content: '', status: 'INACTIVE', isSliderImage: false, isModalImage: false},
         files: {mainImage: null, sliderImage: null, modalImage: null},
-      }
+      },
+      errorMessage: {},
     });
 
     const handleMainImageUpload = (event) => {
@@ -117,41 +140,72 @@ export default {
       }
     };
 
+    const checkInput = () => {
+      let result = true;
+
+      const MAX_TITLE_LENGTH = 100;
+
+      state.errorMessage = {};
+
+      if (state.form.notice.type.length === 0) {
+        state.errorMessage.type = "구분을 선택해주세요.";
+      }
+
+      if (!state.form.files.mainImage) {
+        state.errorMessage.mainImage = "메인 이미지를 업로드해주세요.";
+        result = false;
+      }
+
+      if (state.form.notice.title.length === 0) {
+        state.errorMessage.title = "제목을 입력해주세요.";
+        result = false;
+      } else if (state.form.notice.title.length > MAX_TITLE_LENGTH) {
+        state.errorMessage.title = "제목은 100자 이하로 입력해주세요.";
+        result = false;
+      }
+
+      if (state.form.notice.isSliderImage && !state.form.files.sliderImage) {
+        state.errorMessage.sliderImage = "슬라이더 이미지를 업로드해주세요.";
+        result = false;
+      }
+
+      if (state.form.notice.isModalImage && !state.form.files.modalImage) {
+        state.errorMessage.modalImage = "모달 이미지를 업로드해주세요.";
+        result = false;
+      }
+
+      return result;
+    };
+    
     const createNotice = async () => {
-      state.form.notice.content = editorContent.value;
+      if (checkInput()) {
+        state.form.notice.content = editorContent.value;
 
-      const formData = new FormData();
+        const formData = new FormData();
 
-      formData.append('notice', JSON.stringify(state.form.notice));
+        formData.append('notice', JSON.stringify(state.form.notice));
 
-      // 각 이미지를 각각의 키로 FormData 객체에 추가
-      formData.append('mainImage', state.form.files.mainImage);
-      formData.append('sliderImage', state.form.files.sliderImage);
-      formData.append('modalImage', state.form.files.modalImage);
+        // 각 이미지를 각각의 키로 FormData 객체에 추가
+        formData.append('mainImage', state.form.files.mainImage);
+        formData.append('sliderImage', state.form.files.sliderImage);
+        formData.append('modalImage', state.form.files.modalImage);
 
-      axios.post('/api/notice/register', formData, {
-        headers: {'Content-Type': 'multipart/form-data'}
+        axios.post('/api/notice/register', formData, {
+          headers: {'Content-Type': 'multipart/form-data'}
 
-      }).then(() => {
-        window.alert('등록되었습니다.');
-        window.location.reload();
+        }).then(() => {
+          window.alert('등록되었습니다.');
+          window.location.reload();
 
-      }).catch(error => {
-        if (error.response) {
-          switch (error.response.status) {
-            case 400: // BAD_REQUEST
-              window.alert(error.response.data.message);
-              break;
-            case 401: // UNAUTHORIZED
-              window.alert(error.response.data.message);
-              break;
-            default:
-              window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+        }).catch(error => {
+          if (error.response) {
+            const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+            window.alert(errorMessage);
+          } else {
+            window.alert('오류가 발생했습니다. 다시 시도해주세요.');
           }
-        } else {
-          window.alert("오류가 발생했습니다. 다시 시도해주세요.");
-        }
-      });
+        });
+      }
     };
 
     return {
@@ -164,96 +218,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.notice-regist {
-  padding-inline: 30px;
-}
-
-.title {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.title p {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.content {
-  font-size: 12px;
-}
-
-.input-field, .select-field {
-  margin-bottom: 10px;
-  border: none;
-  border-bottom: 1px solid #545454;
-  outline: none;
-  height: 30px;
-  background-color: transparent;
-}
-
-.input-field {
-  border: none;
-  border-bottom: 1px solid #545454;
-  outline: none;
-  width: 90%;
-  height: 30px;
-}
-
-.select-field {
-  border-color: #545454;
-  outline: none;
-  width: 40%;
-  height: 30px;
-}
-
-.input-label {
-  margin-right: 10px; /* 라벨과 입력 필드 사이의 간격 */
-  font-weight: bold; /* 라벨 텍스트를 굵게 표시 */
-  width: 100px; /* 라벨의 너비를 고정합니다. */
-}
-
-.type-container, .main-image-container, .title-container, .content-container, .status-container, .show-in-slider-container, .show-in-modal-container {
-  display: flex;
-  flex-direction: row;
-}
-
-.content-container {
-  min-height: 510px;
-}
-
-.period-container div {
-  display: flex;
-}
-
-.period-container div input {
-  width: 40%;
-}
-
-.file-input {
-  margin-bottom: 10px;
-}
-
-/* 슬라이더와 모달의 이미지 파일 입력 필드 크기 조정 */
-#notice-show-in-slider-image, #notice-show-in-modal-image {
-  margin-left: 10px;
-  width: 40%;
-}
-
-#notice-content {
-  width: 90%;
-}
-
-.btn-create-notice {
-  border-width: 0.0625rem;
-  font-size: .75rem;
-  font-weight: 700;
-  width: 150px;
-  height: 30px;
-  background-color: rgb(0, 0, 0);
-  border-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-  transition-property: color, background-color;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/admin/notice/notice-regist";
 </style>

@@ -120,7 +120,7 @@ import store from "@/scripts/store";
 import router from "@/scripts/router";
 import axios from "axios";
 import {useRoute} from "vue-router";
-import {isMobile} from "@/scripts/mixin";
+import {isMobile, isDesktop} from "@/scripts/mixin";
 
 export default {
   name: 'Header',
@@ -142,37 +142,47 @@ export default {
     };
 
     const toggleMenuTooltip = () => {
-      showMenuTooltip.value = !showMenuTooltip.value;
+      if(!isDesktop()) {
+        showMenuTooltip.value = !showMenuTooltip.value;
+      }
     };
 
     const toggleMyPageTooltip = () => {
-      showMyPageTooltip.value = !showMyPageTooltip.value;
+      if(!isDesktop()) {
+        showMyPageTooltip.value = !showMyPageTooltip.value;
+      }
     };
 
-    const handleIconMouseLeave = (iconType) => {
-      tooltipTimeout = setTimeout(() => {
+    const handleTooltipMouseEnter = () => {
+      if(isDesktop()) {
+        if (tooltipTimeout) {
+          clearTimeout(tooltipTimeout);
+        }
+      }
+    };
 
+    const handleTooltipMouseLeave = (iconType) => {
+      if(isDesktop()) {
         if (iconType === 'menu') {
           showMenuTooltip.value = false;
 
         } else if (iconType === 'mypage') {
           showMyPageTooltip.value = false;
         }
-      }, 100); // 100ms
-    };
-
-    const handleTooltipMouseEnter = () => {
-      if (tooltipTimeout) {
-        clearTimeout(tooltipTimeout);
       }
     };
 
-    const handleTooltipMouseLeave = (iconType) => {
-      if (iconType === 'menu') {
-        showMenuTooltip.value = false;
+    const handleIconMouseLeave = (iconType) => {
+      if(isDesktop()) {
+        tooltipTimeout = setTimeout(() => {
 
-      } else if (iconType === 'mypage') {
-        showMyPageTooltip.value = false;
+          if (iconType === 'menu') {
+            showMenuTooltip.value = false;
+
+          } else if (iconType === 'mypage') {
+            showMyPageTooltip.value = false;
+          }
+        }, 100); // 100ms
       }
     };
 
@@ -189,7 +199,7 @@ export default {
       // axios.get(`/api/product/search/${query}`).then(response => {
       //   store.commit('setSearchResults', response.data);
       //   // router.push({name: 'search-results'});
-      //   router.push({path: "/"});
+      //   router.push({name: 'Home'});
       //
       // }).catch(error => {
       //   console.log(error);
@@ -206,7 +216,7 @@ export default {
         axios.post("/api/user/logout").then(() => {
           store.commit('setAccountId', 0);
           store.commit('setAccountRole', '');
-          router.push({path: "/"});
+          router.push({name: 'Home'});
         });
       }
     };
@@ -222,7 +232,7 @@ export default {
       selectedContent, searchQuery, isSearchInputVisible,
       showMenuTooltip, showMyPageTooltip,
       toggleSearchInput, toggleMenuTooltip, toggleMyPageTooltip,
-      handleIconMouseLeave, handleTooltipMouseEnter, handleTooltipMouseLeave,
+      handleTooltipMouseEnter, handleTooltipMouseLeave, handleIconMouseLeave,
       setRedirectPathToLogin, search, navigateTo, logout, resetHomePageState,
     };
   }

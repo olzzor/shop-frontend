@@ -36,7 +36,7 @@
         <tr>
           <td colspan="2" class="table-title">내용</td>
           <td>(생략)</td>
-          <td><router-link :to="{ name: 'NoticeContentUpdate', params: { id: state.notice.id }}">내용 변경</router-link></td>
+          <td><router-link :to="{ name: 'AdminNoticeContentUpdate', params: { id: state.notice.id }}">내용 변경</router-link></td>
         </tr>
 
         <tr>
@@ -50,10 +50,8 @@
           </td>
           <td>
             <div class="image">
-              <div class="image">
-                <input type="file" id="notice-main-image" class="file-input" accept="image/*"
-                       @change="handleMainImageUpload"/>
-              </div>
+              <input type="file" id="notice-main-image" class="file-input" accept="image/*"
+                     @change="handleMainImageUpload"/>
             </div>
           </td>
         </tr>
@@ -206,18 +204,10 @@ export default {
 
       }).catch(error => {
         if (error.response) {
-          switch (error.response.status) {
-            case 400: // BAD_REQUEST
-              window.alert(error.response.data.message);
-              break;
-            case 401: // UNAUTHORIZED
-              window.alert(error.response.data.message);
-              break;
-            default:
-              window.alert("오류가 발생했습니다. 다시 시도해주세요.");
-          }
+          const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+          window.alert(errorMessage);
         } else {
-          window.alert("오류가 발생했습니다. 다시 시도해주세요.");
+          window.alert('오류가 발생했습니다. 다시 시도해주세요.');
         }
       });
     };
@@ -254,105 +244,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.notice-update {
-  padding-inline: 30px;
-}
-
-.title {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.title p {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.content {
-  font-size: 12px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-tbody .table-title {
-  background-color: #e3e3e3;
-  border-color: white;
-}
-
-th, td {
-  border: 1px solid #e3e3e3;
-  padding-left: 5px;
-}
-
-th {
-  border: none;
-  border-bottom: 1px solid #e3e3e3;
-  text-align: center;
-}
-
-th:nth-child(1), th:nth-child(2) {
-  width: 5%;
-}
-
-th:nth-child(3), th:nth-child(4) {
-  width: 45%;
-}
-
-tr {
-  height: 40px;
-}
-
-.input-field, .select-field {
-  margin-bottom: 5px;
-  border: none;
-  border-bottom: 1px solid #545454;
-  outline: none;
-  width: 100%;
-  height: 30px;
-  background-color: transparent;
-}
-
-.input-field {
-  border: none;
-  border-bottom: 1px solid #545454;
-  outline: none;
-  width: 100%;
-  height: 30px;
-}
-
-.image {
-  position: relative;
-  display: inline-block;
-  display: flex;
-  overflow-x: auto; /* 이미지가 넘칠 경우 좌우 스크롤 */
-  white-space: nowrap; /* 행 내부에서 줄바꿈 방지 */
-}
-
-.image-box {
-  position: relative;
-  margin-right: 6px;
-  margin-block: 4px;
-}
-
-.notice-image {
-  height: 150px;
-  float: left;
-}
-
-.btn-update {
-  border-width: 0.0625rem;
-  font-size: .75rem;
-  font-weight: 700;
-  width: 150px;
-  height: 30px;
-  background-color: rgb(0, 0, 0);
-  border-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-  transition-property: color, background-color;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/admin/notice/notice-update";
 </style>

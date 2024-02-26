@@ -19,7 +19,7 @@ export default function useSocialLogin() {
             store.commit('setAccountRole', data.role);
 
             syncLocalStorageWithDB();
-            window.alert("로그인하였습니다.");
+            window.alert('로그인하였습니다.');
 
             // 리디렉션 처리
             const redirectPath = sessionStorage.getItem('redirectPath');
@@ -37,8 +37,8 @@ export default function useSocialLogin() {
             // window.close();
 
         }).catch(() => {
-            window.alert("로그인에 실패하였습니다. 다시 시도해주세요.");
-            router.push({path: "/login"});
+            window.alert('로그인에 실패하였습니다. 다시 시도해주세요.');
+            router.push({name: 'Login'});
         });
     }
 

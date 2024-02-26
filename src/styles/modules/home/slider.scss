@@ -6,7 +6,8 @@
     .slider {
       position: relative; /* 상대 위치 지정 */
       width: 100vw; /* 뷰포트의 너비로 설정 */
-      height: 60vh; /* 세로를 고정된 길이로 설정 */
+      height:60vh;
+      //height: calc(100vh - 3rem);
       overflow: hidden; /* 오버플로를 숨김 */
 
       .slider-image {
@@ -38,7 +39,7 @@
         .bar-container {
           display: flex;
           align-items: center;
-          width: 30vw;
+          width: calc(80vw - 30px);
           justify-content: space-between; /* 바 사이의 공간을 동일하게 조절 */
 
           .bar {
@@ -73,5 +74,76 @@
   }
   100% {
     width: 100%; /* 끝날 때 전체 너비 */
+  }
+}
+
+@include mobile {
+  .slider {
+    .title {}
+    .content {
+      margin-top: 3rem; // 슬라이더가 표시되지 않더라도 헤더 높이만큼 margin top
+
+      .slider {
+        position: relative; /* 상대 위치 지정 */
+        width: 100vw; /* 뷰포트의 너비로 설정 */
+        height: 60vh; /* 세로를 고정된 길이로 설정 */
+        overflow: hidden; /* 오버플로를 숨김 */
+
+        .slider-image {
+          position: absolute;
+          width: 100%; /* 이미지의 너비를 부모 요소의 너비로 설정 */
+          height: 100%; /* 이미지의 높이를 부모 요소의 높이로 설정 */
+          top: 0;
+          left: 0;
+
+          img {
+            width: 100%; /* 이미지의 너비를 부모 요소의 너비로 설정 */
+            height: 100%; /* 이미지의 높이를 부모 요소의 높이로 설정 */
+            object-fit: cover; /* 이미지가 부모 요소를 완전히 채우도록 설정 (이미지 비율 유지) */
+            object-position: center center; /* 이미지를 가운데로 정렬 (이미지가 부모 요소를 넘칠 경우, 넘치는 부분은 중앙을 기준으로 hidden) */
+          }
+        }
+
+        .pagination {
+          position: absolute;
+          z-index: 1; /* z-index를 1로 설정하여 다른 요소 위에 위치하도록 함 */
+          bottom: 15px;
+          left: 50%;
+          transform: translate(-50%, 50%); /* 위치를 정확하게 중앙에 배치하기 위해 transform을 사용 */
+          display: flex;
+          align-items: center; /* 자식 요소를 수직 방향으로 중앙에 배치 */
+          width: auto; /* width를 필요한 만큼의 너비만 사용 */
+          height: auto; /* height를 필요한 만큼의 너비만 사용 */
+
+          .bar-container {
+            display: flex;
+            align-items: center;
+            width: calc(100vw - 30px);
+            justify-content: space-between; /* 바 사이의 공간을 동일하게 조절 */
+
+            .bar {
+              background-color: white; /* 바의 기본 배경색 */
+              width: calc((100% - (var(--slider-count) - 1) * 10px) / var(--slider-count)); /* 슬라이더의 개수와 gap을 고려하여 너비를 동적으로 조정 */
+              height: 5px; /* 바의 높이 */
+              overflow: hidden; /* 내부 요소가 넘쳤을 때 숨김 */
+              cursor: pointer; /* 바에 마우스를 올리면 포인터가 나타나게 함 */
+              position: relative; /* 상대 위치 지정 */
+
+              .fill {
+                background-color: dimgray; /* 채워지는 부분의 배경색 */
+                width: 100%; /* 전체 너비 */
+                height: 100%; /* 전체 높이 */
+                position: absolute; /* 절대 위치 지정 */
+                left: 0; /* 왼쪽에서 시작 */
+                animation: fillEffect 3s linear forwards; /* 애니메이션 효과 적용 */
+              }
+            }
+          }
+        }
+      }
+
+      &.no-slider-data {
+      }
+    }
   }
 }
