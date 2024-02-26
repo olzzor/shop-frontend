@@ -60,55 +60,55 @@
          @mouseenter="handleTooltipMouseEnter" @mouseleave="handleTooltipMouseLeave('menu')">
       <div class="menu-tooltip-content">
         <div>
-          <a class="category-title" @click="navigateTo('products', '/products-category/all')">PRODUCTS</a>
+          <a class="category-title" @click="navigateTo('menu', 'products', '/products-category/all')">PRODUCTS</a>
         <!-- 상품 카테고리 -->
 <!--        <div v-if="selectedContent === 'products'">-->
-          <router-link :to="{ name: 'Products', params: { cat: 'all' }}">ALL</router-link>
-          <router-link :to="{ name: 'Products', params: { cat: 'tops' }}">TOPS</router-link>
-          <router-link :to="{ name: 'Products', params: { cat: 'shirts' }}">SHIRTS</router-link>
-          <router-link :to="{ name: 'Products', params: { cat: 'sweats' }}">SWEATS</router-link>
-          <router-link :to="{ name: 'Products', params: { cat: 'knits' }}">KNITS</router-link>
-          <router-link :to="{ name: 'Products', params: { cat: 'pants' }}">PANTS</router-link>
-          <router-link :to="{ name: 'Products', params: { cat: 'jeans' }}">JEANS</router-link>
-          <router-link :to="{ name: 'Products', params: { cat: 'skirts' }}">SKIRTS</router-link>
-          <router-link :to="{ name: 'Products', params: { cat: 'outer' }}">OUTER</router-link>
-          <router-link :to="{ name: 'Products', params: { cat: 'headwear' }}">HEADWEAR</router-link>
-          <router-link :to="{ name: 'Products', params: { cat: 'footwear' }}">FOOTWEAR</router-link>
-          <router-link :to="{ name: 'Products', params: { cat: 'accessories' }}">ACCESSORIES</router-link>
+          <router-link :to="{ name: 'Products', params: { cat: 'all' }}" @click="closeTooltip('menu')">ALL</router-link>
+          <router-link :to="{ name: 'Products', params: { cat: 'tops' }}" @click="closeTooltip('menu')">TOPS</router-link>
+          <router-link :to="{ name: 'Products', params: { cat: 'shirts' }}" @click="closeTooltip('menu')">SHIRTS</router-link>
+          <router-link :to="{ name: 'Products', params: { cat: 'sweats' }}" @click="closeTooltip('menu')">SWEATS</router-link>
+          <router-link :to="{ name: 'Products', params: { cat: 'knits' }}" @click="closeTooltip('menu')">KNITS</router-link>
+          <router-link :to="{ name: 'Products', params: { cat: 'pants' }}" @click="closeTooltip('menu')">PANTS</router-link>
+          <router-link :to="{ name: 'Products', params: { cat: 'jeans' }}" @click="closeTooltip('menu')">JEANS</router-link>
+          <router-link :to="{ name: 'Products', params: { cat: 'skirts' }}" @click="closeTooltip('menu')">SKIRTS</router-link>
+          <router-link :to="{ name: 'Products', params: { cat: 'outer' }}" @click="closeTooltip('menu')">OUTER</router-link>
+          <router-link :to="{ name: 'Products', params: { cat: 'headwear' }}" @click="closeTooltip('menu')">HEADWEAR</router-link>
+          <router-link :to="{ name: 'Products', params: { cat: 'footwear' }}" @click="closeTooltip('menu')">FOOTWEAR</router-link>
+          <router-link :to="{ name: 'Products', params: { cat: 'accessories' }}" @click="closeTooltip('menu')">ACCESSORIES</router-link>
 <!--        </div>-->
         </div>
 
         <div>
-          <a class="category-title" @click="navigateTo('notices', '/notices-category/all')">NOTICES</a>
+          <a class="category-title" @click="navigateTo('menu', 'notices', '/notices-category/all')">NOTICES</a>
         <!-- 공지 카테고리 -->
 <!--        <div v-else-if="selectedContent === 'notices'">-->
-          <router-link :to="{ name: 'Notices', params: { cat: 'all' }}">ALL</router-link>
-          <router-link :to="{ name: 'Notices', params: { cat: 'information' }}">INFORMATION</router-link>
-          <router-link :to="{ name: 'Notices', params: { cat: 'community' }}">COMMUNITY</router-link>
-          <router-link :to="{ name: 'Notices', params: { cat: 'promotion' }}">PROMOTION</router-link>
-          <router-link :to="{ name: 'Notices', params: { cat: 'maintenance' }}">MAINTENANCE</router-link>
-          <router-link :to="{ name: 'Notices', params: { cat: 'alert' }}">ALERT</router-link>
+          <router-link :to="{ name: 'Notices', params: { cat: 'all' }}" @click="closeTooltip('menu')">ALL</router-link>
+          <router-link :to="{ name: 'Notices', params: { cat: 'information' }}" @click="closeTooltip('menu')">INFORMATION</router-link>
+          <router-link :to="{ name: 'Notices', params: { cat: 'community' }}" @click="closeTooltip('menu')">COMMUNITY</router-link>
+          <router-link :to="{ name: 'Notices', params: { cat: 'promotion' }}" @click="closeTooltip('menu')">PROMOTION</router-link>
+          <router-link :to="{ name: 'Notices', params: { cat: 'maintenance' }}" @click="closeTooltip('menu')">MAINTENANCE</router-link>
+          <router-link :to="{ name: 'Notices', params: { cat: 'alert' }}" @click="closeTooltip('menu')">ALERT</router-link>
 <!--        </div>-->
         </div>
 
-        <div><a @click="navigateTo('products', '/reviews')">REVIEWS</a></div>
-        <div><a @click="navigateTo('products', '/support')">SUPPORT</a></div>
+        <div><a @click="navigateTo('menu', 'products', '/reviews')">REVIEWS</a></div>
+        <div><a @click="navigateTo('menu', 'products', '/support')">SUPPORT</a></div>
 
       </div>
     </div>
 <!--    </transition>-->
 
     <!-- 마이 페이지 툴팁 -->
-    <div v-if="showMyPageTooltip" class="mypage-tooltip" @mouseenter="handleTooltipMouseEnter"
-         @mouseleave="handleTooltipMouseLeave('mypage')">
-      <router-link to="/favorite" class="link">관심 상품</router-link>
-      <router-link to="/cart" class="link">장바구니</router-link>
-      <router-link to="/member/coupon-list" class="link">내 쿠폰</router-link>
-      <router-link to="/member/order-history" class="link">주문 이력</router-link>
-      <router-link to="/member/contact-history" class="link">문의 내역</router-link>
-      <router-link to="/member/edit-address" class="link">주소지 변경</router-link>
-      <router-link to="/member/edit-profile" class="link">회원정보 변경</router-link>
-      <router-link to="/member/change-password" class="link">비밀번호 변경</router-link>
+    <div v-if="showMyPageTooltip" class="mypage-tooltip" :class="showMyPageTooltip ? 'show' : 'hide'"
+         @mouseenter="handleTooltipMouseEnter" @mouseleave="handleTooltipMouseLeave('mypage')">
+      <router-link to="/favorite" class="link" @click="closeTooltip('mypage')">관심 상품</router-link>
+      <router-link to="/cart" class="link" @click="closeTooltip('mypage')">장바구니</router-link>
+      <router-link to="/member/coupon-list" class="link" @click="closeTooltip('mypage')">내 쿠폰</router-link>
+      <router-link to="/member/order-history" class="link" @click="closeTooltip('mypage')">주문 이력</router-link>
+      <router-link to="/member/contact-history" class="link" @click="closeTooltip('mypage')">문의 내역</router-link>
+      <router-link to="/member/edit-address" class="link" @click="closeTooltip('mypage')">주소지 변경</router-link>
+      <router-link to="/member/edit-profile" class="link" @click="closeTooltip('mypage')">회원정보 변경</router-link>
+      <router-link to="/member/change-password" class="link" @click="closeTooltip('mypage')">비밀번호 변경</router-link>
       <router-link to="#" class="link" @click="logout">로그아웃</router-link>
     </div>
   </header>
@@ -186,6 +186,15 @@ export default {
       }
     };
 
+    const closeTooltip = (tooltipType) => {
+      if (tooltipType === 'menu') {
+        showMenuTooltip.value = false;
+
+      } else if (tooltipType === 'mypage') {
+        showMyPageTooltip.value = false;
+      }
+    };
+
     // 로그인 페이지로 리디렉션하기 전에 redirectPath 설정
     const setRedirectPathToLogin = (path) => {
       sessionStorage.setItem('redirectPath', path);
@@ -206,9 +215,11 @@ export default {
       // });
     };
 
-    const navigateTo = (content, path) => {
+    const navigateTo = (tooltipType, content, path) => {
       selectedContent.value = content;
-      router.push(path);
+      router.push(path).then(() => {
+        closeTooltip(tooltipType);
+      });
     };
 
     const logout = () => {
@@ -233,6 +244,7 @@ export default {
       showMenuTooltip, showMyPageTooltip,
       toggleSearchInput, toggleMenuTooltip, toggleMyPageTooltip,
       handleTooltipMouseEnter, handleTooltipMouseLeave, handleIconMouseLeave,
+      closeTooltip,
       setRedirectPathToLogin, search, navigateTo, logout, resetHomePageState,
     };
   }

@@ -1,4 +1,4 @@
-.order-reviews {
+.reviews {
   padding: 70px 0 20px 0;
   font-size: 12px;
   display: flex;
@@ -213,7 +213,7 @@
 }
 
 @include mobile {
-  .order-reviews {
+  .reviews {
     .title {}
     .content {
       .review-summary {

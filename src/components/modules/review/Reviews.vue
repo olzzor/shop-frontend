@@ -1,5 +1,5 @@
 <template>
-  <div class="order-reviews" v-if="state.totalReviews > 0">
+  <div class="reviews" v-if="state.totalReviews > 0">
     <div class="title"></div>
 
     <div class="content">
@@ -93,7 +93,7 @@ import lib from "@/scripts/lib";
 import ReviewModal from "@/components/modules/review/ReviewModal.vue";
 
 export default {
-  name: "OrderReviews",
+  name: "Reviews",
   components: {ReviewModal},
   props: {productId: {type: Number, required: true}},
   setup() {

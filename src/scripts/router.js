@@ -45,7 +45,7 @@ const defaultRoutes = [
 
     {path: '/review-write/:orderId', name: 'WriteReview', component: () => import('@/components/modules/review/ReviewWrite.vue')},
     {path: '/review-edit/:reviewId', name: 'EditReview', component: () => import('@/components/modules/review/ReviewEdit.vue')},
-    {path: '/reviews', name: 'OrderReviews', component: () => import('@/components/modules/review/Reviews.vue')},
+    {path: '/reviews', name: 'Reviews', component: () => import('@/components/modules/review/Reviews.vue')},
 
     {path: '/test', component: testDaumAPI},
 

@@ -157,6 +157,13 @@ header {
     z-index: 10;
     font-size: .8rem;
 
+    &.show {
+      animation: expandDown 0.5s ease-out forwards;
+    }
+    &.hide { // TODO 생각대로 애니메이션 적용이 안됨. transform 시도하다 포기
+      animation: collapseUp 0.5s ease-out forwards;
+    }
+
     a, router-link {
       text-decoration: none;
       padding: 5px 0;
@@ -340,7 +347,7 @@ header {
     opacity: 0;
   }
   to {
-    height: calc(60vh - 3rem);
+    height: 60vh;
     opacity: 1;
   }
 }
@@ -351,14 +358,14 @@ header {
     opacity: 0;
   }
   to {
-    height: calc(100vh - 3rem);
+    height: 100vh;
     opacity: 1;
   }
 }
 
 @keyframes collapseUp {
   from {
-    height: calc(60vh - 3rem);
+    height: 60vh;
     opacity: 1;
   }
   to {
@@ -369,7 +376,7 @@ header {
 
 @keyframes collapseUpMobile {
   from {
-    height: calc(100vh - 3rem);
+    height: 100vh;
     opacity: 1;
   }
   to {
