@@ -79,10 +79,8 @@ const adminRoutes = [
     },
 ];
 
-// const USER_HOST = 'bridgeshop.dev:3000';
-// const ADMIN_HOST_NAME = 'admin.bridgeshop.dev';
-const USER_HOST = 'bridgeshop.kro.kr:3000';
-const ADMIN_HOST_NAME = 'admin.bridgeshop.kro.kr';
+const USER_HOST = process.env.VUE_APP_USER_HOST;
+const ADMIN_HOST_NAME = process.env.VUE_APP_ADMIN_HOST_NAME;
 
 let routesToUse;
 
@@ -103,7 +101,7 @@ const router = createRouter({
 
 /** 전역 가드 */
 router.beforeEach(async (to, from, next) => {
-    if (window.location.hostname === ADMIN_HOST_NAME) { // 호스트네임이 admin.bridgeshop.dev인 경우에 권한 확인 로직 실행
+    if (window.location.hostname === ADMIN_HOST_NAME) {
         // 서버에 인증 상태 확인 요청
         const isAdmin = await checkAdminRoleFromServer();
         // 인증 성공시, 어드민 페이지로 이동

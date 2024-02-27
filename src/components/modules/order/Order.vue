@@ -100,8 +100,7 @@ export default {
         buyer_tel: checkoutDetailsInfo.phone, // 구매자 전화번호
         buyer_addr: checkoutDetailsInfo.address2 ? `${checkoutDetailsInfo.address1} ${checkoutDetailsInfo.address2}` : checkoutDetailsInfo.address1, // 구매자 주소
         buyer_postcode: checkoutDetailsInfo.zipCode, // 구매자 우편번호
-        // m_redirect_url: "https://bridgeshop.dev:3000/order/redirect/iamport",
-        m_redirect_url: "http://bridgeshop.kro.kr:3000/order/redirect/iamport",
+        m_redirect_url: `${process.env.VUE_APP_BASE_URL}/order/redirect/iamport`,
 
       }, rsp => { // callback
         console.log(rsp);

@@ -232,8 +232,7 @@ export default {
     const loginGoogle = () => {
       const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
       const clientId = '249788645467-l89t277l0rno4a4pd16jt43mrccd2i3d.apps.googleusercontent.com';
-      // const redirectUri = 'https://bridgeshop.dev:3000/social-login?provider=google';
-      const redirectUri = 'http://bridgeshop.kro.kr:3000/social-login?provider=google';
+      const redirectUri = `${process.env.VUE_APP_BASE_URL}/social-login?provider=google`;
       const scope = 'email profile';
 
       const loginUrl = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
@@ -243,8 +242,7 @@ export default {
     const loginNaver = () => {
       const authUrl = 'https://nid.naver.com/oauth2.0/authorize';
       const clientId = 'lRrQyVJfr2_5u5M3vh7R';
-      // const redirectUri = 'https://bridgeshop.dev:3000/social-login?provider=naver';
-      const redirectUri = 'http://bridgeshop.kro.kr:3000/social-login?provider=naver';
+      const redirectUri = `${process.env.VUE_APP_BASE_URL}/social-login?provider=naver`;
       const state = generateRandomState(); // 난수 생성
 
       const loginUrl = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${state}`;
@@ -257,8 +255,7 @@ export default {
     const loginKakao = () => {
       const authUrl = 'https://kauth.kakao.com/oauth/authorize';
       const clientId = 'bc70bff5016b07be7a2c35517831835f';
-      // const redirectUri = 'https://bridgeshop.dev:3000/social-login?provider=kakao';
-      const redirectUri = 'http://bridgeshop.kro.kr:3000/social-login?provider=kakao';
+      const redirectUri = `${process.env.VUE_APP_BASE_URL}/social-login?provider=kakao`;
       const scope = 'profile_nickname profile_image account_email';
 
       const loginUrl = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
@@ -268,8 +265,7 @@ export default {
     const loginFacebook = () => {
       const authUrl = 'https://www.facebook.com/v12.0/dialog/oauth';
       const clientId = '3561230307461014';
-      // const redirectUri = 'https://bridgeshop.dev:3000/social-login?provider=facebook';
-      const redirectUri = 'http://bridgeshop.kro.kr:3000/social-login?provider=facebook';
+      const redirectUri = `${process.env.VUE_APP_BASE_URL}/social-login?provider=facebook`;
       const scope = 'email';
 
       const loginUrl = `${authUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;

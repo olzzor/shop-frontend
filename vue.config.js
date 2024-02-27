@@ -1,12 +1,17 @@
 // const { CKEditorTranslationsPlugin } = require('@ckeditor/ckeditor5-dev-translations');
 // const { styles } = require('@ckeditor/ckeditor5-dev-utils');
+// const fs = require("fs");
+// const path = require("path");
 
 module.exports = {
   devServer: {
+    // https: {
+    //   key: fs.readFileSync(path.resolve(__dirname, 'certs/certificate.key')),
+    //   cert: fs.readFileSync(path.resolve(__dirname, 'certs/certificate.crt')),
+    // },
     proxy: {
       '/api': {
-        // target: 'http://localhost.test:8080',
-        target: 'http://bridgeshop.kro.kr:8080',
+        target: `${process.env.VUE_APP_API_URL}`,
         changeOrigin: true,
         pathRewrite: {'^/api': ''}
       }

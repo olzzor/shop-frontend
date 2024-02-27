@@ -7,8 +7,7 @@ import axios from "axios"
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-// axios.defaults.baseURL = 'http://localhost.test:8080';
-axios.defaults.baseURL = 'http://bridgeshop.kro.kr:8080';
+axios.defaults.baseURL = `${process.env.VUE_APP_API_URL}`;
 axios.defaults.withCredentials = true;
 
 createApp(App)

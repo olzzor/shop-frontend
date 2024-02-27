@@ -32,8 +32,8 @@ export default {
       axios.post('/api/toast-ui/image-upload', formData, {
         headers: {'upload-type': props.uploadType}
 
-      }).then((res) => {
-        callback(res.data.url, 'alt text');
+      }).then((data) => {
+        callback(data.url, 'image');
 
       }).catch((error) => {
         console.error('Error uploading image:', error);

@@ -1,10 +1,14 @@
+# Existing settings
 .DS_Store
 node_modules
 /dist
 
-# local env files
+# Local environment variable files
 .env.local
 .env.*.local
+
+# Explicitly ignoring development environment variable file
+.env.development
 
 # Log files
 npm-debug.log*
@@ -21,5 +25,6 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
+# Other directories
 src/components/bk/
 certs/
