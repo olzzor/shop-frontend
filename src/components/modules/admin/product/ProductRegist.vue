@@ -2,7 +2,7 @@
   <div class="product-regist">
     <div class="title">
       <p>상품 등록</p>
-      <button class="btn-create-product" @click="createProduct">등록하기</button>
+      <button type="button" class="btn-create-product" @click="createProduct">등록하기</button>
     </div>
 
     <div class="content">
@@ -66,7 +66,7 @@
         <label for="product-images" class="input-label">상품 이미지</label>
         <div class="image-box" v-for="(src, index) in images" :key="index">
           <img class="product-image" :src="src"/>
-          <button class="delete-button" @click="deleteImage(index)">X</button>
+          <button type="button" class="btn-delete" @click="deleteImage(index)">X</button>
         </div>
         <div class="upload-box" @click="clickImageInput" @drop.prevent="dropImage" @dragover.prevent>
           <p>+</p>

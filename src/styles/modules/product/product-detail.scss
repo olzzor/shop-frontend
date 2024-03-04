@@ -244,7 +244,7 @@
     margin-top: 50px;
 
     .content {
-      padding-inline: 0px;
+      padding-inline: 0;
 
       .product-section {
         flex-direction: column;
@@ -294,7 +294,7 @@
           justify-content: flex-start;
           .product-title-row {
             font-size: 1rem;
-            margin-bottom: 0px;
+            margin-bottom: 0;
 
             .product-discount-per {
               margin-right: 3px;

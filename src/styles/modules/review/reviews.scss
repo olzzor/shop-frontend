@@ -1,5 +1,5 @@
 .reviews {
-  padding: 70px 0 20px 0;
+  padding: 50px 0 20px 0;
   font-size: 12px;
   display: flex;
   flex-direction: column;
@@ -150,7 +150,7 @@
               .review-image-row {
                 display: flex;
                 justify-content: flex-start;
-                //position: relative;
+                position: relative;
                 margin-top: auto;
                 gap: 1.5px;
 
@@ -218,6 +218,7 @@
     .content {
       .review-summary {
         flex-direction: column;
+        margin: 10px 15px;
 
         .overall-average-rating {
           .stars {
@@ -276,7 +277,8 @@
                 }
                 .review-image-row {
                   margin-top: 10px;
-                  .review-image-container {}
+                  .review-image-container {
+                  }
                   .btn-review-image-prev {}
                   .btn-review-image-next {}
                 }
