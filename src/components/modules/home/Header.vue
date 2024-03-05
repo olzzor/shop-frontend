@@ -144,18 +144,14 @@ export default {
 
     const toggleMenuTooltip = () => {
       if(!isDesktop()) {
-        if (showMyPageTooltip.value) {
-          closeTooltip('mypage');
-        }
+        closeTooltip('mypage');
         showMenuTooltip.value = !showMenuTooltip.value;
       }
     };
 
     const toggleMyPageTooltip = () => {
       if(!isDesktop()) {
-        if (showMenuTooltip.value) {
-          closeTooltip('menu');
-        }
+        closeTooltip('menu');
         showMyPageTooltip.value = !showMyPageTooltip.value;
       }
     };
@@ -209,6 +205,7 @@ export default {
 
     // 로그인 페이지로 리디렉션하기 전에 redirectPath 설정
     const setRedirectPathToLogin = (path) => {
+      closeTooltips();
       sessionStorage.setItem('redirectPath', path);
     };
 
@@ -236,6 +233,8 @@ export default {
 
     const logout = () => {
       if (window.confirm('로그아웃하시겠습니까?')) {
+        closeTooltips('menu');
+
         axios.post("/api/user/logout").then(() => {
           store.commit('setAccountId', 0);
           store.commit('setAccountRole', '');
