@@ -41,8 +41,8 @@
             <!-- 이메일 저장 -->
             <div>
               <label class="checkbox-wrapper" @click="state.saveEmail = !state.saveEmail">
-                <i v-if="state.saveEmail" class="bi bi-check-square-fill"></i>
-                <i v-else class="bi bi-square"></i>
+                <i class="bi bi-check-square-fill" v-if="state.saveEmail"></i>
+                <i class="bi bi-square" v-else></i>
                 이메일 저장
               </label>
             </div>
@@ -53,14 +53,14 @@
           </div>
 
           <!-- 버튼 -->
-          <button class="button btn-login" type="submit">로그인</button>
-          <button class="button btn-signup" type="button" @click="signup">회원 가입하기</button>
+          <button type="submit" class="button btn-login">로그인</button>
+          <button type="button" class="button btn-signup" @click="signup">회원 가입하기</button>
         </div>
       </form>
 
       <!-- 소셜 로그인: 구글 -->
       <div class="social-login">
-        <button class="button btn-login-google" @click="loginGoogle">
+        <button type="button" class="button btn-login-google" @click="loginGoogle">
           <div class="google-icon-wrapper">
             <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 52 54" preserveAspectRatio="xMidYMid meet">
               <g transform="translate(0.000000,54.000000) scale(0.100000,-0.100000)" fill="#545454" stroke="none">
@@ -74,7 +74,7 @@
         </button>
 
         <!-- 소셜 로그인: 네이버 -->
-        <button class="button btn-login-naver" @click="loginNaver">
+        <button type="button" class="button btn-login-naver" @click="loginNaver">
           <div class="naver-icon-wrapper">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512">
               <path fill="#545454" d="M9 32V480H181.366V255.862L331.358 480H504V32H331.358V255.862L181.366 32H9Z"></path>
@@ -85,7 +85,7 @@
         </button>
 
         <!-- 소셜 로그인: 카카오 -->
-        <button class="button btn-login-kakao" @click="loginKakao">
+        <button type="button" class="button btn-login-kakao" @click="loginKakao">
           <div class="kakao-icon-wrapper">
             <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 50.000000 48.000000" preserveAspectRatio="xMidYMid meet">
               <g transform="translate(0.000000,48.000000) scale(0.100000,-0.100000)" fill="#545454" stroke="none">
@@ -98,7 +98,7 @@
         </button>
 
         <!-- 소셜 로그인: 페이스북 -->
-        <button class="button btn-login-facebook" @click="loginFacebook">
+        <button type="button" class="button btn-login-facebook" @click="loginFacebook">
           <div class="facebook-icon-wrapper">
             <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27"
                  viewBox="0 0 52.000000 52.000000" preserveAspectRatio="xMidYMid meet">

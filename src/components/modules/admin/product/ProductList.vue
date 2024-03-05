@@ -13,14 +13,14 @@
 
       <div class="action-buttons">
         <div class="action-buttons-left">
-          <button class="button btn-search-condition" @click="searchCondition">조건 검색</button>
-          <button class="button btn-search-full" @click="searchFull">전체 검색</button>
-          <button class="button btn-clear-search" @click="clearSearchConditions">조건 초기화</button>
+          <button type="button" class="button btn-search-condition" @click="searchCondition">조건 검색</button>
+          <button type="button" class="button btn-search-full" @click="searchFull">전체 검색</button>
+          <button type="button" class="button btn-clear-search" @click="clearSearchConditions">조건 초기화</button>
         </div>
 
         <div class="action-buttons-right">
-          <button class="button btn-csv-download" @click="downloadCSV">CSV 다운로드 <i class="bi bi-download"></i></button>
-          <button class="button btn-change-products" @click="changeProducts">변경하기</button>
+          <button type="button" class="button btn-csv-download" @click="downloadCSV">CSV 다운로드 <i class="bi bi-download"></i></button>
+          <button type="button" class="button btn-change-products" @click="changeProducts">변경하기</button>
         </div>
       </div>
 
@@ -151,11 +151,11 @@
       </table>
 
       <div class="pagination">
-        <button @click="goToPage(1)" :disabled="state.page.currentPage === 1"><i class="bi bi-chevron-double-left"></i></button>
-        <button @click="goToPage(state.page.currentPage - 1)" :disabled="state.page.currentPage === 1"><i class="bi bi-chevron-left"></i></button>
+        <button type="button" @click="goToPage(1)" :disabled="state.page.currentPage === 1"><i class="bi bi-chevron-double-left"></i></button>
+        <button type="button" @click="goToPage(state.page.currentPage - 1)" :disabled="state.page.currentPage === 1"><i class="bi bi-chevron-left"></i></button>
         <span>{{ state.page.currentPage }} / {{ state.page.totalPages }}</span>
-        <button @click="goToPage(state.page.currentPage + 1)" :disabled="state.page.currentPage === state.page.totalPages"><i class="bi bi-chevron-right"></i></button>
-        <button @click="goToPage(state.page.totalPages)" :disabled="state.page.currentPage === state.page.totalPages"><i class="bi bi-chevron-double-right"></i></button>
+        <button type="button" @click="goToPage(state.page.currentPage + 1)" :disabled="state.page.currentPage === state.page.totalPages"><i class="bi bi-chevron-right"></i></button>
+        <button type="button" @click="goToPage(state.page.totalPages)" :disabled="state.page.currentPage === state.page.totalPages"><i class="bi bi-chevron-double-right"></i></button>
       </div>
     </div>
   </div>

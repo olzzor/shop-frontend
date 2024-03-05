@@ -29,7 +29,7 @@
              v-if="state.errorMessage.newPasswordConfirm">{{ state.errorMessage.newPasswordConfirm }}
         </div>
 
-        <button class="button btn-change-password" type="submit" :disabled="state.isSubmitting">변경하기</button>
+        <button type="submit" class="button btn-change-password" :disabled="state.isSubmitting">변경하기</button>
       </form>
     </div>
   </div>

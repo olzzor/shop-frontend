@@ -14,8 +14,8 @@
 
       <div class="recipient-info">
         <label for="name">수령인</label>
-        <button v-if="state.defaultAddress.id" class="btn-set-default-address" type="button"
-                @click="setDefaultAddress">
+        <button type="button" class="btn-set-default-address"
+                v-if="state.defaultAddress.id" @click="setDefaultAddress">
           기본 주소지 설정
         </button>
 
@@ -35,7 +35,7 @@
       <div class="address-info">
         <div class="address-label-container">
           <label for="address1">주소</label>
-          <button class="btn-search-address" type="button" @click="searchAddress">주소 찾기</button>
+          <button type="button" class="btn-search-address" @click="searchAddress">주소 찾기</button>
         </div>
 
         <div class="zipcode-field" :class="{ 'input-error': state.errorMessage.zipCode }">
@@ -62,7 +62,7 @@
         <div class="payment-methods-field" :class="{ 'input-error': state.errorMessage.paymentMethod }">
           <div class="payment-method" v-for="pg in pgs" :key="pg.value">
             <input type="radio" v-model="state.form.paymentMethod" :value="pg.value" name="paymentMethod" />
-            <img v-if="pg.logo" class="payment-logo" :src="pg.logo" :alt="pg.label" />
+            <img class="payment-logo" v-if="pg.logo" :src="pg.logo" :alt="pg.label" />
             <span v-else>{{ pg.label }}</span>
           </div>
         </div>

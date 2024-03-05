@@ -31,8 +31,8 @@
         <div class="error-message" v-if="state.errorMessage.passwordConfirm">{{ state.errorMessage.passwordConfirm }}
         </div>
 
-        <button class="button btn-signup" type="submit" :disabled="state.isSubmitting">회원 가입</button>
-        <button class="button btn-login" type="button" @click="login">로그인하기</button>
+        <button type="submit" class="button btn-signup" :disabled="state.isSubmitting">회원 가입</button>
+        <button type="button" class="button btn-login" @click="login">로그인하기</button>
       </form>
 
       <div class="message"></div>

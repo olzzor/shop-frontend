@@ -51,8 +51,8 @@
       </div>
 
       <div class="actions">
-        <button class="button btn-inquiry" type="submit">문의</button>
-        <button class="button btn-cancel" type="button" @click="close">취소</button>
+        <button type="submit" class="button btn-inquiry" :disabled="state.isSubmitting">문의</button>
+        <button type="button" class="button btn-cancel" @click="close">취소</button>
       </div>
     </form>
   </div>

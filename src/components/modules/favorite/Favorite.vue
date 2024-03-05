@@ -12,7 +12,7 @@
             <div class="product-image">
               <router-link :to="{ name: 'ProductDetail', params: { id: f.product.id }}">
                 <img :src="`${f.product.productImages[0].fileUrl}`" />
-                <div v-if="f.product.status !== 'ON_SALE'" class="not-in-stock-overlay">
+                <div class="not-in-stock-overlay" v-if="f.product.status !== 'ON_SALE'">
                   <div class="not-in-stock">NOT IN STOCK</div>
                 </div>
               </router-link>
@@ -30,10 +30,8 @@
 
               <div class="product-price-row">
                 <div class="price-container">
-                  <small class="original-price"
-                         :class="{ 'sale': f.product.discountPer }">{{ lib.getFormattedNumber(f.product.price) }}원</small>
-                  <small class="discounted-price"
-                         v-if="f.product.discountPer"> {{ lib.getFormattedNumber(price.getDiscountedPrice(f.product)) }}원</small>
+                  <small class="original-price" :class="{ 'sale': f.product.discountPer }">{{ lib.getFormattedNumber(f.product.price) }}원</small>
+                  <small class="discounted-price" v-if="f.product.discountPer"> {{ lib.getFormattedNumber(price.getDiscountedPrice(f.product)) }}원</small>
                 </div>
               </div>
             </div>
@@ -47,14 +45,13 @@
       </ul>
 
       <div class="action-buttons">
-        <button class="btn-remove-all" type="button" @click="removeFavoriteAll"
+        <button type="button" class="btn-remove-all" @click="removeFavoriteAll"
                 :disabled="state.favorites.length === 0 && state.isSubmitting">전체 삭제
         </button>
       </div>
     </div>
 
     <div class="content no-favorite-data" v-else>관심 상품이 없습니다.</div>
-
   </div>
 </template>
 

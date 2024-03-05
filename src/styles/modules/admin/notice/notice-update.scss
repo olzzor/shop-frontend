@@ -75,6 +75,17 @@
               background-color: transparent;
             }
 
+            .input-container, .select-container {
+              flex-direction: column;
+              flex-grow: 1;
+            }
+
+            .error-message {
+              color: #dc3545;
+              font-size: .75rem;
+              margin-bottom: 5px;
+            }
+
             .image {
               position: relative;
               //display: inline-block;

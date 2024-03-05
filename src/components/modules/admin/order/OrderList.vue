@@ -116,16 +116,19 @@
       </table>
 
       <div class="pagination">
-        <button @click="goToPage(1)" :disabled="state.page.currentPage === 1"><i class="bi bi-chevron-double-left"></i>
+        <button type="button" @click="goToPage(1)" :disabled="state.page.currentPage === 1">
+          <i class="bi bi-chevron-double-left"></i>
         </button>
-        <button @click="goToPage(state.page.currentPage - 1)" :disabled="state.page.currentPage === 1"><i
-            class="bi bi-chevron-left"></i></button>
+        <button type="button" @click="goToPage(state.page.currentPage - 1)" :disabled="state.page.currentPage === 1">
+          <i class="bi bi-chevron-left"></i>
+        </button>
         <span>{{ state.page.currentPage }} / {{ state.page.totalPages }}</span>
-        <button @click="goToPage(state.page.currentPage + 1)"
-                :disabled="state.page.currentPage === state.page.totalPages"><i class="bi bi-chevron-right"></i>
+        <button type="button" @click="goToPage(state.page.currentPage + 1)" :disabled="state.page.currentPage === state.page.totalPages">
+          <i class="bi bi-chevron-right"></i>
         </button>
-        <button @click="goToPage(state.page.totalPages)" :disabled="state.page.currentPage === state.page.totalPages"><i
-            class="bi bi-chevron-double-right"></i></button>
+        <button type="button" @click="goToPage(state.page.totalPages)" :disabled="state.page.currentPage === state.page.totalPages">
+          <i class="bi bi-chevron-double-right"></i>
+        </button>
       </div>
     </div>
   </div>

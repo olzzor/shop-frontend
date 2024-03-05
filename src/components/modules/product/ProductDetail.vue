@@ -19,10 +19,10 @@
             </div>
 
             <div class="image-list-navigation">
-              <button class="button btn-scroll-up" type="button" @click="scrollImageList(-1)"><i
+              <button type="button" class="button btn-scroll-up" @click="scrollImageList(-1)"><i
                   class="bi bi-chevron-up"></i></button>
               <div class="divider"></div>
-              <button class="button btn-scroll-down" type="button" @click="scrollImageList(1)"><i
+              <button type="button" class="button btn-scroll-down" @click="scrollImageList(1)"><i
                   class="bi bi-chevron-down"></i></button>
             </div>
           </div>
@@ -68,19 +68,19 @@
               </div>
 
               <div class="quantity-control">
-                <button class="btn-quantity-down" @click="decrementQuantity"><i class="bi bi-dash-lg"></i></button>
+                <button type="button" class="btn-quantity-down" @click="decrementQuantity"><i class="bi bi-dash-lg"></i></button>
                 <input type="number" v-model="state.selectedQuantity" min="1">
-                <button class="btn-quantity-up" @click="incrementQuantity"><i class="bi bi-plus-lg"></i></button>
+                <button type="button" class="btn-quantity-up" @click="incrementQuantity"><i class="bi bi-plus-lg"></i></button>
               </div>
             </div>
           </div>
 
           <div class="actions">
-            <button class="button btn-add-cart" type="button"
+            <button type="button" class="button btn-add-cart"
                     @click="addToCart(state.selectedSizeId)" :disabled="state.isSubmitting">
               장바구니 추가
             </button>
-            <button class="button btn-add-favorite" type="button"
+            <button type="button" class="button btn-add-favorite"
                     @click="isFavorite ? removeFavorite() : addFavorite()" :disabled="state.isSubmitting">
               <span v-if="isFavorite">관심 상품 삭제</span>
               <span v-else>관심 상품 추가</span>

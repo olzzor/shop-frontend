@@ -20,7 +20,7 @@
     <div class="address-info">
       <div class="address-label-container">
         <label for="address1">주소</label>
-        <button class="btn-search-address" type="button" @click="searchAddress">주소 찾기</button>
+        <button type="button" class="btn-search-address" @click="searchAddress">주소 찾기</button>
       </div>
 
       <div class="zipcode-field" :class="{ 'input-error': state.errorMessage.zipCode }">
@@ -49,8 +49,8 @@
     </label>
 
     <div class="actions">
-      <button class="button btn-add" type="button" @click="addAddress">추가</button>
-      <button class="button btn-cancel" type="button" @click="close">취소</button>
+      <button type="button" class="button btn-add" @click="addAddress">추가</button>
+      <button type="button" class="button btn-cancel" @click="close">취소</button>
     </div>
   </div>
 

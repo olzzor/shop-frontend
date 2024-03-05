@@ -29,7 +29,7 @@
         </div>
         <div class="error-message" v-if="state.errorMessage.content">{{ state.errorMessage.content }}</div>
 
-        <button class="button btn-answer" type="button" @click="answer">답변하기</button>
+        <button type="button" class="button btn-answer" @click="answer" :disabled="state.isSubmitting">답변하기</button>
       </div>
     </div>
   </div>
@@ -51,6 +51,7 @@ export default {
     const tableHeaders = ['문의 날짜', '문의자 이름', '문의자 메일', '문의 사항', '문의 제목', '문의 내용', '문의 상태'];
 
     const state = reactive({
+      isSubmitting: false,
       contacts: [],
       form: {id: 0, title: "", content: "",},
       errorMessage: {},
@@ -75,16 +76,33 @@ export default {
     };
 
     const answer = () => {
+      state.isSubmitting = true;
+
       if (checkInput()) {
         const latestContact = state.contacts[state.contacts.length - 1];
         state.form.id = latestContact.id;
         state.form.title = "RE : " + latestContact.title;
 
         const args = JSON.parse(JSON.stringify(state.form));
+
         axios.post('/api/contact/answer', args).then(() => {
           window.alert('답변되었습니다.');
           router.push({name: 'Home'});
+
+        }).catch(error => {
+          if (error.response) {
+            const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+            window.alert(errorMessage);
+          } else {
+            window.alert('오류가 발생했습니다. 다시 시도해주세요.');
+          }
+
+        }).finally(() => {
+          state.isSubmitting = false;
         });
+
+      } else {
+        state.isSubmitting = false;
       }
     };
 

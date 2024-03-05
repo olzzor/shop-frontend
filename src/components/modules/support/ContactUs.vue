@@ -52,7 +52,7 @@
           *공휴일 제외
         </div>
 
-        <button class="button btn-inquiry" type="submit" :disabled="state.isSubmitting">문의하기</button>
+        <button type="submit" class="button btn-inquiry" :disabled="state.isSubmitting">문의하기</button>
       </form>
     </div>
   </div>

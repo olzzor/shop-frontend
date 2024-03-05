@@ -40,8 +40,8 @@
                   <router-link :to="{ name: 'ProductDetail', params: { id: r.productSizes[currentProductImageIndices[r.id] || 0].product.id }}">
                     <span class="product-image-container" :style="{backgroundImage: `url(${r.productSizes[currentProductImageIndices[r.id] || 0].product.productImages[0].fileUrl})`}"></span>
                   </router-link>
-                  <button class="btn-product-image-prev" v-if="r.productSizes.length > 1" @click="changeProductImage(r.id, -1)">◀</button>
-                  <button class="btn-product-image-next" v-if="r.productSizes.length > 1" @click="changeProductImage(r.id, 1)">▶</button>
+                  <button type="button" class="btn-product-image-prev" v-if="r.productSizes.length > 1" @click="changeProductImage(r.id, -1)">◀</button>
+                  <button type="button" class="btn-product-image-next" v-if="r.productSizes.length > 1" @click="changeProductImage(r.id, 1)">▶</button>
                 </div>
 
                 <div class="review-section">
@@ -64,8 +64,8 @@
                     <div v-for="(ri, idx) in displayReviewImages(r.id)" :key="idx">
                       <span class="review-image-container" :style="{backgroundImage: `url(${ri.fileUrl})`}"></span>
                     </div>
-                    <button class="btn-review-image-prev" v-if="r.reviewImages.length > 5" @click="changeReviewImage($event, r.id, -1)">◀</button>
-                    <button class="btn-review-image-next" v-if="r.reviewImages.length > 5" @click="changeReviewImage($event, r.id, 1)">▶</button>
+                    <button type="button" class="btn-review-image-prev" v-if="r.reviewImages.length > 5" @click="changeReviewImage($event, r.id, -1)">◀</button>
+                    <button type="button" class="btn-review-image-next" v-if="r.reviewImages.length > 5" @click="changeReviewImage($event, r.id, 1)">▶</button>
                   </div>
                 </div>
               </div>

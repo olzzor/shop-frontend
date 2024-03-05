@@ -7,8 +7,8 @@
 
     <div class="content">
       <div class="category-container">
-        <label for="product-category" class="input-label">카테고리</label>
-        <select id="product-category" class="select-field" v-model="state.form.product.categoryCode">
+        <label class="input-label" for="product-category">카테고리</label>
+        <select class="select-field" id="product-category" v-model="state.form.product.categoryCode">
           <option disabled value="">카테고리를 선택해주세요.</option>
           <option v-for="code in categoryCodes" :key="code" :value="code">
             {{ lib.getCategoryName(code) }}
@@ -17,61 +17,60 @@
       </div>
 
       <div class="name-container">
-        <label for="product-name" class="input-label">상품명</label>
-        <input type="text" id="product-name" class="input-field" v-model="state.form.product.name" />
+        <label class="input-label" for="product-name">상품명</label>
+        <input type="text" class="input-field" id="product-name" v-model="state.form.product.name" />
       </div>
 
       <div class="price-container">
-        <label for="product-price" class="input-label">가격</label>
+        <label class="input-label" for="product-price">가격</label>
         <div class="input-container">
-          <input type="number" step="1" min="0" id="product-price" class="input-field"
-                 v-model="state.form.product.price" placeholder="가격" />
+          <input type="number" step="1" min="0" class="input-field" id="product-price"
+                 placeholder="가격" v-model="state.form.product.price" />
           <div class="error-message" v-if="state.errorMessage.price">{{ state.errorMessage.price }}</div>
         </div>
       </div>
 
       <div class="discount-container">
-        <label for="product-discount" class="input-label">할인율</label>
+        <label class="input-label" for="product-discount">할인율</label>
         <div class="input-container">
-          <input type="number" min="0" max="99" id="product-discount" class="input-field"
-                 v-model="state.form.product.discountPer" placeholder="할인율" />
+          <input type="number" min="0" max="99" class="input-field" id="product-discount"
+                 placeholder="할인율" v-model="state.form.product.discountPer" />
           <div class="error-message" v-if="state.errorMessage.discountPer">{{ state.errorMessage.discountPer }}</div>
         </div>
       </div>
 
       <div class="size-container">
-        <label for="product-size" class="input-label">사이즈
+        <label class="input-label" for="product-size">사이즈
           <i class="bi bi-plus-square-fill" @click="addSizeInput"></i>
         </label>
 
         <div class="size-inputs-scrollable">
-          <div v-for="(size, index) in state.form.sizes" :key="index" class="size-input-container">
-            <input type="text" :id="'product-size-size' + index" class="input-field size-input"
-                   v-model="state.form.sizes[index].size" placeholder="상품 사이즈" />
-            <input type="number" step="1" min="0" :id="'product-size-quantity-' + index"
-                   class="input-field quantity-input" placeholder="재고 수량"
-                   v-model="state.form.sizes[index].quantity" />
+          <div class="size-input-container" v-for="(size, index) in state.form.sizes" :key="index" >
+            <input type="text" class="input-field size-input" :id="'product-size-size' + index"
+                   placeholder="상품 사이즈" v-model="state.form.sizes[index].size" />
+            <input type="number" step="1" min="0" class="input-field quantity-input" :id="'product-size-quantity-' + index"
+                   placeholder="재고 수량" v-model="state.form.sizes[index].quantity" />
             <i class="bi bi-dash-square-fill" @click="state.form.sizes.splice(index, 1)"></i>
           </div>
         </div>
       </div>
 
       <div class="detail-container">
-        <label for="product-detail" class="input-label">상세 설명</label>
+        <label class="input-label" for="product-detail">상세 설명</label>
         <textarea class="input-field" id="product-detail" placeholder="설명"
                   v-model="state.form.product.detail" @input="autoGrow"/>
       </div>
 
       <div class="images-container">
-        <label for="product-images" class="input-label">상품 이미지</label>
+        <label class="input-label" for="product-images">상품 이미지</label>
         <div class="image-box" v-for="(src, index) in images" :key="index">
           <img class="product-image" :src="src"/>
           <button type="button" class="btn-delete" @click="deleteImage(index)">X</button>
         </div>
         <div class="upload-box" @click="clickImageInput" @drop.prevent="dropImage" @dragover.prevent>
           <p>+</p>
-          <input type="file" id="product-images" multiple accept="image/*" ref="imageInput" @change="previewImage"
-                 style="display: none" />
+          <input type="file" id="product-images" multiple accept="image/*" ref="imageInput" style="display: none"
+                 @change="previewImage" />
         </div>
       </div>
     </div>

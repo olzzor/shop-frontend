@@ -2,7 +2,7 @@
   <div class="address-edit">
     <div class="title">
       <span>주소지 추가 및 변경</span>
-      <button class="btn-add-address" type="button" @click="state.showAddAddressModal = true">+ 추가</button>
+      <button type="button" class="btn-add-address" v-if="!state.isLoading" @click="state.showAddAddressModal = true">+ 추가</button>
     </div>
 
     <div class="content" v-if="state.addresses.length>0">
@@ -19,8 +19,8 @@
           </div>
 
           <div class="address-actions">
-            <button class="button btn-edit" @click="showEditAddressModal(a.id)">수정</button>
-            <button class="button btn-delete" @click="deleteAddress(a.id)">삭제</button>
+            <button type="button" class="button btn-edit" @click="showEditAddressModal(a.id)">수정</button>
+            <button type="button" class="button btn-delete" @click="deleteAddress(a.id)">삭제</button>
           </div>
         </li>
       </ul>
@@ -46,6 +46,7 @@ export default {
   components: {AddAddressModal, EditAddressModal},
   setup() {
     const state = reactive({
+      isLoading: true,
       addresses: [],
       showAddAddressModal: false,
       showEditAddressModal: false,
@@ -75,9 +76,22 @@ export default {
     };
 
     const load = () => {
+      state.isLoading = true;
+
       axios.get("/api/address/get").then(({data}) => {
         state.addresses = data;
         console.log(state.addresses);
+
+      }).catch(error => {
+        if (error.response) {
+          const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+          window.alert(errorMessage);
+        } else {
+          window.alert('오류가 발생했습니다. 다시 시도해주세요.');
+        }
+
+      }).finally(() => {
+        state.isLoading = false;
       });
     };
 
@@ -87,7 +101,7 @@ export default {
       state,
       load,
       showEditAddressModal,
-      deleteAddress, editAddress,
+      editAddress, deleteAddress,
     }
   }
 }

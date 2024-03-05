@@ -8,116 +8,122 @@
     margin-bottom: 20px;
   }
 
-  .grid {
-    display: flex;
-    flex-wrap: wrap;
+  .content {
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-inline: 15px;
+      gap: 0.1rem;
+      font-size: 0.9rem;
 
-    .item {
-      flex: 0 0 25%;
-      max-width: 25%;
-      padding: 15px;
+      button {
+        border: none;
+        background-color: transparent;
 
-      .product {
-        border: 1px solid rgba(169, 169, 169, .3);
-
-        .image-container {
-          display: block;
-          width: 100%;
-          aspect-ratio: 10 / 11;
-          background-size: cover;
-          background-position: center;
+        &:not(:disabled) .bi {
+          color: black;
         }
+      }
 
-        .detail-section {
-          flex: 1;
-          display: flex;
-          padding: 10px 15px;
-          justify-content: space-between;
+      span {
+        cursor: pointer;
+        color: gray;
+        margin: 0 2px;
 
-          .info-section {
-            flex: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-
-            .title-row {
-              display: flex;
-              align-items: center;
-              font-size: 0.75rem;
-              font-weight: bold;
-              max-width: 270px;
-
-              .discount-per {
-                display: inline;
-                white-space: nowrap;
-                align-items: center;
-                color: #dc3545;
-                margin-right: 0.2rem;
-              }
-
-              .name {
-                display: inline-block;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-              }
-            }
-
-            .pricing-row {
-              font-size: 0.85rem;
-
-              .price-container {
-                display: flex;
-                align-items: center;
-                gap: 0.25rem;
-
-                .original-price {
-                  color: #6c757d;
-
-                  &.sale {
-                    text-decoration: line-through;
-                  }
-                }
-
-                .discounted-price {
-                  color: #dc3545;
-                }
-              }
-            }
-          }
-
-          .action-buttons {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-          }
+        &.current-page {
+          color: black;
+          font-weight: bold;
         }
       }
     }
-  }
 
-  .pagination {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding-inline: 15px;
-    gap: 0.1rem;
-    font-size: 0.9rem;
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
 
-    button {
-      border: none;
-      background-color: transparent;
-    }
+      .item {
+        flex: 0 0 25%;
+        max-width: 25%;
+        padding: 15px;
 
-    span {
-      cursor: pointer;
-      color: gray;
-      margin: 0 2px;
+        .product {
+          border: 1px solid rgba(169, 169, 169, .3);
 
-      &.current-page {
-        color: black;
-        font-weight: bold;
+          .image-container {
+            display: block;
+            width: 100%;
+            aspect-ratio: 10 / 11;
+            background-size: cover;
+            background-position: center;
+          }
+
+          .detail-section {
+            flex: 1;
+            display: flex;
+            padding: 10px 15px;
+            justify-content: space-between;
+
+            .info-section {
+              flex: 2;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+
+              .title-row {
+                display: flex;
+                align-items: center;
+                font-size: 0.75rem;
+                font-weight: bold;
+                max-width: 270px;
+
+                .discount-per {
+                  display: inline;
+                  white-space: nowrap;
+                  align-items: center;
+                  color: #dc3545;
+                  margin-right: 0.2rem;
+                }
+
+                .name {
+                  display: inline-block;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+              }
+
+              .pricing-row {
+                font-size: 0.85rem;
+
+                .price-container {
+                  display: flex;
+                  align-items: center;
+                  gap: 0.25rem;
+
+                  .original-price {
+                    color: #6c757d;
+
+                    &.sale {
+                      text-decoration: line-through;
+                    }
+                  }
+
+                  .discounted-price {
+                    color: #dc3545;
+                  }
+                }
+              }
+            }
+
+            .action-buttons {
+              flex: 1;
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+            }
+          }
+        }
       }
     }
   }

@@ -8,13 +8,11 @@
     <div class="content">
       <!-- 구분 선택 -->
       <div class="type-container">
-        <label for="notice-type" class="input-label">구분</label>
+        <label class="input-label" for="notice-type">구분</label>
         <div class="select-container">
-          <select id="notice-type" class="select-field" v-model="state.form.notice.type">
+          <select class="select-field" id="notice-type" v-model="state.form.notice.type">
             <option value="" disabled>구분</option>
-            <option v-for="nt in noticeTypes" :key="nt" :value="nt">
-              {{ nt }}
-            </option>
+            <option v-for="nt in noticeTypes" :key="nt" :value="nt">{{ nt }}</option>
           </select>
           <div class="error-message" v-if="state.errorMessage.type">{{ state.errorMessage.type }}</div>
         </div>
@@ -22,32 +20,32 @@
 
       <!-- 메인이미지 업로드 -->
       <div class="main-image-container">
-        <label for="notice-main-image" class="input-label">메인 이미지</label>
+        <label class="input-label" for="notice-main-image">메인 이미지</label>
         <div class="input-container">
-          <input type="file" id="notice-main-image" class="file-input" accept="image/*" @change="handleMainImageUpload"/>
+          <input type="file" class="file-input" id="notice-main-image" accept="image/*" @change="handleMainImageUpload"/>
           <div class="error-message" v-if="state.errorMessage.mainImage">{{ state.errorMessage.mainImage }}</div>
         </div>
       </div>
 
       <!-- 제목 입력 -->
       <div class="title-container">
-        <label for="notice-title" class="input-label">제목</label>
+        <label class="input-label" for="notice-title" >제목</label>
         <div class="input-container">
-          <input type="text" id="notice-title" class="input-field" v-model="state.form.notice.title" placeholder="제목">
+          <input type="text" class="input-field" id="notice-title" v-model="state.form.notice.title" placeholder="제목">
           <div class="error-message" v-if="state.errorMessage.title">{{ state.errorMessage.title }}</div>
         </div>
       </div>
 
       <!-- 내용 입력 -->
       <div class="content-container">
-        <label for="notice-content" class="input-label">내용</label>
+        <label class="input-label" for="notice-content">내용</label>
         <ToastUIEditorComponent id="notice-content" v-model="editorContent" :uploadType="'notices'"/>
       </div>
 
       <!-- 상태 선택 -->
       <div class="status-container">
-        <label for="notice-status" class="input-label">상태</label>
-        <select id="notice-status" class="select-field" v-model="state.form.notice.status">
+        <label class="input-label" for="notice-status">상태</label>
+        <select class="select-field" id="notice-status" v-model="state.form.notice.status">
           <option value="" disabled>상태</option>
           <option v-for="ns in noticeStatuses" :key="ns" :value="ns">
             {{ lib.getNoticeStatusName(ns) }}
@@ -57,18 +55,17 @@
 
       <!-- 슬라이더 표시 유무 선택 및 이미지 업로드 -->
       <div class="show-in-slider-container">
-        <label for="notice-show-in-slider" class="input-label">슬라이더 표시</label>
+        <label class="input-label" for="notice-show-in-slider">슬라이더 표시</label>
         <div class="input-container">
           <!-- state.form.notice.isSliderImage 현재 값을 select 요소의 값에 바인딩 -->
           <!-- 선택된 값이 'true' 문자열인 경우 state.form.notice.isSliderImage true로 설정하고, 그렇지 않은 경우 false로 설정 -->
-          <select id="notice-show-in-slider" class="select-field"
-                  :value="state.form.notice.isSliderImage"
+          <select class="select-field" id="notice-show-in-slider" :value="state.form.notice.isSliderImage"
                   @change="state.form.notice.isSliderImage = ($event.target.value === 'true')">
             <option value="" disabled>슬라이더 표시</option>
             <option value=true>표시</option>
             <option value=false>비표시</option>
           </select>
-          <input type="file" id="notice-show-in-slider-image" class="file-input" accept="image/*"
+          <input type="file" class="file-input" id="notice-show-in-slider-image" accept="image/*"
                  @change="handleSliderImageUpload" :disabled="!state.form.notice.isSliderImage"/>
           <div class="error-message" v-if="state.errorMessage.sliderImage">{{ state.errorMessage.sliderImage }}</div>
         </div>
@@ -76,18 +73,17 @@
 
       <!-- 모달 표시 유무 선택 및 이미지 업로드 -->
       <div class="show-in-modal-container">
-        <label for="notice-show-in-modal" class="input-label">모달 표시</label>
+        <label class="input-label" for="notice-show-in-modal">모달 표시</label>
         <div class="input-container">
           <!-- state.form.notice.isModalImage 현재 값을 select 요소의 값에 바인딩 -->
           <!-- 선택된 값이 'true' 문자열인 경우 state.form.notice.isModalImage true로 설정하고, 그렇지 않은 경우 false로 설정 -->
-          <select id="notice-show-in-modal" class="select-field"
-                  :value="state.form.notice.isModalImage"
+          <select class="select-field" id="notice-show-in-modal" :value="state.form.notice.isModalImage"
                   @change="state.form.notice.isModalImage = ($event.target.value === 'true')">
             <option value="" disabled>모달 표시</option>
             <option value=true>표시</option>
             <option value=false>비표시</option>
           </select>
-          <input type="file" id="notice-show-in-modal-image" class="file-input" accept="image/*"
+          <input type="file" class="file-input" id="notice-show-in-modal-image" accept="image/*"
                  @change="handleModalImageUpload" :disabled="!state.form.notice.isModalImage"/>
           <div class="error-message" v-if="state.errorMessage.modalImage">{{ state.errorMessage.modalImage }}</div>
         </div>

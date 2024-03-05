@@ -104,7 +104,7 @@
             <div class="image">
               <div class="image-box" v-for="(src, index) in images" :key="index">
                 <img class="product-image" :src="src"/>
-                <button class="btn-delete-image" @click="deleteImage(index)">X</button>
+                <button type="button" class="btn-delete-image" @click="deleteImage(index)">X</button>
               </div>
               <div class="upload-box" @click="clickImageInput" @drop.prevent="dropImage" @dragover.prevent>
                 <p>+</p>

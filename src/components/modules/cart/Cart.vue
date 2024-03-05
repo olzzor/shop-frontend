@@ -98,9 +98,7 @@
         </div>
 
         <div class="actions">
-          <button class="button btn-checkout" type="button" @click="checkout"
-                  :disabled="state.cartProducts.length === 0">주문하기
-          </button>
+          <button type="button" class="button btn-checkout" @click="checkout" :disabled="state.cartProducts.length === 0">주문하기</button>
         </div>
       </div>
 

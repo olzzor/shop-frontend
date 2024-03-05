@@ -2,7 +2,7 @@
   <div class="frequently-asked-questions">
     <div class="title">
       <span>자주 묻는 질문</span>
-      <button class="btn-contact-us" type="button" @click="state.showContactUsModal = true">+ 1:1 문의하기</button>
+      <button type="button" class="btn-contact-us" @click="state.showContactUsModal = true">+ 1:1 문의하기</button>
     </div>
 
     <div class="content">

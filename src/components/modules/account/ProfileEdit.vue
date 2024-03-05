@@ -31,8 +31,8 @@
         <!--        </div>-->
         <!--        <div class="error-message" v-if="state.errorMessage.password">{{ state.errorMessage.password }}</div>-->
 
-        <button class="button btn-edit" type="submit" :disabled="state.isSubmitting">변경하기</button>
-        <button class="button btn-withdraw" type="button" @click="withdraw">탈퇴하기</button>
+        <button type="submit" class="button btn-edit" :disabled="state.isSubmitting">변경하기</button>
+        <button type="button" class="button btn-withdraw" @click="withdraw">탈퇴하기</button>
       </form>
     </div>
   </div>

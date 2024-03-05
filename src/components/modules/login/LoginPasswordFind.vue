@@ -12,7 +12,7 @@
 
         <div class="error-message" v-if="state.errorMessage.email">{{ state.errorMessage.email }}</div>
 
-        <button class="button btn-find-password" type="submit" :disabled="state.isSubmitting">전송</button>
+        <button type="submit" class="button btn-find-password" :disabled="state.isSubmitting">전송</button>
       </form>
     </div>
 

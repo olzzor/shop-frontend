@@ -12,7 +12,7 @@
       </div>
 
       <div class="action-buttons">
-        <button class="button btn-payment" type="button" @click="order" :disabled="state.isSubmitting">결제하기</button>
+        <button type="button" class="button btn-payment" @click="order" :disabled="state.isSubmitting">결제하기</button>
       </div>
     </div>
 
