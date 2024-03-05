@@ -72,11 +72,12 @@
 
         &.btn-edit {
           background: linear-gradient(to bottom, #3a3a3a, #000000);
-          color: rgb(255, 255, 255);
+          color: white;
         }
 
         &.btn-withdraw {
-          background-color: transparent; /* 배경색을 투명하게 설정 */
+          background-color: transparent;
+          color: black;
           text-decoration: underline; /* 텍스트에 밑줄 추가 */
           text-underline-offset: 0.15em; /* 밑줄 오프셋을 조정 */
           margin-block: 0;

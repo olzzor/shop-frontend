@@ -139,6 +139,8 @@
 
     .content {
       .pagination {
+        padding-inline: 10px;
+        gap: 0.05rem;
         font-size: 0.8rem;
         button {}
         span {}
@@ -190,6 +192,8 @@
 
     .content {
       .pagination {
+        padding-inline: 5px;
+        gap: 0.01rem;
         font-size: 0.8rem;
         button {}
         span {}
