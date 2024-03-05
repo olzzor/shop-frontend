@@ -28,7 +28,7 @@
 
       <div class="navbar-right">
         <!-- 관심 상품 -->
-        <router-link v-if="$store.state.account.id" to="/favorite">
+        <router-link v-if="$store.state.account.id" to="/favorite" @click="closeTooltips">
           <i :class="isFavoritePage ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
         </router-link>
         <router-link v-else to="/login" @click.prevent="setRedirectPathToLogin('/favorite')">
@@ -36,7 +36,7 @@
         </router-link>
 
         <!-- 장바구니 -->
-        <router-link v-if="$store.state.account.id" to="/cart">
+        <router-link v-if="$store.state.account.id" to="/cart" @click="closeTooltips">
           <i :class="isCartPage ? 'bi bi-bag-fill' : 'bi bi-bag'"></i>
         </router-link>
         <router-link v-else to="/login" @click.prevent="setRedirectPathToLogin('/cart')">
@@ -138,17 +138,24 @@ export default {
     let tooltipTimeout = null;
 
     const toggleSearchInput = () => {
+      closeTooltips();
       isSearchInputVisible.value = !isSearchInputVisible.value;
     };
 
     const toggleMenuTooltip = () => {
       if(!isDesktop()) {
+        if (showMyPageTooltip.value) {
+          closeTooltip('mypage');
+        }
         showMenuTooltip.value = !showMenuTooltip.value;
       }
     };
 
     const toggleMyPageTooltip = () => {
       if(!isDesktop()) {
+        if (showMenuTooltip.value) {
+          closeTooltip('menu');
+        }
         showMyPageTooltip.value = !showMyPageTooltip.value;
       }
     };
@@ -195,6 +202,11 @@ export default {
       }
     };
 
+    const closeTooltips = () => {
+      showMenuTooltip.value = false;
+      showMyPageTooltip.value = false;
+    };
+
     // 로그인 페이지로 리디렉션하기 전에 redirectPath 설정
     const setRedirectPathToLogin = (path) => {
       sessionStorage.setItem('redirectPath', path);
@@ -233,6 +245,7 @@ export default {
     };
 
     const resetHomePageState = () => {
+      closeTooltips();
       sessionStorage.removeItem('productPageState');
       sessionStorage.removeItem('scrollPosition');
     };
@@ -244,7 +257,7 @@ export default {
       showMenuTooltip, showMyPageTooltip,
       toggleSearchInput, toggleMenuTooltip, toggleMyPageTooltip,
       handleTooltipMouseEnter, handleTooltipMouseLeave, handleIconMouseLeave,
-      closeTooltip,
+      closeTooltip, closeTooltips,
       setRedirectPathToLogin, search, navigateTo, logout, resetHomePageState,
     };
   }
