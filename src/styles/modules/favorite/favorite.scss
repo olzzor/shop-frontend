@@ -151,18 +151,17 @@
         position: relative;
         display: flex;
         align-items: center;
+        justify-content: center;
+        text-align: center;
         font-weight: 700;
         font-size: .75rem;
         height: 3.2rem;
-        justify-content: center;
-        text-align: center;
-        transition-timing-function: cubic-bezier(.215, .61, .355, 1);
         width: 60%;
         margin-block: 10px;
         border-radius: 5px;
         border: none;
         background: linear-gradient(to bottom, #3a3a3a, #000000);
-        color: rgb(255, 255, 255);
+        color: white;
       }
     }
 

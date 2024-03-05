@@ -54,12 +54,11 @@
               position: relative;
               display: flex;
               align-items: center;
+              justify-content: center;
+              text-align: center;
               border-width: 0.0625rem;
               font-size: .75rem;
               width: 100px;
-              justify-content: center;
-              text-align: center;
-              transition-timing-function: cubic-bezier(.215, .61, .355, 1);
 
               &.btn-write-review {
                 background-color: black;

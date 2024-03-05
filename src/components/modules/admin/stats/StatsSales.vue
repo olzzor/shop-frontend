@@ -215,10 +215,9 @@ thead > tr:first-child {
   font-weight: 700;
   width: 150px;
   height: 30px;
-  background-color: rgb(0, 0, 0);
-  border-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-  transition-property: color, background-color;
+  background-color: black;
+  border-color: black;
+  color: white;
 }
 
 </style>

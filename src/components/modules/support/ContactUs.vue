@@ -233,12 +233,11 @@ export default {
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   font-size: .75rem;
   font-weight: 700;
   height: 3.2rem;
-  justify-content: center;
-  text-align: center;
-  transition-timing-function: cubic-bezier(.215, .61, .355, 1);
   width: 100%;
   margin-block: 5px;
   border-radius: 5px;
@@ -250,7 +249,6 @@ export default {
   background-color: black;
   border-color: black;
   color: white;
-  transition-property: color, background-color;
 }
 
 .input-error {

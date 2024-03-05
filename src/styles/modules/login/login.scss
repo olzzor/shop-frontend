@@ -109,12 +109,11 @@
       position: relative;
       display: flex;
       align-items: center;
+      justify-content: center;
+      text-align: center;
       font-size: .75rem;
       font-weight: 700;
       height: 3.2rem;
-      justify-content: center;
-      text-align: center;
-      transition-timing-function: cubic-bezier(.215, .61, .355, 1);
       width: 100%;
       margin-block: 5px;
       border-radius: 5px;
@@ -122,12 +121,12 @@
 
       &.btn-login {
         background: linear-gradient(to bottom, #3a3a3a, #000000);
-        color: rgb(255, 255, 255);
-        transition-property: color, background-color;
+        color: white;
       }
 
       &.btn-signup {
-        background-color: transparent; /* 배경색을 투명하게 설정 */
+        background-color: transparent;
+        color: black;
         text-decoration: underline; /* 텍스트에 밑줄 추가 */
         text-underline-offset: 0.15em; /* 밑줄 오프셋을 조정 */
         margin-block: 0;
@@ -136,6 +135,7 @@
       &.btn-login-google, &.btn-login-naver, &.btn-login-kakao, &.btn-login-facebook {
         box-shadow: 0 4px 2px -2px gray;
         background-color: #ECECEC;
+        color: black;
       }
     }
   }

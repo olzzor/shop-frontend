@@ -199,10 +199,9 @@
         height: 40px;
         width: 150px;
         margin: 5px auto;
-        border: none; /* 테두리 제거 */
+        border: none;
         background: linear-gradient(to bottom, #3a3a3a, #000000);
         color: rgb(255, 255, 255);
-        transition-property: color, background-color;
       }
     }
 
