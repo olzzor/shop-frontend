@@ -57,9 +57,13 @@
     }
 
     .input-label {
-      margin-right: 10px; /* 라벨과 입력 필드 사이의 간격 */
-      font-weight: bold; /* 라벨 텍스트를 굵게 표시 */
-      width: 100px; /* 라벨의 너비를 고정합니다. */
+      margin-right: 10px;
+      font-weight: bold;
+      width: 100px;
+
+      .required {
+        color: #dc3545;
+      }
     }
 
     .input-field, .select-field {

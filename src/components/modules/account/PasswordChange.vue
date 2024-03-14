@@ -36,9 +36,10 @@
 </template>
 
 <script>
-import {computed, reactive} from "vue";
+import {computed, onMounted, reactive} from "vue";
 import router from "@/scripts/router";
 import axiosInstance from "@/scripts/axiosInstance";
+import axios from "axios";
 
 export default {
   name: "ChangePassword",
@@ -110,6 +111,27 @@ export default {
         state.isSubmitting = false;
       }
     };
+
+    const load = () => {
+      // 사용자 계정의 인증 서비스 확인
+      axios.get('/api/user/check-local-user').then(({data}) => {
+        if (!data) {
+          window.alert('비밀번호 변경 기능은 로컬 계정 사용자만 이용할 수 있습니다.\n소셜 미디어 계정으로 로그인한 경우, 로컬 계정으로 전환하거나 새로운 로컬 계정을 생성해주세요.');
+          history.back();
+        }
+
+      }).catch(error => {
+        if (error.response) {
+          const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+          window.alert(errorMessage);
+        } else {
+          window.alert('오류가 발생했습니다. 다시 시도해주세요.');
+        }
+        history.back();
+      });
+    };
+
+    onMounted(load);
 
     return {
       state,

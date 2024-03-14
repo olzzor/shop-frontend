@@ -62,7 +62,7 @@
 import {reactive} from "vue";
 import router from "@/scripts/router";
 import axios from "axios";
-import lib from "../../../scripts/lib";
+import lib from "@/scripts/lib";
 
 export default {
   name: "ContactUs",
@@ -89,7 +89,7 @@ export default {
         state.errorMessage.inquirerName = "이름을 입력해주세요.";
         state.hasError = false;
       } else if (state.form.inquirerName.length > MAX_NAME_LENGTH) {
-        state.errorMessage.inquirerName = "이름은 20자 이하로 입력해주세요.";
+        state.errorMessage.inquirerName = `이름은 ${MAX_NAME_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
         result = false;
       }
 
@@ -110,7 +110,7 @@ export default {
         state.errorMessage.title = "제목을 입력해주세요.";
         result = false;
       } else if (state.form.title.length > MAX_TITLE_LENGTH) {
-        state.errorMessage.title = "제목은 100자 이하로 입력해주세요.";
+        state.errorMessage.title = `제목은 ${MAX_TITLE_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
         result = false;
       }
 
@@ -118,7 +118,7 @@ export default {
         state.errorMessage.content = "내용을 입력해주세요.";
         result = false;
       } else if (state.form.content.length > MAX_CONTENT_LENGTH) {
-        state.errorMessage.content = "내용은 5,000자 이하로 입력해주세요.";
+        state.errorMessage.content = `내용은 ${MAX_CONTENT_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
         result = false;
       }
 

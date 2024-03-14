@@ -54,10 +54,10 @@
 </template>
 
 <script>
-import {onMounted, reactive, ref} from "vue";
+import {computed, reactive, ref, watchEffect} from "vue";
 import axios from "axios";
 import lib from "@/scripts/lib";
-import {useStore} from "vuex";
+import store from "@/scripts/store";
 import {isMobile, isTablet} from "@/scripts/mixin";
 import SelectProductSize from "@/components/modules/favorite/SelectProductSizeModal.vue";
 
@@ -65,7 +65,7 @@ export default {
   name: 'RecentlyViewedProducts',
   components: {SelectProductSize},
   setup() {
-    const store = useStore();
+    const isLoggedIn = computed(() => store.getters.userId !== 0);
     const showSelectProductSizeModal = ref(false);
     const selectedProductId = ref(null);
     const state = reactive({
@@ -75,11 +75,11 @@ export default {
 
     const goToPage = (page) => {
       state.page.currentPage = page;
-      load();
+      getRecentlyViewedProducts();
     };
 
     const handleAddFavorite = (productId) => {
-      if (store.state.account.id) {
+      if (isLoggedIn.value) {
         selectedProductId.value = productId; // 선택한 제품 ID 설정
         showSelectProductSizeModal.value = true; // 사이즈 선택 모달 표시
 
@@ -88,8 +88,8 @@ export default {
       }
     };
 
-    const load = () => {
-      if (store.state.account.id) {
+    const getRecentlyViewedProducts = () => {
+      if (isLoggedIn.value) {
         axios.get("/api/recently-viewed-product/get-by-database?page=" + (state.page.currentPage - 1) + "&size=" + state.page.pageSize).then(({data}) => {
           state.recentlyViewed = data.recentlyViewedProducts;
           state.page.totalPages = data.totalPages;
@@ -115,7 +115,7 @@ export default {
       }
     };
 
-    onMounted(load);
+    watchEffect(getRecentlyViewedProducts);
 
     return {
       lib,

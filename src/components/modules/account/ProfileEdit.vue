@@ -63,9 +63,7 @@ export default {
     };
 
     const load = () => {
-      const id = store.state.account.id;
-
-      axios.get(`/api/user/${id}`).then(({data}) => {
+      axios.get(`/api/user/${store.getters.userId}`).then(({data}) => {
         state.form = data;
       })
     };
@@ -82,7 +80,7 @@ export default {
         state.errorMessage.name = "이름을 입력해주세요.";
         result = false;
       } else if (state.form.name.length > MAX_NAME_LENGTH) {
-        state.errorMessage.name = "이름은 20자 이하로 입력해주세요.";
+        state.errorMessage.name = `이름은 ${MAX_NAME_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
         result = false;
       }
 
@@ -130,6 +128,7 @@ export default {
           store.commit('setToken', 0);
           store.commit('setAccountId', 0);
           store.commit('setAccountRole', '');
+          store.commit('setAccountAuthProvider', '');
           router.push({name: 'Home'});
         });
       }

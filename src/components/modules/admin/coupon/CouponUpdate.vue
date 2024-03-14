@@ -326,7 +326,7 @@ export default {
         state.errorMessage.code = "코드를 입력해주세요.";
         result = false;
       } else if (state.form.code.length > MAX_CODE_LENGTH) {
-        state.errorMessage.code = "코드는 50자 이하로 입력해주세요.";
+        state.errorMessage.code = `코드는 ${MAX_CODE_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
         result = false;
       } else if (!CODE_PATTERN.test(state.form.code)) {
         state.errorMessage.code = "코드는 영문자, 숫자 및 언더바(_)로만 구성되어야 합니다.";
@@ -337,7 +337,7 @@ export default {
         state.errorMessage.name = "이름을 입력해주세요.";
         result = false;
       } else if (state.form.name.length > MAX_NAME_LENGTH) {
-        state.errorMessage.name = "이름은 50자 이하로 입력해주세요.";
+        state.errorMessage.name = `이름은 ${MAX_NAME_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
         result = false;
       }
 
@@ -345,7 +345,7 @@ export default {
         state.errorMessage.detail = "설명을 입력해주세요.";
         result = false;
       } else if (state.form.detail.length > MAX_DETAIL_LENGTH) {
-        state.errorMessage.detail = "설명은 2000자 이하로 입력해주세요.";
+        state.errorMessage.detail = `설명은 ${MAX_DETAIL_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
         result = false;
       }
 

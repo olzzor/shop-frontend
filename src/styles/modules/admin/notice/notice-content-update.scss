@@ -1,0 +1,39 @@
+.notice-content-update {
+  padding-inline: 30px;
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    p {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .btn-update {
+      border-width: 0.0625rem;
+      font-size: .75rem;
+      font-weight: 700;
+      width: 150px;
+      height: 30px;
+      background-color: black;
+      border-color: black;
+      color: white;
+    }
+  }
+
+  .content {
+    //font-size: 12px;
+
+    .content-container {
+      display: flex;
+      flex-direction: row;
+
+      #notice-content {
+        height: 800px;
+        width: 100%;
+      }
+    }
+  }
+}

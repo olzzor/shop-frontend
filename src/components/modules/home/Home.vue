@@ -47,44 +47,51 @@ export default {
       }
     };
 
-    watch(() => route.path, (newPath) => {
+    const getProducts = () => {
+      axios.get(`/api/product/all?page=0&size=${state.page.pageSize}&sort=regDate,desc`).then(({data}) => {
+        state.isSearched = false;
+        state.products = data.products;
+        state.page.totalPages = data.totalPages;
+      });
+    };
 
+    const getProductsByCategory = (categoryCode) => {
+      axios.get(`/api/product/category/${categoryCode}?page=0&size=${state.page.pageSize}&sort=regDate,desc`).then(({data}) => {
+        state.isSearched = false;
+        state.products = data.products;
+        state.page.totalPages = data.totalPages;
+      });
+    };
+
+    const getProductsByQuery = (searchQuery) => {
+      axios.get(`/api/product/search/${searchQuery}?page=0&size=${state.page.pageSize}&sort=regDate,desc`).then(({data}) => {
+        state.isSearched = true;
+        state.products = data.products;
+        state.page.totalPages = data.totalPages;
+      });
+    };
+
+    watch(() => route.path, (newPath) => {
       if (newPath === '/') { // 홈 페이지로 돌아왔을 때 상품 목록을 새로 로드
         state.page.currentPage = 1;
-
-        axios.get(`/api/product/all?page=0&size=${state.page.pageSize}&sort=regDate,desc`).then(({data}) => {
-          state.isSearched = false;
-          state.products = data.products;
-          state.page.totalPages = data.totalPages;
-        });
+        getProducts();
       }
     });
 
     watch(() => route.params.cat, (newCategoryCode) => {
-
-      if (newCategoryCode) {
+      if (newCategoryCode && !route.query.search) {
         state.page.currentPage = 1;
-
-        axios.get(`/api/product/category/${newCategoryCode}?page=0&size=${state.page.pageSize}&sort=regDate,desc`).then(({data}) => {
-          state.isSearched = false;
-          state.products = data.products;
-          state.page.totalPages = data.totalPages;
-        });
+        getProductsByCategory(newCategoryCode);
       }
-    });
+    }, { immediate: true });
 
     watch(() => route.query.search, (newSearchQuery) => {
 
       if (newSearchQuery) {
         state.page.currentPage = 1;
-
-        axios.get(`/api/product/search/${newSearchQuery}?page=0&size=${state.page.pageSize}&sort=regDate,desc`).then(({data}) => {
-          state.isSearched = true;
-          state.products = data.products;
-          state.page.totalPages = data.totalPages;
-        });
+        getProductsByQuery(newSearchQuery);
       }
-    });
+    }, { immediate: true });
 
     const load = () => {
       axios.get("/api/notice/show-in-modal").then(({data}) => {
@@ -92,11 +99,7 @@ export default {
       });
 
       // if (!route.params.cat && store.state.searchResults.length === 0) {
-      axios.get(`/api/product/all?page=0&size=${state.page.pageSize}&sort=regDate,desc`).then(({data}) => {
-        state.isSearched = false;
-        state.products = data.products;
-        state.page.totalPages = data.totalPages;
-      });
+      getProducts();
       // }
     };
 

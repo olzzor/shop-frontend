@@ -102,14 +102,14 @@
 </template>
 
 <script>
-import {onMounted, reactive, ref, watch} from "vue";
-import {useStore} from 'vuex';
+import {computed, onMounted, reactive, ref, watch} from "vue";
 import {useRoute} from "vue-router";
 import {isMobile} from "@/scripts/mixin";
 import axios from "axios";
 import lib from "@/scripts/lib";
 import price from "@/scripts/price";
 import router from "@/scripts/router";
+import store from "@/scripts/store";
 
 export default {
   name: "ProductDetail",
@@ -120,8 +120,8 @@ export default {
   },
   setup() {
     const route = useRoute();
-    const store = useStore();
     const productId = route.params.id;
+    const isLoggedIn = computed(() => store.getters.userId !== 0);
     const isFavorite = ref(false);
     const favoriteId = ref(0);
     const imageListRef = ref(null);
@@ -153,7 +153,7 @@ export default {
     };
 
     const addFavorite = () => {
-      if (store.state.account.id) {
+      if (isLoggedIn.value) {
         const productSizeId = state.selectedSizeId;
 
         if (productSizeId === 0) {
@@ -201,7 +201,7 @@ export default {
     const checkFavorite = () => {
       const productSizeId = state.selectedSizeId;
 
-      if (store.state.account.id && productSizeId !== 0) {
+      if (isLoggedIn.value && productSizeId !== 0) {
         axios.get(`/api/favorite/check/${productSizeId}`).then(({data}) => {
           isFavorite.value = data.favorite;
           favoriteId.value = isFavorite.value ? data.id : 0;
@@ -211,7 +211,7 @@ export default {
 
     const recordRecentlyViewedProduct = () => {
       // 유저 로그인 확인
-      if (store.state.account.id) {
+      if (isLoggedIn.value) {
         // 로그인 유저의 경우, DB에 선택 상품 기록
         axios.post(`/api/recently-viewed-product/record/${state.product.id}`).then((res) => {
           console.log('Recently viewed product recorded:', res.data);
@@ -285,8 +285,7 @@ export default {
     };
 
     const addToCart = (productSizeId) => {
-      if (store.state.account.id) {
-
+      if (isLoggedIn.value) {
         if (productSizeId === 0) {
           window.alert("사이즈를 선택해주세요.");
 
@@ -313,6 +312,7 @@ export default {
             state.isSubmitting = false;
           });
         }
+
       } else {
         window.alert('로그인이 필요합니다.');
       }

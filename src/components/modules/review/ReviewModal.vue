@@ -18,9 +18,11 @@
     </div>
 
     <div class="review-images" v-if="state.review.reviewImages && state.review.reviewImages.length">
-      <span class="image-container" :style="{backgroundImage: `url(${state.review.reviewImages[state.currentImageIndex].fileUrl})`}"></span>
-      <button class="btn-image-prev" v-if="state.review.reviewImages.length > 1" @click="changeImage(-1)">◀</button>
-      <button class="btn-image-next" v-if="state.review.reviewImages.length > 1" @click="changeImage(1)">▶</button>
+      <transition name="slide-fade" mode="out-in">
+        <span class="image-container" :style="{backgroundImage: `url(${state.review.reviewImages[state.currentImageIndex].fileUrl})`}"></span>
+      </transition>
+      <button type="button" class="btn-image-prev" v-if="state.review.reviewImages.length > 1" @click="changeImage(-1)">◀</button>
+      <button type="button" class="btn-image-next" v-if="state.review.reviewImages.length > 1" @click="changeImage(1)">▶</button>
     </div>
 
     <div class="footer">

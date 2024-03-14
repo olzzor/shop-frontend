@@ -9,13 +9,9 @@
 
         <!-- 상품 검색 -->
         <div class="search-container">
-          <!--          <input v-model="searchQuery" type="text" @keyup.enter="search" placeholder=" SEARCH FOR KEYWORDS">-->
-          <!--          <a href="#" @click.prevent="search">-->
-          <!--            <i class="bi bi-search"></i>-->
-          <!--          </a>-->
-
           <i class="bi bi-search" @click="toggleSearchInput"></i>
-          <input v-if="isSearchInputVisible" v-model="searchQuery" type="text" @keyup.enter="search" placeholder="SEARCH FOR KEYWORDS">
+          <input v-if="isSearchInputVisible" type="text" placeholder="SEARCH FOR KEYWORDS"
+                 v-model="searchQuery" @keyup.enter="search" />
         </div>
       </div>
 
@@ -28,7 +24,7 @@
 
       <div class="navbar-right">
         <!-- 관심 상품 -->
-        <router-link v-if="$store.state.account.id" to="/favorite" @click="closeTooltips">
+        <router-link v-if="isLoggedIn" to="/favorite" @click="closeTooltips">
           <i :class="isFavoritePage ? 'bi bi-heart-fill' : 'bi bi-heart'"></i>
         </router-link>
         <router-link v-else to="/login" @click.prevent="setRedirectPathToLogin('/favorite')">
@@ -36,7 +32,7 @@
         </router-link>
 
         <!-- 장바구니 -->
-        <router-link v-if="$store.state.account.id" to="/cart" @click="closeTooltips">
+        <router-link v-if="isLoggedIn" to="/cart" @click="closeTooltips">
           <i :class="isCartPage ? 'bi bi-bag-fill' : 'bi bi-bag'"></i>
         </router-link>
         <router-link v-else to="/login" @click.prevent="setRedirectPathToLogin('/cart')">
@@ -44,7 +40,7 @@
         </router-link>
 
         <!-- 내 계정 -->
-        <div v-if="$store.state.account.id" @click="toggleMyPageTooltip"
+        <div v-if="isLoggedIn" @click="toggleMyPageTooltip"
              @mouseenter="showMyPageTooltip = true" @mouseleave="handleIconMouseLeave('mypage')">
           <i :class="isMyPage ? 'bi bi-person-fill' : 'bi bi-person'"></i>
         </div>
@@ -108,7 +104,7 @@
       <router-link to="/member/contact-history" class="link" @click="closeTooltip('mypage')">문의 내역</router-link>
       <router-link to="/member/edit-address" class="link" @click="closeTooltip('mypage')">주소지 변경</router-link>
       <router-link to="/member/edit-profile" class="link" @click="closeTooltip('mypage')">회원정보 변경</router-link>
-      <router-link to="/member/change-password" class="link" @click="closeTooltip('mypage')">비밀번호 변경</router-link>
+      <router-link v-if="isLocalUser" to="/member/change-password" class="link" @click="closeTooltip('mypage')">비밀번호 변경</router-link>
       <router-link to="#" class="link" @click="logout">로그아웃</router-link>
     </div>
   </header>
@@ -126,6 +122,8 @@ export default {
   name: 'Header',
   setup() {
     const route = useRoute();
+    const isLoggedIn = computed(() => store.getters.userId !== 0);
+    const isLocalUser = computed(() => store.getters.userAuthProvider === 'local');
     const isFavoritePage = computed(() => route.path === '/favorite');
     const isCartPage = computed(() => route.path === '/cart');
     const isMyPage = computed(() => route.path.startsWith('/member'));
@@ -142,6 +140,7 @@ export default {
       isSearchInputVisible.value = !isSearchInputVisible.value;
     };
 
+    // TODO 툴팁 중복 표시 문제
     const toggleMenuTooltip = () => {
       if(!isDesktop()) {
         closeTooltip('mypage');
@@ -149,6 +148,7 @@ export default {
       }
     };
 
+    // TODO 툴팁 중복 표시 문제
     const toggleMyPageTooltip = () => {
       if(!isDesktop()) {
         closeTooltip('menu');
@@ -238,6 +238,7 @@ export default {
         axios.post("/api/user/logout").then(() => {
           store.commit('setAccountId', 0);
           store.commit('setAccountRole', '');
+          store.commit('setAccountAuthProvider', '');
           router.push({name: 'Home'});
         });
       }
@@ -251,7 +252,7 @@ export default {
 
     return {
       isMobile,
-      isFavoritePage, isCartPage, isMyPage,
+      isLoggedIn, isLocalUser, isFavoritePage, isCartPage, isMyPage,
       selectedContent, searchQuery, isSearchInputVisible,
       showMenuTooltip, showMyPageTooltip,
       toggleSearchInput, toggleMenuTooltip, toggleMyPageTooltip,

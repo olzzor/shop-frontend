@@ -1,4 +1,4 @@
-.notice-list {
+.review-list {
   padding-inline: 30px;
 
   .title {
@@ -26,18 +26,12 @@
           width: 6rem;
           justify-content: center;
           text-align: center;
-          margin-right: 5px;
 
-          &.btn-search-full {
+          &.btn-search-full, &.btn-search-condition {
             border: none;
             background-color: black;
             color: white;
-          }
-
-          &.btn-search-condition {
-            border: none;
-            background-color: black;
-            color: white;
+            margin-right: 5px;
           }
 
           &.btn-clear-search {
@@ -58,13 +52,13 @@
 
           &.btn-csv-download {
             width: 10rem;
-            margin-right: 5px;
             border: 1px solid black;
             background-color: white;
             color: black;
+            margin-right: 5px;
           }
 
-          &.btn-change-notices {
+          &.btn-change-reviews {
             width: 6rem;
             border: none;
             background-color: black;
@@ -92,70 +86,72 @@
 
           &:nth-child(2) {
             th {
-              position: relative; // 부모 요소에 대한 위치를 지정
+              position: relative;
             }
           }
         }
 
-        .input-field, .select-field {
-          width: 100%;
-          height: 25px;
-
-          &.date {
-            width: 70px;
+        th {
+          .input-field, .select-field {
+            width: 100%;
+            height: 25px;
           }
-        }
 
-        .sort-icons {
-          position: absolute;
-          right: 0;
-          top: 50%;
-          transform: translateY(-50%);
-        }
+          .date-cell {
+            display: flex;
 
-        .date-cell {
-          display: flex;
+            .date {
+              width: 70px;
+            }
+          }
+
+          .sort-icons {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+          }
         }
       }
 
       tbody {
         tr {
-          .column-check-box, .column-no {
-            width: 25px;
-            text-align: center;
-          }
-
-          .column-notice-type {
-            width: 130px;
-          }
-
-          .column-notice-main-image, .column-notice-slider-image, .column-notice-modal-image {
-            width: 110px;
-          }
-
-          .column-notice-status, .column-notice-modal, .column-notice-slider {
-            width: 100px;
-          }
-
-          .column-notice-reg-date, .column-notice-mod-date {
-            width: 170px;
-          }
-
-          .notice-main-image, .notice-slider-image, .notice-modal-image {
-            flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
-            margin: 5px 10px;
-
-            img {
-              width: 100px;
-              height: 100px;
-              object-fit: cover; /* 이미지가 부모 요소를 완전히 채우도록 설정 (이미지 비율 유지) */
-              object-position: center center; /* 이미지를 가운데로 정렬 (이미지가 부모 요소를 넘칠 경우, 넘치는 부분은 중앙을 기준으로 hidden) */
+          td {
+            &.column-check-box, &.column-no {
+              width: 25px;
+              text-align: center; /* 수평 가운데 정렬 */
             }
-          }
+            &.column-review-rating {
+              width: 70px;
+            }
+            &.column-review-title {
+              width: 200px;
+              max-width: 200px;
+            }
+            &.column-review-content {
+              width: 400px;
+              max-width: 400px;
+            }
+            &.column-review-user-email {
+              width: 200px;
+            }
+            &.column-review-activate-flag {
+              width: 120px;
+            }
+            &.column-review-reg-date, &.column-review-mod-date {
+              width: 170px;
+            }
 
-          .select-field {
-            width: 100%;
-            height: 25px;
+            &.ellipsis {
+              white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정 */
+              overflow: hidden; /* 내용이 요소 크기를 넘어가면 내용을 숨김 */
+              text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
+            }
+
+            .select-field {
+              width: 100%;
+              height: 25px;
+            }
           }
         }
       }
@@ -173,4 +169,5 @@
     }
   }
 }
+
 

@@ -12,8 +12,7 @@
           <div id="review-rating" class="stars">
             <i v-for="(star, index) in 5" :key="index"
                :class="index < selectedStars ? 'bi bi-star-fill filled-star-black' : 'bi bi-star-fill filled-star-gray'"
-               @mouseover="highlightStars(index)"
-               @mouseout="resetStars"
+               @mouseover="highlightStars(index)" @mouseout="resetStars"
                @click="selectStars(index)">
             </i>
           </div>

@@ -56,7 +56,7 @@
 <script>
 import {computed, ref, watch} from "vue";
 import lib from "@/scripts/lib";
-import {useStore} from 'vuex';
+import store from "@/scripts/store";
 import {useRoute} from "vue-router";
 import SelectProductSize from "@/components/modules/favorite/SelectProductSizeModal.vue";
 
@@ -65,18 +65,14 @@ export default {
   components: {SelectProductSize},
   props: {products: Array, isSearched: Boolean},
   setup(props) {
-    watch(() => props.isSearched, (newValue, oldValue) => {
-      console.log('isSearched changed from', oldValue, 'to', newValue);
-    });
-
-    const store = useStore();
     const route = useRoute();
+    const isLoggedIn = computed(() => store.getters.userId !== 0);
     const isHomePage = computed(() => route.path === '/');
     const showSelectProductSizeModal = ref(false);
     const selectedProductId = ref(null);
 
     const handleAddFavorite = (productId) => {
-      if (store.state.account.id) {
+      if (isLoggedIn.value) {
         selectedProductId.value = productId; // 선택한 제품 ID 설정
         showSelectProductSizeModal.value = true; // 사이즈 선택 모달 표시
 
@@ -84,6 +80,10 @@ export default {
         window.alert('로그인이 필요합니다.');
       }
     };
+
+    watch(() => props.isSearched, (newValue, oldValue) => {
+      console.log('isSearched changed from', oldValue, 'to', newValue);
+    });
 
     return {
       lib,

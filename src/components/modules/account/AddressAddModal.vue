@@ -102,6 +102,7 @@ export default {
     const checkInput = () => {
       let result = true;
 
+      const MAX_NAME_LENGTH = 10;
       const PHONE_PATTERN = /^(01[016789]{1}|02|0[3-9]{1}[0-9]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
 
       state.errorMessage = {};
@@ -109,8 +110,8 @@ export default {
       if (state.form.name.length === 0) {
         state.errorMessage.name = "이름을 입력해주세요.";
         result = false;
-      } else if (state.form.name.length > 10) {
-        state.errorMessage.name = "이름은 10자 이하 입력해주세요.";
+      } else if (state.form.name.length > MAX_NAME_LENGTH) {
+        state.errorMessage.name = `이름은 ${MAX_NAME_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
         result = false;
       }
 

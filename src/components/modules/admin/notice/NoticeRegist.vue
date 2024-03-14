@@ -2,13 +2,13 @@
   <div class="notice-regist">
     <div class="title">
       <p>공지 등록</p>
-      <button type="button" class="btn-create-notice" @click="createNotice">등록하기</button>
+      <button type="button" class="btn-create-notice" @click="createNotice" :disabled="state.isSubmitting">등록하기</button>
     </div>
 
     <div class="content">
       <!-- 구분 선택 -->
       <div class="type-container">
-        <label class="input-label" for="notice-type">구분</label>
+        <label class="input-label" for="notice-type">구분 <span class="required">*</span></label>
         <div class="select-container">
           <select class="select-field" id="notice-type" v-model="state.form.notice.type">
             <option value="" disabled>구분</option>
@@ -20,7 +20,7 @@
 
       <!-- 메인이미지 업로드 -->
       <div class="main-image-container">
-        <label class="input-label" for="notice-main-image">메인 이미지</label>
+        <label class="input-label" for="notice-main-image">메인 이미지 <span class="required">*</span></label>
         <div class="input-container">
           <input type="file" class="file-input" id="notice-main-image" accept="image/*" @change="handleMainImageUpload"/>
           <div class="error-message" v-if="state.errorMessage.mainImage">{{ state.errorMessage.mainImage }}</div>
@@ -29,7 +29,7 @@
 
       <!-- 제목 입력 -->
       <div class="title-container">
-        <label class="input-label" for="notice-title" >제목</label>
+        <label class="input-label" for="notice-title" >제목 <span class="required">*</span></label>
         <div class="input-container">
           <input type="text" class="input-field" id="notice-title" v-model="state.form.notice.title" placeholder="제목">
           <div class="error-message" v-if="state.errorMessage.title">{{ state.errorMessage.title }}</div>
@@ -38,13 +38,14 @@
 
       <!-- 내용 입력 -->
       <div class="content-container">
-        <label class="input-label" for="notice-content">내용</label>
-        <ToastUIEditorComponent id="notice-content" v-model="editorContent" :uploadType="'notices'"/>
+        <label class="input-label" for="notice-content">내용 <span class="required">*</span></label>
+<!--        <ToastUIEditor id="notice-content" v-model="editorContent" :uploadType="'notices'"/>-->
+        <CKEditor id="notice-content" v-model="editorContent" :uploadType="'notices'"/>
       </div>
 
       <!-- 상태 선택 -->
       <div class="status-container">
-        <label class="input-label" for="notice-status">상태</label>
+        <label class="input-label" for="notice-status">상태 <span class="required">*</span></label>
         <select class="select-field" id="notice-status" v-model="state.form.notice.status">
           <option value="" disabled>상태</option>
           <option v-for="ns in noticeStatuses" :key="ns" :value="ns">
@@ -96,18 +97,19 @@
 import {reactive, ref} from "vue";
 import axios from "axios";
 import lib from "@/scripts/lib";
-// import CKEditorComponent from "@/components/shared/CKEditorComponent.vue";
-import ToastUIEditorComponent from "@/components/common/ToastUIEditor.vue";
+import CKEditor from "@/components/common/CKEditor.vue";
+// import ToastUIEditor from "@/components/common/ToastUIEditor.vue";
 
 export default {
   name: "NoticeRegist",
-  components: {ToastUIEditorComponent},
+  components: {CKEditor},
   setup() {
     const noticeTypes = lib.noticeTypes;
     const noticeStatuses = lib.noticeStatuses;
 
     const editorContent = ref('');
     const state = reactive({
+      isSubmitting: false,
       form: {
         notice: {type: '', title: '', content: '', status: 'INACTIVE', isSliderImage: false, isModalImage: false},
         files: {mainImage: null, sliderImage: null, modalImage: null},
@@ -145,6 +147,7 @@ export default {
 
       if (state.form.notice.type.length === 0) {
         state.errorMessage.type = "구분을 선택해주세요.";
+        result = false;
       }
 
       if (!state.form.files.mainImage) {
@@ -156,7 +159,7 @@ export default {
         state.errorMessage.title = "제목을 입력해주세요.";
         result = false;
       } else if (state.form.notice.title.length > MAX_TITLE_LENGTH) {
-        state.errorMessage.title = "제목은 100자 이하로 입력해주세요.";
+        state.errorMessage.title = `제목은 ${MAX_TITLE_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
         result = false;
       }
 
@@ -174,6 +177,8 @@ export default {
     };
     
     const createNotice = async () => {
+      state.isSubmitting = true;
+
       if (checkInput()) {
         state.form.notice.content = editorContent.value;
 
@@ -200,7 +205,13 @@ export default {
           } else {
             window.alert('오류가 발생했습니다. 다시 시도해주세요.');
           }
+
+        }).finally(() => {
+          state.isSubmitting = false;
         });
+
+      } else {
+        state.isSubmitting = false;
       }
     };
 

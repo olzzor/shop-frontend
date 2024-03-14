@@ -219,5 +219,4 @@ thead > tr:first-child {
   border-color: black;
   color: white;
 }
-
 </style>

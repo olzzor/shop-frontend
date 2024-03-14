@@ -15,7 +15,7 @@
       </div>
 
       <div class="notice-content">
-        <div v-html="lib.convertMarkdownToHtml(state.notice.content)"></div>
+        <div class="ck-content" v-html="lib.convertMarkdownToHtml(state.notice.content)"></div>
       </div>
     </div>
   </div>
@@ -29,6 +29,7 @@ import lib from "@/scripts/lib";
 
 export default {
   name: "NoticeDetail",
+  components: {},
   data() {
     return {
       notice: Object
@@ -89,4 +90,5 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/styles/modules/notice/notice-detail";
+@import "@/assets/content-styles.css";
 </style>

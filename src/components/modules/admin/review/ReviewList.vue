@@ -13,22 +13,22 @@
 
       <div class="button-area">
         <div class="search-btn">
-          <button type="button" class="btn-search-full" @click="searchFull">
+          <button type="button" class="button btn-search-full" @click="searchFull">
             전체 검색
           </button>
-          <button type="button" class="btn-search-condition" @click="searchCondition">
+          <button type="button" class="button btn-search-condition" @click="searchCondition">
             조건 검색
           </button>
-          <button type="button" class="btn-clear-search" @click="clearSearchConditions">
+          <button type="button" class="button btn-clear-search" @click="clearSearchConditions">
             조건 초기화
           </button>
         </div>
 
         <div class="download-btn">
-          <button type="button" class="btn-csv-download" @click="downloadCSV">
+          <button type="button" class="button btn-csv-download" @click="downloadCSV">
             CSV 다운로드 <i class="bi bi-download"></i>
           </button>
-          <button type="button" class="btn-change-reviews" @click="changeReviews">
+          <button type="button" class="button btn-change-reviews" @click="changeReviews">
             변경하기
           </button>
         </div>
@@ -36,102 +36,106 @@
 
       <table>
         <thead>
-        <tr>
-          <th colspan="2">조건</th>
-          <th>
-            <select class="select-field" v-model="state.form.rating">
-              <option value="">전체</option>
-              <option v-for="num in 5" :value="num" :key="num">{{ num }}</option>
-            </select>
-          </th>
+          <tr>
+            <th colspan="2">조건</th>
+            <th>
+              <select class="select-field" v-model="state.form.rating">
+                <option value="">전체</option>
+                <option v-for="num in 5" :value="num" :key="num">{{ num }}</option>
+              </select>
+            </th>
 
-          <th><input type="text" class="input-field" v-model="state.form.title"></th>
-          <th><input type="text" class="input-field" v-model="state.form.content"></th>
-          <th><input type="text" class="input-field" v-model="state.form.userEmail"></th>
+            <th><input type="text" class="input-field" v-model="state.form.title"></th>
+            <th><input type="text" class="input-field" v-model="state.form.content"></th>
+            <th><input type="text" class="input-field" v-model="state.form.userEmail"></th>
 
-          <th>
-            <select class="select-field" v-model="state.form.activateFlag">
-              <option value="">전체</option>
-              <option value="true">◯</option>
-              <option value="false">✕</option>
-            </select>
-          </th>
+            <th>
+              <select class="select-field" v-model="state.form.activateFlag">
+                <option value="">전체</option>
+                <option value="true">◯</option>
+                <option value="false">✕</option>
+              </select>
+            </th>
 
-          <th>
-            <div class="date-cell">
-              <input type="date" class="input-field date" v-model="state.form.startRegDate">
-              &nbsp;~&nbsp;
-              <input type="date" class="input-field date" v-model="state.form.endRegDate">
-            </div>
-          </th>
+            <th>
+              <div class="date-cell">
+                <input type="date" class="input-field date" v-model="state.form.startRegDate">
+                &nbsp;~&nbsp;
+                <input type="date" class="input-field date" v-model="state.form.endRegDate">
+              </div>
+            </th>
 
-          <th>
-            <div class="date-cell">
-              <input type="date" class="input-field date" v-model="state.form.startModDate">
-              &nbsp;~&nbsp;
-              <input type="date" class="input-field date" v-model="state.form.endModDate">
-            </div>
-          </th>
-        </tr>
+            <th>
+              <div class="date-cell">
+                <input type="date" class="input-field date" v-model="state.form.startModDate">
+                &nbsp;~&nbsp;
+                <input type="date" class="input-field date" v-model="state.form.endModDate">
+              </div>
+            </th>
+          </tr>
 
-        <tr>
-          <th><input type="checkbox" v-model="state.selectedAll" @change="toggleSelectAll" /></th>
-          <th>번호</th>
-          <th v-for="(tableHeader, index) in tableHeaders" :key="index">
-            {{ tableHeader }}
-            <div class="sort-icons">
-              <span @click="sort(sortKey[index])">▲</span>
-              <span @click="sort(sortKey[index], true)">▼</span>
-            </div>
-          </th>
-        </tr>
+          <tr>
+            <th><input type="checkbox" v-model="state.selectedAll" @change="toggleSelectAll" /></th>
+            <th>번호</th>
+            <th v-for="(tableHeader, index) in tableHeaders" :key="index">
+              {{ tableHeader }}
+              <div class="sort-icons">
+                <span @click="sort(sortKey[index])">▲</span>
+                <span @click="sort(sortKey[index], true)">▼</span>
+              </div>
+            </th>
+          </tr>
         </thead>
 
         <tbody>
-        <tr v-for="(review, idx) in state.reviews" :key="idx">
-          <td class="column-check-box">
-            <input type="checkbox" :checked="state.isModify[idx].value" @change="modify(idx)" />
-          </td>
+          <tr v-for="(review, idx) in state.reviews" :key="idx">
+            <td class="column-check-box">
+              <input type="checkbox" :checked="state.isModify[idx].value" @change="modify(idx)" />
+            </td>
 
-          <td class="column-no">
-            <router-link :to="{ name: 'AdminReviewUpdate', params: { id: review.id }}">
-              {{ idx + 1 }}
-            </router-link>
-          </td>
+            <td class="column-no">
+              <router-link :to="{ name: 'AdminReviewUpdate', params: { id: review.id }}">
+                {{ idx + 1 }}
+              </router-link>
+            </td>
 
-          <td class="column-review-rating">{{ review.rating }}</td>
-          <td class="column-review-title ellipsis">{{ review.title }}</td>
-          <td class="column-review-content ellipsis">{{ review.content }}</td>
-          <td class="column-review-user-email">{{ review.userEmail }}</td>
+            <td class="column-review-rating">{{ review.rating }}</td>
+            <td class="column-review-title ellipsis">{{ review.title }}</td>
+            <td class="column-review-content ellipsis">{{ review.content }}</td>
+            <td class="column-review-user-email">{{ review.userEmail }}</td>
 
-          <td class="column-review-activate-flag">
-            <select class="select-field" v-model="review.activateFlag" :disabled="!state.isModify[idx].value">
-              <option value="true">○</option>
-              <option value="false">☓</option>
-            </select>
-          </td>
+            <td class="column-review-activate-flag">
+              <select class="select-field" v-model="review.activateFlag" :disabled="!state.isModify[idx].value">
+                <option value="true">○</option>
+                <option value="false">☓</option>
+              </select>
+            </td>
 
-          <td class="column-review-reg-date">
-            {{ lib.getFormattedDate(review.regDate, 'YYYY-MM-DD HH:mm:ss') }}
-          </td>
-          <td class="column-review-mod-date">
-            {{ lib.getFormattedDate(review.modDate, 'YYYY-MM-DD HH:mm:ss') }}
-          </td>
-        </tr>
+            <td class="column-review-reg-date">
+              {{ lib.getFormattedDate(review.regDate, 'YYYY-MM-DD HH:mm:ss') }}
+            </td>
+            <td class="column-review-mod-date">
+              {{ lib.getFormattedDate(review.modDate, 'YYYY-MM-DD HH:mm:ss') }}
+            </td>
+          </tr>
         </tbody>
       </table>
-    </div>
 
-    <div class="pagination">
-      <button @click="goToPage(1)" :disabled="state.page.currentPage === 1"><i class="bi bi-chevron-double-left"></i>
-      </button>
-      <button @click="goToPage(state.page.currentPage - 1)" :disabled="state.page.currentPage === 1"><i
-          class="bi bi-chevron-left"></i></button>
-      <span>{{ state.page.currentPage }} / {{ state.page.totalPages }}</span>
-      <button @click="goToPage(state.page.currentPage + 1)"
-              :disabled="state.page.currentPage === state.page.totalPages"><i class="bi bi-chevron-right"></i></button>
-      <button @click="goToPage(state.page.totalPages)" :disabled="state.page.currentPage === state.page.totalPages"><i
-          class="bi bi-chevron-double-right"></i></button>
+      <div class="pagination">
+        <button @click="goToPage(1)" :disabled="state.page.currentPage === 1">
+          <i class="bi bi-chevron-double-left"></i>
+        </button>
+        <button @click="goToPage(state.page.currentPage - 1)" :disabled="state.page.currentPage === 1">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <span>{{ state.page.currentPage }} / {{ state.page.totalPages }}</span>
+        <button @click="goToPage(state.page.currentPage + 1)" :disabled="state.page.currentPage === state.page.totalPages">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+        <button @click="goToPage(state.page.totalPages)" :disabled="state.page.currentPage === state.page.totalPages">
+          <i class="bi bi-chevron-double-right"></i>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -325,162 +329,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.review-list {
-  padding-inline: 30px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.content {
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-}
-
-.column-check-box, .column-no {
-  width: 25px;
-  text-align: center; /* 수평 가운데 정렬 */
-}
-.column-review-rating {
-  width: 70px;
-}
-.column-review-title {
-  width: 200px;
-  max-width: 200px;
-}
-.column-review-content {
-  width: 400px;
-  max-width: 400px;
-}
-.column-review-user-email {
-  width: 200px;
-}
-.column-review-activate-flag {
-  width: 120px;
-}
-.column-review-reg-date, .column-review-mod-date {
-  width: 170px;
-}
-
-table {
-  border: 1px solid #e3e3e3;
-  width: 100%;
-  border-collapse: collapse;
-}
-table th, table td {
-  border: 1px solid #e3e3e3;
-  padding-inline: 5px;
-}
-thead > tr:first-child {
-  background-color: #e3e3e3;
-}
-th {
-  position: relative;
-}
-
-.input-field, .select-field {
-  width: 100%;
-  height: 25px;
-}
-
-.ellipsis {
-  white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정 */
-  overflow: hidden; /* 내용이 요소 크기를 넘어가면 내용을 숨김 */
-  text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
-}
-
-.date {
-  width: 70px;
-}
-.date-cell {
-  display: flex;
-}
-
-.sort-icons {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.button-area {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-.btn-search-full {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: none;
-  background-color: black;
-  color: white;
-}
-.btn-search-condition {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: none;
-  background-color: black;
-  color: white;
-}
-.btn-clear-search {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-.btn-csv-download {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 10rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-.btn-change-reviews {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.pagination {
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
-}
-.pagination button {
-  border: none;
-  background-color: transparent;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/admin/review/review-list";
 </style>

@@ -17,6 +17,7 @@ export default function useSocialLogin() {
         axios.post(apiPath, bodyData).then(({data}) => {
             store.commit('setAccountId', data.id);
             store.commit('setAccountRole', data.role);
+            store.commit('setAccountAuthProvider', data.authProvider);
 
             syncLocalStorageWithDB();
             window.alert('로그인하였습니다.');

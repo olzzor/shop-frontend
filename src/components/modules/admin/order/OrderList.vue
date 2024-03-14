@@ -5,10 +5,10 @@
     <div class="content">
       <p>
         <span>
-        <i class="bi bi-emoji-smile"></i> 변경 방법: 변경하고자 하는 대상의 체크 박스 선택
-          <i class="bi bi-arrow-right"></i> 변경 내용 입력
-          <i class="bi bi-arrow-right"></i> '변경하기' 버튼 클릭<br>
-        <i class="bi bi-emoji-smile"></i> 주문자 이메일과 주문 상태를 제외한 항목의 변경은 주문 번호 링크를 클릭하여, 상세 페이지로 이동한 후에 변경해주세요.<br>
+          <i class="bi bi-emoji-smile"></i> 변경 방법: 변경하고자 하는 대상의 체크 박스 선택
+            <i class="bi bi-arrow-right"></i> 변경 내용 입력
+            <i class="bi bi-arrow-right"></i> '변경하기' 버튼 클릭<br>
+          <i class="bi bi-emoji-smile"></i> 주문자 이메일과 주문 상태를 제외한 항목의 변경은 주문 번호 링크를 클릭하여, 상세 페이지로 이동한 후에 변경해주세요.<br>
         </span>
         <span style="color: #dc3545;">
           <i class="bi bi-emoji-frown"></i>체크박스 해제시 변경 내용은 반영되지 않습니다.
@@ -17,101 +17,101 @@
 
       <div class="button-area">
         <div class="search-btn">
-          <button type="button" class="btn-search-full" @click="searchFull">
+          <button type="button" class="button btn-search-full" @click="searchFull">
             전체 검색
           </button>
-          <button type="button" class="btn-search-condition" @click="searchCondition">
+          <button type="button" class="button btn-search-condition" @click="searchCondition">
             조건 검색
           </button>
-          <button type="button" class="btn-clear-search" @click="clearSearchConditions">
+          <button type="button" class="button btn-clear-search" @click="clearSearchConditions">
             조건 초기화
           </button>
         </div>
 
         <div class="download-btn">
-          <button type="button" class="btn-csv-download" @click="downloadCSV">
+          <button type="button" class="button btn-csv-download" @click="downloadCSV">
             CSV 다운로드 <i class="bi bi-download"></i>
           </button>
-          <button type="button" class="btn-change-orders" @click="changeOrders">변경하기</button>
+          <button type="button" class="button btn-change-orders" @click="changeOrders">변경하기</button>
         </div>
       </div>
 
       <table>
         <thead>
-        <tr>
-          <th colspan="2">조건</th>
-          <th><input type="text" class="input-field" v-model="state.form.orderNumber"></th>
-          <th><input type="text" class="input-field" v-model="state.form.buyerEmail"></th>
-          <th><input type="text" class="input-field" v-model="state.form.paymentMethod"></th>
-          <th><input type="text" class="input-field" v-model="state.form.paymentAmount"></th>
-          <th><input type="text" class="input-field" v-model="state.form.orderProduct"></th>
-          <th>
-            <select class="select-field" v-model="state.form.orderStatus">
-              <option value="">전체</option>
-              <option v-for="status in orderStatuses" :key="status" :value="status">{{
-                  lib.getOrderStatusName(status)
-                }}
-              </option>
-            </select>
-          </th>
-          <th>
-            <div class="date-cell">
-              <input type="date" class="input-field date" v-model="state.form.startOrderDate">
-              &nbsp;~&nbsp;
-              <input type="date" class="input-field date" v-model="state.form.endOrderDate">
-            </div>
-          </th>
-        </tr>
+          <tr>
+            <th colspan="2">조건</th>
+            <th><input type="text" class="input-field" v-model="state.form.orderNumber"></th>
+            <th><input type="text" class="input-field" v-model="state.form.buyerEmail"></th>
+            <th><input type="text" class="input-field" v-model="state.form.paymentMethod"></th>
+            <th><input type="text" class="input-field" v-model="state.form.paymentAmount"></th>
+            <th><input type="text" class="input-field" v-model="state.form.orderProduct"></th>
+            <th>
+              <select class="select-field" v-model="state.form.orderStatus">
+                <option value="">전체</option>
+                <option v-for="status in orderStatuses" :key="status" :value="status">{{
+                    lib.getOrderStatusName(status)
+                  }}
+                </option>
+              </select>
+            </th>
+            <th>
+              <div class="date-cell">
+                <input type="date" class="input-field date" v-model="state.form.startOrderDate">
+                &nbsp;~&nbsp;
+                <input type="date" class="input-field date" v-model="state.form.endOrderDate">
+              </div>
+            </th>
+          </tr>
 
-        <tr>
-          <th><input type="checkbox" v-model="state.selectedAll" @change="toggleSelectAll"/></th>
-          <th>번호</th>
-          <th v-for="(tableHeader, index) in tableHeaders" :key="index">
-            {{ tableHeader }}
-            <div class="sort-icons">
-              <span @click="sort(sortKey[index])">▲</span>
-              <span @click="sort(sortKey[index], true)">▼</span>
-            </div>
-          </th>
-        </tr>
+          <tr>
+            <th><input type="checkbox" v-model="state.selectedAll" @change="toggleSelectAll"/></th>
+            <th>번호</th>
+            <th v-for="(tableHeader, index) in tableHeaders" :key="index">
+              {{ tableHeader }}
+              <div class="sort-icons">
+                <span @click="sort(sortKey[index])">▲</span>
+                <span @click="sort(sortKey[index], true)">▼</span>
+              </div>
+            </th>
+          </tr>
         </thead>
 
         <tbody>
-        <tr v-for="(order, idx) in state.orders" :key="idx">
-          <td class="column-check-box">
-            <input type="checkbox" :checked="state.isModify[idx].value" @change="modify(idx)"/>
-          </td>
+          <tr v-for="(order, idx) in state.orders" :key="idx">
+            <td class="column-check-box">
+              <input type="checkbox" :checked="state.isModify[idx].value" @change="modify(idx)"/>
+            </td>
 
-          <td class="column-no">
-            <router-link :to="{ name: 'AdminOrderUpdate', params: { id: order.id }}">
-              {{idx + 1 }}
-            </router-link>
-          </td>
+            <td class="column-no">
+              <router-link :to="{ name: 'AdminOrderUpdate', params: { id: order.id }}">
+                {{idx + 1 }}
+              </router-link>
+            </td>
 
-          <td class="column-order-number">{{ order.orderNumber }}</td>
+            <td class="column-order-number">{{ order.orderNumber }}</td>
 
-          <td class="column-order-buyer-email">
-            <input type="text" class="input-field" id="buyer-email"
-                   v-model="order.buyerEmail" :disabled="!state.isModify[idx].value"/>
-          </td>
+            <td class="column-order-buyer-email">
+              <input type="text" class="input-field" id="buyer-email"
+                     v-model="order.buyerEmail" :disabled="!state.isModify[idx].value"/>
+            </td>
 
-          <td class="column-order-payment-method">{{ order.paymentMethod }} {{ order.cardNumber }}</td>
-          <td class="column-order-payment-amount">{{ lib.getFormattedNumber(order.paymentAmount) }}원</td>
+            <td class="column-order-payment-method">{{ order.paymentMethod }} {{ order.cardNumber }}</td>
+            <td class="column-order-payment-amount">{{ lib.getFormattedNumber(order.paymentAmount) }}원</td>
 
-          <td class="column-order-product-name">
-            {{ getOrderProducts(order.orderDetails) }}
-          </td>
+            <td class="column-order-product-name">
+              {{ getOrderProducts(order.orderDetails) }}
+            </td>
 
-          <td class="column-order-status">
-            <select class="select-field" v-model="order.status" :disabled="!state.isModify[idx].value">
-              <option v-for="status in orderStatuses" :key="status" :value="status">
-                {{ lib.getOrderStatusName(status) }}
-              </option>
-            </select>
-          </td>
+            <td class="column-order-status">
+              <select class="select-field" v-model="order.status" :disabled="!state.isModify[idx].value">
+                <option v-for="status in orderStatuses" :key="status" :value="status">
+                  {{ lib.getOrderStatusName(status) }}
+                </option>
+              </select>
+            </td>
 
-          <td class="column-order-reg-date">{{ lib.getFormattedDate(order.regDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
-        </tr>
+            <td class="column-order-reg-date">{{ lib.getFormattedDate(order.regDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
+          </tr>
         </tbody>
       </table>
 
@@ -338,153 +338,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.order-list {
-  padding-inline: 30px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.content {
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-}
-
-table {
-  border: 1px solid #e3e3e3;
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table th, table td {
-  border: 1px solid #e3e3e3;
-  padding-inline: 5px;
-}
-
-thead > tr:first-child {
-  background-color: #e3e3e3;
-}
-
-thead tr:nth-child(2) th {
-  position: relative; /* 부모 요소에 대한 위치를 지정 */
-}
-
-.column-check-box, .column-no {
-  width: 25px;
-  text-align: center; /* 수평 가운데 정렬 */
-}
-
-.input-field, .select-field {
-  width: 100%;
-  height: 25px;
-}
-
-.input-field.date {
-  width: 75px;
-}
-
-.date-cell {
-  display: flex;
-}
-
-.sort-icons {
-  display: inline-block;
-  position: absolute; /* 절대 위치 지정 */
-  right: 5px; /* 셀의 오른쪽에 위치 */
-  top: 50%; /* 셀의 중앙에 위치 */
-  transform: translateY(-50%); /* Y축을 기준으로 50%만큼 이동하여 완전히 중앙에 위치 */
-}
-
-.button-area {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.btn-search-full {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.btn-search-condition {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.btn-clear-search {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-
-.btn-csv-download {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 10rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-
-.btn-change-orders {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.submit-btn {
-  width: 20rem;
-  color: black;
-  border-color: black;
-}
-
-.pagination {
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
-}
-
-.pagination button {
-  border: none;
-  background-color: transparent;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/admin/order/order-list";
 </style>

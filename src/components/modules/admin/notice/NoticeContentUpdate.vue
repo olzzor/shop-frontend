@@ -7,7 +7,8 @@
 
     <div class="content">
       <div class="content-container">
-        <ToastUIEditorComponent id="notice-content" v-model="editorContent" :uploadType="'notices'"/>
+<!--        <ToastUIEditor id="notice-content" v-model="editorContent" :uploadType="'notices'"/>-->
+        <CKEditor id="notice-content" v-model="editorContent" :uploadType="'notices'"/>
       </div>
     </div>
   </div>
@@ -18,11 +19,12 @@ import {onMounted, reactive, ref} from "vue";
 import {useRoute} from "vue-router";
 import axios from "axios";
 import lib from "@/scripts/lib";
-import ToastUIEditorComponent from "@/components/common/ToastUIEditor.vue";
+// import ToastUIEditor from "@/components/common/ToastUIEditor.vue";
+import CKEditor from "@/components/common/CKEditor.vue";
 
 export default {
   name: "NoticeContentUpdate",
-  components: {ToastUIEditorComponent},
+  components: {CKEditor},
   data() {
     return {
       notice: Object
@@ -65,45 +67,6 @@ export default {
 }
 </script>
 
-<!--<style>-->
-<style scoped>
-.notice-content-update {
-  padding-inline: 30px;
-}
-
-.title {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.title p {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.content {
-  font-size: 12px;
-}
-
-.content-container {
-  display: flex;
-  flex-direction: row;
-}
-
-#notice-content {
-  height: 800px;
-  width: 100%;
-}
-
-.btn-update {
-  border-width: 0.0625rem;
-  font-size: .75rem;
-  font-weight: 700;
-  width: 150px;
-  height: 30px;
-  background-color: black;
-  border-color: black;
-  color: white;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/admin/notice/notice-content-update";
 </style>

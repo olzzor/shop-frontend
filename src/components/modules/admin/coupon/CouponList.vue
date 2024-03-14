@@ -13,22 +13,22 @@
 
       <div class="button-area">
         <div class="search-btn">
-          <button type="button" class="btn-search-full" @click="searchFull">
+          <button type="button" class="button btn-search-full" @click="searchFull">
             전체 검색
           </button>
-          <button type="button" class="btn-search-condition" @click="searchCondition">
+          <button type="button" class="button btn-search-condition" @click="searchCondition">
             조건 검색
           </button>
-          <button type="button" class="btn-clear-search" @click="clearSearchConditions">
+          <button type="button" class="button btn-clear-search" @click="clearSearchConditions">
             조건 초기화
           </button>
         </div>
 
         <div class="download-btn">
-          <button type="button" class="btn-csv-download" @click="downloadCSV">
+          <button type="button" class="button btn-csv-download" @click="downloadCSV">
             CSV 다운로드 <i class="bi bi-download"></i>
           </button>
-          <button type="button" class="btn-change-coupons" @click="changeCoupons">
+          <button type="button" class="button btn-change-coupons" @click="changeCoupons">
             변경하기
           </button>
         </div>
@@ -36,151 +36,154 @@
 
       <table>
         <thead>
-        <tr>
-          <th colspan="2">조건</th>
+          <tr>
+            <th colspan="2">조건</th>
 
-          <th>
-            <select class="select-field" v-model="state.form.type">
-              <option value="">전체</option>
-              <option v-for="ct in couponTypes" :key="ct" :value="ct">
-                {{ lib.getCouponTypeName(ct) }}
-              </option>
-            </select>
-          </th>
+            <th>
+              <select class="select-field" v-model="state.form.type">
+                <option value="">전체</option>
+                <option v-for="ct in couponTypes" :key="ct" :value="ct">
+                  {{ lib.getCouponTypeName(ct) }}
+                </option>
+              </select>
+            </th>
 
-          <th><input type="text" class="input-field" v-model="state.form.code"></th>
-          <th><input type="text" class="input-field" v-model="state.form.name"></th>
-          <th><input type="text" class="input-field" v-model="state.form.minAmount"></th>
+            <th><input type="text" class="input-field" v-model="state.form.code"></th>
+            <th><input type="text" class="input-field" v-model="state.form.name"></th>
+            <th><input type="text" class="input-field" v-model="state.form.minAmount"></th>
 
-          <th>
-            <select class="select-field" v-model="state.form.discountType">
-              <option value="">전체</option>
-              <option v-for="dt in discountTypes" :key="dt" :value="dt">
-                {{ lib.getDiscountTypeName(dt) }}
-              </option>
-            </select>
-          </th>
+            <th>
+              <select class="select-field" v-model="state.form.discountType">
+                <option value="">전체</option>
+                <option v-for="dt in discountTypes" :key="dt" :value="dt">
+                  {{ lib.getDiscountTypeName(dt) }}
+                </option>
+              </select>
+            </th>
 
-          <th>
-            <input type="text" class="input-field" v-model="state.form.discountValue"/>
-          </th>
-          <th>
-            <input type="text" class="input-field" v-model="state.form.targets" disabled/>
-          </th>
+            <th>
+              <input type="text" class="input-field" v-model="state.form.discountValue"/>
+            </th>
+            <th>
+              <input type="text" class="input-field" v-model="state.form.targets" disabled/>
+            </th>
 
-          <th>
-            <div class="date-cell">
-              <input type="date" class="input-field date" v-model="state.form.startStartValidDate"/>
-              &nbsp;~&nbsp;
-              <input type="date" class="input-field date" v-model="state.form.endStartValidDate"/>
-            </div>
-          </th>
+            <th>
+              <div class="date-cell">
+                <input type="date" class="input-field date" v-model="state.form.startStartValidDate"/>
+                &nbsp;~&nbsp;
+                <input type="date" class="input-field date" v-model="state.form.endStartValidDate"/>
+              </div>
+            </th>
 
-          <th>
-            <div class="date-cell">
-              <input type="date" class="input-field date" v-model="state.form.startEndValidDate"/>
-              &nbsp;~&nbsp;
-              <input type="date" class="input-field date" v-model="state.form.endEndValidDate"/>
-            </div>
-          </th>
+            <th>
+              <div class="date-cell">
+                <input type="date" class="input-field date" v-model="state.form.startEndValidDate"/>
+                &nbsp;~&nbsp;
+                <input type="date" class="input-field date" v-model="state.form.endEndValidDate"/>
+              </div>
+            </th>
 
-          <th>
-            <select class="select-field" v-model="state.form.status">
-              <option value="">전체</option>
-              <option v-for="cs in couponStatuses" :key="cs" :value="cs">
-                {{ lib.getCouponStatusName(cs) }}
-              </option>
-            </select>
-          </th>
-        </tr>
+            <th>
+              <select class="select-field" v-model="state.form.status">
+                <option value="">전체</option>
+                <option v-for="cs in couponStatuses" :key="cs" :value="cs">
+                  {{ lib.getCouponStatusName(cs) }}
+                </option>
+              </select>
+            </th>
+          </tr>
 
-        <tr>
-          <th><input type="checkbox" v-model="state.selectedAll" @change="toggleSelectAll" /></th>
-          <th>번호</th>
-          <th v-for="(tableHeader, index) in tableHeaders" :key="index">
-            {{ tableHeader }}
-            <div class="sort-icons">
-              <span @click="sort(sortKey[index])">▲</span>
-              <span @click="sort(sortKey[index], true)">▼</span>
-            </div>
-          </th>
-        </tr>
+          <tr>
+            <th><input type="checkbox" v-model="state.selectedAll" @change="toggleSelectAll" /></th>
+            <th>번호</th>
+            <th v-for="(tableHeader, index) in tableHeaders" :key="index">
+              {{ tableHeader }}
+              <div class="sort-icons">
+                <span @click="sort(sortKey[index])">▲</span>
+                <span @click="sort(sortKey[index], true)">▼</span>
+              </div>
+            </th>
+          </tr>
         </thead>
 
         <tbody>
-        <tr v-for="(coupon, idx) in state.coupons" :key="idx">
-          <td>
-            <input type="checkbox" :checked="state.isModify[idx].value" @change="modify(idx)" />
-          </td>
+          <tr v-for="(coupon, idx) in state.coupons" :key="idx">
+            <td>
+              <input type="checkbox" :checked="state.isModify[idx].value" @change="modify(idx)" />
+            </td>
 
-          <td>
-            <router-link :to="{ name: 'CouponUpdate', params: { id: coupon.id }}">
-              {{ idx + 1 }}
-            </router-link>
-          </td>
+            <td>
+              <router-link :to="{ name: 'AdminCouponUpdate', params: { id: coupon.id }}">
+                {{ idx + 1 }}
+              </router-link>
+            </td>
 
-          <td class="column-coupon-type">
-            <select class="select-field" v-model="coupon.type" :disabled="!state.isModify[idx].value">
-              <option v-for="ct in couponTypes" :key="ct" :value="ct">
-                {{ lib.getCouponTypeName(ct) }}
-              </option>
-            </select>
-          </td>
+            <td class="column-coupon-type">
+              <select class="select-field" v-model="coupon.type" :disabled="!state.isModify[idx].value">
+                <option v-for="ct in couponTypes" :key="ct" :value="ct">
+                  {{ lib.getCouponTypeName(ct) }}
+                </option>
+              </select>
+            </td>
 
-          <td class="column-coupon-code">
-            <input type="text" class="input-field" id="coupon-code"
-                   v-model="coupon.code" :disabled="!state.isModify[idx].value">
-          </td>
+            <td class="column-coupon-code">
+              <input type="text" class="input-field" id="coupon-code"
+                     v-model="coupon.code" :disabled="!state.isModify[idx].value">
+            </td>
 
-          <td class="column-coupon-name">
-            <input type="text" class="input-field" id="coupon-name"
-                   v-model="coupon.name" :disabled="!state.isModify[idx].value">
-          </td>
+            <td class="column-coupon-name">
+              <input type="text" class="input-field" id="coupon-name"
+                     v-model="coupon.name" :disabled="!state.isModify[idx].value">
+            </td>
 
-          <td class="column-coupon-min-amount">{{ lib.getFormattedNumber(coupon.minAmount) }} 원</td>
-          <td class="column-coupon-discount-type">{{ lib.getDiscountTypeName(coupon.discountType) }}</td>
+            <td class="column-coupon-min-amount">{{ lib.getFormattedNumber(coupon.minAmount) }} 원</td>
+            <td class="column-coupon-discount-type">{{ lib.getDiscountTypeName(coupon.discountType) }}</td>
 
-          <td class="column-coupon-discount-value">
-            <span v-if="coupon.discountType === 'AMOUNT_DISCOUNT'">{{ lib.getFormattedNumber(coupon.discountValue) }} 원</span>
-            <span v-else>{{ coupon.discountValue }} %</span>
-          </td>
+            <td class="column-coupon-discount-value">
+              <span v-if="coupon.discountType === 'AMOUNT_DISCOUNT'">{{ lib.getFormattedNumber(coupon.discountValue) }} 원</span>
+              <span v-else>{{ coupon.discountValue }} %</span>
+            </td>
 
-          <td class="column-coupon-targets">
-            {{ getTargetUserEmails(coupon.users) }}<br>
-            {{ getTargetCategoryNames(coupon.categories) }}<br>
-            {{ getTargetProductNames(coupon.products) }}
-          </td>
+            <td class="column-coupon-targets">
+              {{ getTargetUserEmails(coupon.users) }}<br>
+              {{ getTargetCategoryNames(coupon.categories) }}<br>
+              {{ getTargetProductNames(coupon.products) }}
+            </td>
 
-          <td class="column-coupon-start-valid-date">
-            {{ lib.getFormattedDate(coupon.startValidDate, 'YYYY-MM-DD HH:mm:ss') }}
-          </td>
+            <td class="column-coupon-start-valid-date">
+              {{ lib.getFormattedDate(coupon.startValidDate, 'YYYY-MM-DD HH:mm:ss') }}
+            </td>
 
-          <td class="column-coupon-end-valid-date">
-            {{ lib.getFormattedDate(coupon.endValidDate, 'YYYY-MM-DD HH:mm:ss') }}
-          </td>
+            <td class="column-coupon-end-valid-date">
+              {{ lib.getFormattedDate(coupon.endValidDate, 'YYYY-MM-DD HH:mm:ss') }}
+            </td>
 
-          <td class="column-coupon-status">
-            <select class="select-field" v-model="coupon.status" :disabled="!state.isModify[idx].value">
-              <option v-for="cs in couponStatuses" :key="cs" :value="cs">
-                {{ lib.getCouponStatusName(cs) }}
-              </option>
-            </select>
-          </td>
-        </tr>
+            <td class="column-coupon-status">
+              <select class="select-field" v-model="coupon.status" :disabled="!state.isModify[idx].value">
+                <option v-for="cs in couponStatuses" :key="cs" :value="cs">
+                  {{ lib.getCouponStatusName(cs) }}
+                </option>
+              </select>
+            </td>
+          </tr>
         </tbody>
       </table>
 
       <div class="pagination">
-        <button @click="goToPage(1)" :disabled="state.page.currentPage === 1"><i class="bi bi-chevron-double-left"></i>
+        <button @click="goToPage(1)" :disabled="state.page.currentPage === 1">
+          <i class="bi bi-chevron-double-left"></i>
         </button>
-        <button @click="goToPage(state.page.currentPage - 1)" :disabled="state.page.currentPage === 1"><i
-            class="bi bi-chevron-left"></i></button>
+        <button @click="goToPage(state.page.currentPage - 1)" :disabled="state.page.currentPage === 1">
+          <i class="bi bi-chevron-left"></i>
+        </button>
         <span>{{ state.page.currentPage }} / {{ state.page.totalPages }}</span>
-        <button @click="goToPage(state.page.currentPage + 1)"
-                :disabled="state.page.currentPage === state.page.totalPages"><i class="bi bi-chevron-right"></i>
+        <button @click="goToPage(state.page.currentPage + 1)" :disabled="state.page.currentPage === state.page.totalPages">
+          <i class="bi bi-chevron-right"></i>
         </button>
-        <button @click="goToPage(state.page.totalPages)" :disabled="state.page.currentPage === state.page.totalPages"><i
-            class="bi bi-chevron-double-right"></i></button>
+        <button @click="goToPage(state.page.totalPages)" :disabled="state.page.currentPage === state.page.totalPages">
+          <i class="bi bi-chevron-double-right"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -406,163 +409,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.coupon-list {
-  padding-inline: 30px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.content {
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-}
-
-table {
-  border: 1px solid #e3e3e3;
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table th, table td {
-  border: 1px solid #e3e3e3;
-  padding-inline: 5px;
-}
-
-thead > tr:first-child {
-  background-color: #e3e3e3;
-}
-
-thead tr:nth-child(2) th {
-  position: relative; /* 부모 요소에 대한 위치를 지정 */
-}
-
-.column-coupon-type {
-  width: 120px;
-}
-.column-coupon-code {
-  width: 200px;
-}
-.column-coupon-name {
-  width: 200px;
-}
-.column-coupon-min-amount {
-  width: 120px;
-}
-.column-coupon-discount-type {
-  width: 100px;
-}
-.column-coupon-discount-value {
-  width: 120px;
-}
-.column-coupon-targets {
-  width: 300px;
-}
-.column-coupon-status {
-  width: 120px;
-}
-
-.input-field, .select-field {
-  width: 100%;
-  height: 25px;
-}
-
-.date {
-  width: 70px;
-}
-
-.date-cell {
-  display: flex;
-}
-
-.sort-icons {
-//display: inline-block; position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-}
-
-.button-area {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.btn-search-full {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.btn-search-condition {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.btn-clear-search {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-
-.btn-csv-download {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 10rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-
-.btn-change-coupons {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.pagination {
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
-}
-
-.pagination button {
-  border: none;
-  background-color: transparent;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/admin/coupon/coupon-list";
 </style>

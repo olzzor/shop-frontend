@@ -217,7 +217,7 @@ export default {
         state.errorMessage.title = "제목을 입력해주세요.";
         result = false;
       } else if (state.form.notice.title.length > MAX_TITLE_LENGTH) {
-        state.errorMessage.title = "제목은 100자 이하로 입력해주세요.";
+        state.errorMessage.title = `제목은 ${MAX_TITLE_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
         result = false;
       }
 

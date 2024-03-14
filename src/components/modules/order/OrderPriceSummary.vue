@@ -32,7 +32,7 @@ import store from "@/scripts/store";
 export default {
   name: "PriceSummary",
   setup(props, { emit }) {
-    const cartProducts = computed(() => store.state.cartProducts);
+    const cartProducts = computed(() => store.getters.cartProducts);
 
     const totalProductAmount = computed(() => {
       let totalProductAmount = 0;

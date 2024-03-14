@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="shipment-list">
     <div class="title">배송 내역</div>
 
     <div class="content">
@@ -13,22 +13,22 @@
 
       <div class="button-area">
         <div class="search-btn">
-          <button type="button" class="btn-search-condition" @click="searchCondition">
+          <button type="button" class="button btn-search-condition" @click="searchCondition">
             조건 검색
           </button>
-          <button type="button" class="btn-search-full" @click="searchFull">
+          <button type="button" class="button btn-search-full" @click="searchFull">
             전체 검색
           </button>
-          <button type="button" class="btn-clear-search" @click="clearSearchConditions">
+          <button type="button" class="button btn-clear-search" @click="clearSearchConditions">
             조건 초기화
           </button>
         </div>
 
         <div class="download-btn">
-          <button type="button" class="btn-csv-download" @click="downloadCSV">
+          <button type="button" class="button btn-csv-download" @click="downloadCSV">
             CSV 다운로드 <i class="bi bi-download"></i>
           </button>
-          <button type="button" class="btn-change-shipments" @click="changeShipments">
+          <button type="button" class="button btn-change-shipments" @click="changeShipments">
             변경하기
           </button>
         </div>
@@ -36,128 +36,131 @@
 
       <table>
         <thead>
-        <tr>
-          <th colspan="2">조건</th>
-          <th>
-            <select class="select-field" v-model="state.form.courierCompany">
-              <option value="">전체</option>
-              <option v-for="cc in courierCompanies" :key="cc" :value="cc">
-                {{ lib.getCourierCompanyName(cc) }}
-              </option>
-            </select>
-          </th>
-          <th><input type="text" class="input-field" v-model="state.form.trackingNumber"></th>
-          <th>
-            <select class="select-field" v-model="state.form.shipmentStatus">
-              <option value="">전체</option>
-              <option v-for="s in shipmentStatuses" :key="s" :value="s">
-                {{ lib.getShipmentStatusName(s) }}
-              </option>
-            </select>
-          </th>
-          <th><input type="text" class="input-field" v-model="state.form.recipientName"></th>
-          <th><input type="text" class="input-field" v-model="state.form.recipientPhone"></th>
-          <th><input type="text" class="input-field" v-model="state.form.shippingAddress"></th>
-          <th><input type="text" class="input-field" v-model="state.form.orderNumber"></th>
-          <th><input type="text" class="input-field" v-model="state.form.orderProduct"></th>
-          <th>
-            <div class="date-cell">
-              <input type="date" class="input-field date" v-model="state.form.startRegDate">
-              &nbsp;~&nbsp;
-              <input type="date" class="input-field date" v-model="state.form.endRegDate">
-            </div>
-          </th>
-          <th>
-            <div class="date-cell">
-              <input type="date" class="input-field date" v-model="state.form.startModDate">
-              &nbsp;~&nbsp;
-              <input type="date" class="input-field date" v-model="state.form.endModDate">
-            </div>
-          </th>
-        </tr>
-        <tr>
-          <th><input type="checkbox" v-model="state.selectedAll" @change="toggleSelectAll"/></th>
-          <th>번호</th>
-          <th v-for="(tableHeader, index) in tableHeaders" :key="index">
-            {{ tableHeader }}
-            <div class="sort-icons">
-              <span @click="sort(sortKey[index])">▲</span>
-              <span @click="sort(sortKey[index], true)">▼</span>
-            </div>
-          </th>
-        </tr>
+          <tr>
+            <th colspan="2">조건</th>
+            <th>
+              <select class="select-field" v-model="state.form.courierCompany">
+                <option value="">전체</option>
+                <option v-for="cc in courierCompanies" :key="cc" :value="cc">
+                  {{ lib.getCourierCompanyName(cc) }}
+                </option>
+              </select>
+            </th>
+            <th><input type="text" class="input-field" v-model="state.form.trackingNumber"></th>
+            <th>
+              <select class="select-field" v-model="state.form.shipmentStatus">
+                <option value="">전체</option>
+                <option v-for="s in shipmentStatuses" :key="s" :value="s">
+                  {{ lib.getShipmentStatusName(s) }}
+                </option>
+              </select>
+            </th>
+            <th><input type="text" class="input-field" v-model="state.form.recipientName"></th>
+            <th><input type="text" class="input-field" v-model="state.form.recipientPhone"></th>
+            <th><input type="text" class="input-field" v-model="state.form.shippingAddress"></th>
+            <th><input type="text" class="input-field" v-model="state.form.orderNumber"></th>
+            <th><input type="text" class="input-field" v-model="state.form.orderProduct"></th>
+            <th>
+              <div class="date-cell">
+                <input type="date" class="input-field date" v-model="state.form.startRegDate">
+                &nbsp;~&nbsp;
+                <input type="date" class="input-field date" v-model="state.form.endRegDate">
+              </div>
+            </th>
+            <th>
+              <div class="date-cell">
+                <input type="date" class="input-field date" v-model="state.form.startModDate">
+                &nbsp;~&nbsp;
+                <input type="date" class="input-field date" v-model="state.form.endModDate">
+              </div>
+            </th>
+          </tr>
+          <tr>
+            <th><input type="checkbox" v-model="state.selectedAll" @change="toggleSelectAll"/></th>
+            <th>번호</th>
+            <th v-for="(tableHeader, index) in tableHeaders" :key="index">
+              {{ tableHeader }}
+              <div class="sort-icons">
+                <span @click="sort(sortKey[index])">▲</span>
+                <span @click="sort(sortKey[index], true)">▼</span>
+              </div>
+            </th>
+          </tr>
         </thead>
 
         <tbody>
-        <tr v-for="(shipment, idx) in state.shipments" :key="idx">
-          <td>
-            <input type="checkbox" :checked="state.isModify[idx].value" @change="modify(idx)"/>
-          </td>
+          <tr v-for="(shipment, idx) in state.shipments" :key="idx">
+            <td>
+              <input type="checkbox" :checked="state.isModify[idx].value" @change="modify(idx)"/>
+            </td>
 
-          <td>{{ idx + 1 }}</td>
+            <td>{{ idx + 1 }}</td>
 
-          <td>
-            <select class="select-field" v-model="shipment.courierCompany" :disabled="!state.isModify[idx].value">
-              <option v-for="cc in courierCompanies" :key="cc" :value="cc">
-                {{ lib.getCourierCompanyName(cc) }}
-              </option>
-            </select>
-          </td>
+            <td>
+              <select class="select-field" v-model="shipment.courierCompany" :disabled="!state.isModify[idx].value">
+                <option v-for="cc in courierCompanies" :key="cc" :value="cc">
+                  {{ lib.getCourierCompanyName(cc) }}
+                </option>
+              </select>
+            </td>
 
-          <td>
-            <input type="text" class="input-field" id="tracking-number"
-                   v-model="shipment.trackingNumber" :disabled="!state.isModify[idx].value">
-          </td>
+            <td>
+              <input type="text" class="input-field" id="tracking-number"
+                     v-model="shipment.trackingNumber" :disabled="!state.isModify[idx].value">
+            </td>
 
-          <td>
-            <select class="select-field" v-model="shipment.status" :disabled="!state.isModify[idx].value">
-              <option v-for="s in shipmentStatuses" :key="s" :value="s">
-                {{ lib.getShipmentStatusName(s) }}
-              </option>
-            </select>
-          </td>
+            <td>
+              <select class="select-field" v-model="shipment.status" :disabled="!state.isModify[idx].value">
+                <option v-for="s in shipmentStatuses" :key="s" :value="s">
+                  {{ lib.getShipmentStatusName(s) }}
+                </option>
+              </select>
+            </td>
 
-          <td>
-            <input type="text" class="input-field" id="recipient-name"
-                   v-model="shipment.recipientName" :disabled="!state.isModify[idx].value">
-          </td>
+            <td>
+              <input type="text" class="input-field" id="recipient-name"
+                     v-model="shipment.recipientName" :disabled="!state.isModify[idx].value">
+            </td>
 
-          <td>
-            <input type="text" class="input-field" id="recipient-phone"
-                   v-model="shipment.recipientPhone" :disabled="!state.isModify[idx].value">
-          </td>
+            <td>
+              <input type="text" class="input-field" id="recipient-phone"
+                     v-model="shipment.recipientPhone" :disabled="!state.isModify[idx].value">
+            </td>
 
-          <td>
-            <input type="text" class="input-field" id="shipping-address"
-                   v-model="shipment.shippingAddress" :disabled="!state.isModify[idx].value">
-          </td>
+            <td>
+              <input type="text" class="input-field" id="shipping-address"
+                     v-model="shipment.shippingAddress" :disabled="!state.isModify[idx].value">
+            </td>
 
-          <td>{{ shipment.orderDetails[0].order.orderNumber }}</td>
+            <td>{{ shipment.orderDetails[0].order.orderNumber }}</td>
 
-          <td>
-            <div v-for="(od, idx) in shipment.orderDetails" :key="idx">
-              {{ getShippingProduct(od) }}<br>
-            </div>
-          </td>
+            <td>
+              <div v-for="(od, idx) in shipment.orderDetails" :key="idx">
+                {{ getShippingProduct(od) }}<br>
+              </div>
+            </td>
 
-          <td>{{ lib.getFormattedDate(shipment.regDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
+            <td>{{ lib.getFormattedDate(shipment.regDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
 
-          <td>{{ lib.getFormattedDate(shipment.modDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
-        </tr>
+            <td>{{ lib.getFormattedDate(shipment.modDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
+          </tr>
         </tbody>
       </table>
 
       <div class="pagination">
-        <button @click="goToPage(1)" :disabled="state.page.currentPage === 1"><i class="bi bi-chevron-double-left"></i>
+        <button @click="goToPage(1)" :disabled="state.page.currentPage === 1">
+          <i class="bi bi-chevron-double-left"></i>
         </button>
-        <button @click="goToPage(state.page.currentPage - 1)" :disabled="state.page.currentPage === 1"><i
-            class="bi bi-chevron-left"></i></button>
+        <button @click="goToPage(state.page.currentPage - 1)" :disabled="state.page.currentPage === 1">
+          <i class="bi bi-chevron-left"></i>
+        </button>
         <span>{{ state.page.currentPage }} / {{ state.page.totalPages }}</span>
-        <button @click="goToPage(state.page.currentPage + 1)"
-                :disabled="state.page.currentPage === state.page.totalPages"><i class="bi bi-chevron-right"></i>
+        <button @click="goToPage(state.page.currentPage + 1)" :disabled="state.page.currentPage === state.page.totalPages">
+          <i class="bi bi-chevron-right"></i>
         </button>
-        <button @click="goToPage(state.page.totalPages)" :disabled="state.page.currentPage === state.page.totalPages"><i
-            class="bi bi-chevron-double-right"></i></button>
+        <button @click="goToPage(state.page.totalPages)" :disabled="state.page.currentPage === state.page.totalPages">
+          <i class="bi bi-chevron-double-right"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -367,129 +370,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.list {
-  padding-inline: 30px;
-}
-
-.title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-.content {
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-}
-
-table {
-  border: 1px solid #e3e3e3;
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table th, table td {
-  border: 1px solid #e3e3e3;
-  padding-inline: 5px;
-}
-
-thead > tr:first-child {
-  background-color: #e3e3e3;
-}
-
-thead tr:nth-child(2) th {
-  position: relative; /* 부모 요소에 대한 위치를 지정 */
-}
-
-.input-field, .select-field {
-  width: 100%;
-  height: 25px;
-}
-
-.input-field.date {
-  width: 75px;
-}
-
-.date-cell {
-  display: flex;
-}
-
-.sort-icons {
-  display: inline-block;
-  position: absolute; /* 절대 위치 지정 */
-  right: 5px; /* 셀의 오른쪽에 위치 */
-  top: 50%; /* 셀의 중앙에 위치 */
-  transform: translateY(-50%); /* Y축을 기준으로 50%만큼 이동하여 완전히 중앙에 위치 */
-}
-
-.button-area {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.btn-search-full, .btn-search-condition {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.btn-clear-search {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-
-.btn-csv-download {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 10rem;
-  justify-content: center;
-  text-align: center;
-  margin-right: 5px;
-  border: 1px solid black;
-  background-color: white;
-  color: black;
-}
-
-.btn-change-shipments {
-  font-size: .75rem;
-  font-weight: 700;
-  height: 25px;
-  width: 6rem;
-  justify-content: center;
-  text-align: center;
-  border: none;
-  background-color: black;
-  color: white;
-}
-
-.pagination {
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
-}
-
-.pagination button {
-  border: none;
-  background-color: transparent;
-}
+<style lang="scss" scoped>
+@import "@/styles/modules/admin/shipment/shipment-list";
 </style>

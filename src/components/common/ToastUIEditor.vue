@@ -14,7 +14,7 @@ import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 
 export default {
-  name: 'ToastUIEditorComponent',
+  name: 'ToastUIEditor',
   props: {
     modelValue: {type: String, required: false, default: '',},
     uploadType: {type: String, required: true, default: '',},
@@ -32,7 +32,7 @@ export default {
       axios.post('/api/toast-ui/image-upload', formData, {
         headers: {'upload-type': props.uploadType}
 
-      }).then((data) => {
+      }).then(({data}) => {
         callback(data.url, 'image');
 
       }).catch((error) => {
@@ -55,6 +55,7 @@ export default {
           ['hr', 'quote', 'ul', 'ol', 'task'],
           ['indent', 'outdent',],
           ['image', 'link', 'code', 'codeblock'],
+          ['scrollSync'],
         ],
         events: {
           change: () => {
@@ -86,5 +87,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

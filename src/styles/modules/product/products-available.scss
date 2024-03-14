@@ -1,5 +1,5 @@
 .available-products {
-  padding-block: 10px;
+  padding-block: 20px;
 
   .title {
     font-size: 20px;
@@ -103,13 +103,13 @@
 
 @include tablet {
   .available-products {
-    padding-block: 5px;
+    padding-block: 15px;
     .title {
       font-size: 15px;
       margin: 0 5px -15px 5px;
     }
     .content {
-      margin-top: 0;
+      margin-top: 35px;
       .grid {
         .item {
           flex: 0 0 33.3333%;
@@ -154,7 +154,7 @@
       margin: 0 5px -15px 5px;
     }
     .content {
-      //margin-top: 50px;
+      margin-top: 40px; // TODO 모바일에서 위부분 잘림 최소 50px은 주어야함
       .grid {
         .item {
           flex: 0 0 50%;
