@@ -30,8 +30,8 @@
 
           <tr>
             <td class="table-title">내용</td>
-            <td><div v-html="lib.convertLineBreaks(state.review.content)"></div></td>
-            <td><div v-html="lib.convertLineBreaks(state.review.content)"></div></td>
+            <td><div v-html="formatter.convertLineBreaks(state.review.content)"></div></td>
+            <td><div v-html="formatter.convertLineBreaks(state.review.content)"></div></td>
           </tr>
 
           <tr>
@@ -54,9 +54,9 @@
 
           <tr>
             <td class="table-title">활성</td>
-            <td>{{ state.review.activateFlag ? '○' : '☓' }}</td>
+            <td>{{ state.review.isActivate ? '○' : '☓' }}</td>
             <td>
-              <select class="select-field" v-model="state.form.activateFlag">
+              <select class="select-field" v-model="state.form.isActivate">
                 <option value="true">○</option>
                 <option value="false">☓</option>
               </select>
@@ -72,7 +72,7 @@
 import {onMounted, reactive} from "vue";
 import {useRoute} from "vue-router";
 import axios from "axios";
-import lib from "@/scripts/lib";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: 'ReviewUpdate',
@@ -105,7 +105,7 @@ export default {
     onMounted(load);
 
     return {
-      lib,
+      formatter,
       state,
       updateReview,
     }

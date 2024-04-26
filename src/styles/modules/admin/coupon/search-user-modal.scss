@@ -93,7 +93,7 @@
             text-overflow: ellipsis; /* 내용이 넘칠 경우 말줄임표 사용 */
           }
 
-          &.column-user-admin-flag, .column-user-activate-flag {
+          &.column-user-is-admin, .column-user-is-activate {
             width: 80px;
             max-width: 80px;
           }

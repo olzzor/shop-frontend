@@ -26,16 +26,29 @@
   .content {
     font-size: 12px;
 
-    .category-container, .name-container, .price-container, .discount-container, .size-container, .detail-container, .images-container {
+    .category-container, .name-container, .price-container, .discount-container, .size-container, .detail-container, .images-container, .display-container {
       display: flex;
       flex-direction: row;
       border-bottom: 1px solid #e3e3e3;
       margin-block: 3px;
-      //align-items: flex-start; // 요소들을 컨테이너의 시작점(왼쪽)에 맞춥니다.
 
       .input-container, .select-container {
         flex-direction: column;
         flex-grow: 1;
+      }
+    }
+
+    .category-container {
+      .input-container {
+        .category-input-container {
+          display: inline-flex; /* 가로로 배열 */
+          gap: 10px;
+          .select-container {
+            .select-field {
+              width: 200px;
+            }
+          }
+        }
       }
     }
 
@@ -102,6 +115,17 @@
       }
     }
 
+    .display-container {
+      .input-container {
+        display: inline-flex; /* 가로로 배열 */
+        .select-container {
+          .select-field {
+            width: 200px;
+          }
+        }
+      }
+    }
+
     .input-label {
       margin-right: 10px;
       font-weight: bold;
@@ -132,10 +156,6 @@
         -webkit-box-shadow: 0 0 0 30px white inset !important;
         box-shadow: 0 0 0 30px white inset !important;
       }
-    }
-
-    .select-field {
-      width: 40%;
     }
 
     .error-message {

@@ -6,25 +6,45 @@
     </div>
 
     <div class="content">
+      <!-- 카테고리 -->
       <div class="category-container">
         <label class="input-label" for="product-category">카테고리 <span class="required">*</span></label>
-        <div class="select-container">
-          <select class="select-field" id="product-category" v-model="state.form.product.categoryCode">
-            <option disabled value="">카테고리를 선택해주세요.</option>
-            <option v-for="code in categoryCodes" :key="code" :value="code">{{ lib.getCategoryName(code) }}</option>
-          </select>
+
+        <div class="input-container">
+          <div class="category-input-container">
+            <!-- 대카테고리 -->
+            <div class="select-container">
+              <select class="select-field" id="product-category-main"
+                      v-model="state.categorySelection.selectedMainCategoryCode" @change="updateSubCategories">
+                <option disabled value="">카테고리를 선택해주세요.</option>
+                <option v-for="cat in categories" :key="cat.code" :value="cat.code">{{ cat.name }}</option>
+              </select>
+            </div>
+
+            <!-- 소카테고리 -->
+            <div class="select-container">
+              <select class="select-field" id="product-category"
+                      v-model="state.form.product.categoryCode" :disabled="state.categorySelection.isSubCategoryDisabled">
+                <option disabled value="">카테고리를 선택해주세요.</option>
+                <option v-for="cat in state.categorySelection.subCategories" :key="cat.code" :value="cat.code">{{ cat.name }}</option>
+              </select>
+            </div>
+          </div>
+
           <div class="error-message" v-if="state.errorMessage.categoryCode">{{ state.errorMessage.categoryCode }}</div>
         </div>
       </div>
 
+      <!-- 이름 -->
       <div class="name-container">
-        <label class="input-label" for="product-name">상품명 <span class="required">*</span></label>
+        <label class="input-label" for="product-name">이름 <span class="required">*</span></label>
         <div class="input-container">
           <input type="text" class="input-field" id="product-name" v-model="state.form.product.name" />
           <div class="error-message" v-if="state.errorMessage.name">{{ state.errorMessage.name }}</div>
         </div>
       </div>
 
+      <!-- 가격 -->
       <div class="price-container">
         <label class="input-label" for="product-price">가격 <span class="required">*</span></label>
         <div class="input-container">
@@ -34,6 +54,7 @@
         </div>
       </div>
 
+      <!-- 할인율 -->
       <div class="discount-container">
         <label class="input-label" for="product-discount">할인율 <span class="required">*</span></label>
         <div class="input-container">
@@ -43,6 +64,7 @@
         </div>
       </div>
 
+      <!-- 사이즈 -->
       <div class="size-container">
         <label class="input-label" for="product-size">사이즈 <span class="required">*</span>
           &nbsp;<i class="bi bi-plus-square-fill" @click="addSizeInput"></i>
@@ -61,17 +83,29 @@
         </div>
       </div>
 
+      <!-- 사이즈 가이드 -->
       <div class="detail-container">
-        <label class="input-label" for="product-detail">상세 설명</label>
+        <label class="input-label" for="product-detail">사이즈 가이드</label>
         <div class="input-container">
           <textarea class="input-field" id="product-detail" placeholder="설명을 입력해주세요."
-                    v-model="state.form.product.detail" @input="autoGrow"/>
-          <div class="error-message" v-if="state.errorMessage.detail">{{ state.errorMessage.detail }}</div>
+                    v-model="state.form.detail.sizeGuide" @input="autoGrow"/>
+          <div class="error-message" v-if="state.errorMessage.detailSizeGuide">{{ state.errorMessage.detailSizeGuide }}</div>
         </div>
       </div>
 
+      <!-- 제품 설명 -->
+      <div class="detail-container">
+        <label class="input-label" for="product-detail">제품 설명</label>
+        <div class="input-container">
+          <textarea class="input-field" id="product-detail" placeholder="설명을 입력해주세요."
+                    v-model="state.form.detail.description" @input="autoGrow"/>
+          <div class="error-message" v-if="state.errorMessage.detailDescription">{{ state.errorMessage.detailDescription }}</div>
+        </div>
+      </div>
+
+      <!-- 이미지 -->
       <div class="images-container">
-        <label class="input-label" for="product-images">상품 이미지 <span class="required">*</span></label>
+        <label class="input-label" for="product-images">이미지 <span class="required">*</span></label>
         <div class="image-box" v-for="(src, index) in images" :key="index">
           <img class="product-image" :src="src"/>
           <button type="button" class="btn-delete" @click="deleteImage(index)">X</button>
@@ -82,6 +116,19 @@
                  @change="previewImage" />
         </div>
       </div>
+
+      <!-- 표시 유무 20240411 추가 -->
+      <div class="display-container">
+        <label class="input-label" for="product-display">표시 <span class="required">*</span></label>
+        <div class="input-container">
+          <div class="select-container">
+            <select class="select-field" id="product-display" v-model="state.form.product.isDisplay">
+              <option :value="true">표시</option>
+              <option :value="false">비표시</option>
+            </select>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -90,24 +137,42 @@
 import {nextTick, onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import lib from "@/scripts/lib";
+import constants from "@/scripts/constants";
 
 export default {
   name: "ProductRegist",
   components: {},
   setup() {
-    const categoryCodes = lib.categoryCodes;
+    const categories = constants.CATEGORIES;
     const images = ref([]);
     const imageInput = ref(null);
 
     const state = reactive({
       isSubmitting: false,
+      categorySelection: {selectedMainCategoryCode: '', subCategories: [], isSubCategoryDisabled: true,},
       form: {
-        product: {categoryCode: '', name: '', price: 1, discountPer: 0, detail: '',},
+        product: {categoryCode: '', name: '', price: 1, discountPer: 0, isDisplay: true},
         sizes: [{size: '', quantity: 1}],
+        detail: {description: '', sizeGuide: ''},
         files: [],
       },
       errorMessage: {},
     });
+
+    const updateSubCategories = () => {
+      const category = categories.find(cat => cat.code === state.categorySelection.selectedMainCategoryCode);
+
+      if (category && category.subCategories) { // 서브 카테고리가 존재하는 경우
+        state.categorySelection.isSubCategoryDisabled = false; // 서브 카테고리 셀렉트 박스 활성
+        state.categorySelection.subCategories = category.subCategories; // 서브 카테고리값 취득
+        state.form.product.categoryCode = ''; // 카테고리 선택값 초기화
+
+      } else { // 서브 카테고리가 존재하지 않는 경우
+        state.categorySelection.isSubCategoryDisabled = true; // 서브 카테고리 셀렉트 박스 비활성
+        state.categorySelection.subCategories = [];
+        state.form.product.categoryCode = category.code; // 카테고리 선택값으로 메인 카테고리 코드값 사용
+      }
+    };
 
     const addSizeInput = () => {
       state.form.sizes.push({size: "", quantity: 1});
@@ -145,7 +210,8 @@ export default {
       let result = true;
 
       const MAX_NAME_LENGTH = 100;
-      const MAX_DETAIL_LENGTH = 2000;
+      const MAX_DETAIL_DESCRIPTION_LENGTH = 2000;
+      const MAX_DETAIL_SIZE_GUIDE_LENGTH = 2000;
 
       state.errorMessage = {};
 
@@ -183,8 +249,13 @@ export default {
         result = false;
       }
 
-      if (state.form.product.detail && state.form.product.detail.length > MAX_DETAIL_LENGTH) {
-        state.errorMessage.detail = `상세 설명은 ${MAX_DETAIL_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
+      if (state.form.detail.description && state.form.detail.description.length > MAX_DETAIL_DESCRIPTION_LENGTH) {
+        state.errorMessage.detailDescription = `제품 설명은 ${MAX_DETAIL_DESCRIPTION_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
+        result = false;
+      }
+
+      if (state.form.detail.sizeGuide && state.form.detail.sizeGuide.length > MAX_DETAIL_SIZE_GUIDE_LENGTH) {
+        state.errorMessage.detailSizeGuide = `사이즈 가이드는 ${MAX_DETAIL_SIZE_GUIDE_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
         result = false;
       }
 
@@ -198,6 +269,7 @@ export default {
         const formData = new FormData();
 
         formData.append('product', JSON.stringify(state.form.product));
+        formData.append('detail', JSON.stringify(state.form.detail));
         formData.append('sizes', JSON.stringify(state.form.sizes));
         state.form.files.forEach(file => {
           formData.append('files', file);
@@ -229,17 +301,20 @@ export default {
 
     const autoGrow = () => {
       nextTick(() => {
-        const textarea = document.querySelector('#product-detail');
-        textarea.style.height = '100px';
-        textarea.style.height = (textarea.scrollHeight < 200 ? textarea.scrollHeight : 200) + 'px'; // 최대 높이 제한 (약 10줄)
+        const textareas = document.querySelectorAll('textarea.input-field');
+        textareas.forEach(textarea => {
+          textarea.style.height = '100px';
+          textarea.style.height = (textarea.scrollHeight < 150 ? textarea.scrollHeight : 150) + 'px';
+        });
       });
     };
 
     onMounted(autoGrow);
 
     return {
-      lib, categoryCodes,
-      imageInput, images, state,
+      lib,
+      categories, imageInput, images, state,
+      updateSubCategories,
       addSizeInput,
       clickImageInput, previewImage, dropImage, deleteImage,
       autoGrow, createProduct,

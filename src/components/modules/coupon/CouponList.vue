@@ -6,13 +6,13 @@
       <ul class="coupons">
         <li v-for="c in state.coupons" :key="c.id">
           <div class="coupon-header">
-            <span>[{{ lib.getCouponTypeName(c.type) }}] {{ c.name }}</span>
+            <span>[{{ formatter.getCouponTypeName(c.type) }}] {{ c.name }}</span>
           </div>
 
           <div class="coupon-details">
             기간:
-            {{ lib.getFormattedDate(c.startValidDate, 'YYYY-MM-DD') }} ~ {{ lib.getFormattedDate(c.endValidDate, 'YYYY-MM-DD') }}<br>
-            최소 이용 금액: {{ lib.getFormattedNumber(c.minAmount) }}원<br>
+            {{ formatter.getFormattedDate(c.startValidDate, 'YYYY-MM-DD') }} ~ {{ formatter.getFormattedDate(c.endValidDate, 'YYYY-MM-DD') }}<br>
+            최소 이용 금액: {{ formatter.getFormattedNumber(c.minAmount) }}원<br>
             <span v-if="c.discountType === 'AMOUNT_DISCOUNT'">할인 금액: {{ c.discountValue }}원<br></span>
             <span v-else>할인율: {{ c.discountValue }}%<br></span>
             <span v-if="c.categories.length > 0">대상 카테고리: {{ getCategoryNames(c.categories) }}<br></span>
@@ -29,6 +29,7 @@
 import {onMounted, reactive} from "vue";
 import axios from "axios";
 import lib from "@/scripts/lib";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: 'CouponList',
@@ -54,7 +55,7 @@ export default {
     onMounted(load);
 
     return {
-      lib,
+      formatter,
       state,
       getCategoryNames,getProductNames
     }

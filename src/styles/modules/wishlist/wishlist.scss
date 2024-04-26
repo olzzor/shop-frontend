@@ -1,4 +1,4 @@
-.favorite {
+.wishlist {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,7 +14,7 @@
     font-weight: bold;
     margin-bottom: 15px;
 
-    .count-favorites {
+    .wishlist-count {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -38,7 +38,7 @@
         display: flex;
         border-bottom: 1px solid #eee;
 
-        .favorite-product {
+        .wishlist-item {
           display: flex; /* Flexbox 적용 */
           align-items: center; /* 수직 중앙 정렬 */
           justify-content: space-between;
@@ -85,26 +85,32 @@
           }
 
           .product-details {
+            font-size: 0.9rem;
             flex-grow: 1; /* 가능한 모든 여유 공간을 차지하도록 설정 */
 
-            .product-title-row {
+            .title-row {
               display: block; // 블록 레벨 요소, 자동 줄바꿈 처리
-              font-size: 0.9rem;
               font-weight: bold;
 
-              .title-container, .discount-container {
-                display: inline;
+              .new-label {
+                background-color: #dc3545;
+                color: white;
+                padding: 0.1rem 0.5rem;
+                margin-right: 0.3rem;
+                line-height: 1; // 줄 간격을 1로 설정하여 패딩에 의해 높이가 늘어나지 않도록 함.
               }
 
-              .discount-container {
-                margin-left: 0.2rem;
+              .discount-per {
                 color: #dc3545;
+                margin-right: 0.2rem;
               }
+
+              .name {}
             }
 
-            .product-price-row {
-              font-size: 0.9rem;
+            .size-row {}
 
+            .price-row {
               .price-container {
                 display: flex;
                 align-items: center;
@@ -165,14 +171,14 @@
       }
     }
 
-    &.no-favorite-data {
+    &.no-wishlist-data {
       font-size: 1rem;
     }
   }
 }
 
 @include mobile {
-  .favorite {
+  .wishlist {
     margin-top: 60px;
     margin-inline: 10px;
 
@@ -180,7 +186,7 @@
       font-size: 16px;
       margin-bottom: 5px;
 
-      .count-favorites {
+      .wishlist-count {
         width: 20px;
         height: 20px;
         margin-left: 8px;
@@ -193,7 +199,7 @@
         li {
           flex-direction: column;
 
-          .favorite-product {
+          .wishlist-item {
             .product-image, .product-details {
             }
 
@@ -205,14 +211,16 @@
             }
 
             .product-details {
-              .product-title-row {
-                font-size: 0.75rem;
-                .title-container, .discount-container {}
-                .title-container {}
-                .discount-container {}
+              font-size: 0.75rem;
+              .title-row {
+                .new-label {
+                  padding: 0.1rem 0.4rem;
+                }
+                .discount-per {}
+                .name {}
               }
 
-              .product-price-row {
+              .price-row {
                 .price-container {
                   .original-price {
                     &.sale {}
@@ -243,7 +251,7 @@
         }
       }
 
-      &.no-favorite-data {
+      &.no-wishlist-data {
         font-size: .8rem;
       }
     }

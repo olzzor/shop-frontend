@@ -13,13 +13,14 @@
 
       <div class="review-text">
         <div class="review-title">{{ state.review.title }}</div>
-        <div class="review-content"><p v-html="lib.convertLineBreaks(state.review.content)"></p></div>
+        <div class="review-content"><p v-html="formatter.convertLineBreaks(state.review.content)"></p></div>
       </div>
     </div>
 
     <div class="review-images" v-if="state.review.reviewImages && state.review.reviewImages.length">
       <transition name="slide-fade" mode="out-in">
-        <span class="image-container" :style="{backgroundImage: `url(${state.review.reviewImages[state.currentImageIndex].fileUrl})`}"></span>
+<!--        <span class="image-container" :style="{backgroundImage: `url(${state.review.reviewImages[state.currentImageIndex].fileUrl})`}"></span>-->
+        <img class="image-container" :src="`${state.review.reviewImages[state.currentImageIndex].fileUrl}`" />
       </transition>
       <button type="button" class="btn-image-prev" v-if="state.review.reviewImages.length > 1" @click="changeImage(-1)">◀</button>
       <button type="button" class="btn-image-next" v-if="state.review.reviewImages.length > 1" @click="changeImage(1)">▶</button>
@@ -27,8 +28,8 @@
 
     <div class="footer">
       <div class="review-date">
-        {{ lib.getFormattedDate(state.review.regDate, 'YYYY/MM/DD') }}
-        <span v-if="!isModDateAfterRegDate">(최근 수정 {{ lib.getFormattedDate(state.review.modDate, 'YYYY-MM-DD') }})</span>
+        {{ formatter.getFormattedDate(state.review.regDate, 'YYYY/MM/DD') }}
+        <span v-if="!isModDateAfterRegDate">(최근 수정 {{ formatter.getFormattedDate(state.review.modDate, 'YYYY-MM-DD') }})</span>
       </div>
       <div @click="close">닫기 X</div>
     </div>
@@ -38,7 +39,7 @@
 <script>
 import {computed, onMounted, reactive} from "vue";
 import axios from "axios";
-import lib from "@/scripts/lib";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: "ReviewModal",
@@ -66,7 +67,7 @@ export default {
     };
 
     const load = () => {
-      axios.get(`/api/review/${props.reviewId}`).then(({data}) => {
+      axios.get(`/api/review/public/${props.reviewId}`).then(({data}) => {
         state.review = data;
 
       }).catch(error => {
@@ -82,7 +83,7 @@ export default {
     onMounted(load);
 
     return {
-      lib,
+      formatter,
       state, isModDateAfterRegDate,
       changeImage,close,
     }

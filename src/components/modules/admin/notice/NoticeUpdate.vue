@@ -20,7 +20,7 @@
             <td>
               <div class="select-container">
                 <select class="select-field" v-model="state.form.notice.type">
-                  <option v-for="nt in noticeTypes" :key="nt" :value="nt">{{ nt }}</option>
+                  <option v-for="nt in noticeTypes" :key="nt.key" :value="nt.key">{{ nt.key }}</option>
                 </select>
                 <div class="error-message" v-if="state.errorMessage.type">{{ state.errorMessage.type }}</div>
               </div>
@@ -131,12 +131,10 @@
 
           <tr>
             <td colspan="2" class="table-title">상태</td>
-            <td>{{ lib.getNoticeStatusName(state.notice.status) }}</td>
+            <td>{{ formatter.getNoticeStatusName(state.notice.status) }}</td>
             <td>
               <select class="select-field" v-model="state.form.notice.status">
-                <option v-for="ns in noticeStatuses" :key="ns" :value="ns">
-                  &nbsp;{{ lib.getNoticeStatusName(ns) }}
-                </option>
+                <option v-for="ns in noticeStatuses" :key="ns.key" :value="ns.key">{{ ns.description }}</option>
               </select>
             </td>
           </tr>
@@ -152,14 +150,15 @@
 import {onMounted, reactive} from "vue";
 import {useRoute} from "vue-router";
 import axios from "axios";
-import lib from "@/scripts/lib";
+import constants from "@/scripts/constants";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: 'NoticeUpdate',
   components: {},
   setup() {
-    const noticeTypes = lib.noticeTypes;
-    const noticeStatuses = lib.noticeStatuses;
+    const noticeTypes = constants.NOTICE_TYPES;
+    const noticeStatuses = constants.NOTICE_STATUSES;
 
     const route = useRoute();
 
@@ -286,7 +285,8 @@ export default {
     onMounted(load);
 
     return {
-      lib, noticeTypes, noticeStatuses,
+      formatter,
+      noticeTypes, noticeStatuses,
       state,
       showImage, handleMainImageUpload, handleSliderImageUpload, handleModalImageUpload,
       updateNotice,

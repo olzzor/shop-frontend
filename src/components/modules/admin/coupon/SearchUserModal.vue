@@ -12,21 +12,21 @@
             <th>
               <select class="select-field" v-model="state.form.authProvider">
                 <option value="">전체</option>
-                <option v-for="ap in authProviders" :key="ap" :value="ap">{{ ap }}</option>
+                <option v-for="ap in authProviders" :key="ap.key" :value="ap.key">{{ ap.key }}</option>
               </select>
             </th>
             <th><input type="text" class="input-field" v-model="state.form.email" @keyup.enter="searchCondition"></th>
             <th><input type="text" class="input-field" v-model="state.form.name" @keyup.enter="searchCondition"></th>
             <th><input type="text" class="input-field" v-model="state.form.phoneNumber" @keyup.enter="searchCondition"></th>
             <th>
-              <select class="select-field" v-model="state.form.adminFlag">
+              <select class="select-field" v-model="state.form.isAdmin">
                 <option value="">전체</option>
                 <option value="true">◯</option>
                 <option value="false">✕</option>
               </select>
             </th>
             <th>
-              <select class="select-field" v-model="state.form.activateFlag">
+              <select class="select-field" v-model="state.form.isActivate">
                 <option value="">전체</option>
                 <option value="true">◯</option>
                 <option value="false">✕</option>
@@ -49,12 +49,12 @@
             <td class="column-user-email">{{ user.email }}</td>
             <td class="column-user-name">{{ user.name }}</td>
             <td class="column-user-phone-number">{{ user.phoneNumber }}</td>
-            <td class="column-user-admin-flag">
-              <span v-if="user.adminFlag">◯</span>
+            <td class="column-user-is-admin">
+              <span v-if="user.isAdmin">◯</span>
               <span v-else>✕</span>
             </td>
-            <td class="column-user-activate-flag">
-              <span v-if="user.activateFlag">◯</span>
+            <td class="column-user-is-activate">
+              <span v-if="user.isActivate">◯</span>
               <span v-else>✕</span>
             </td>
           </tr>
@@ -80,19 +80,19 @@
 <script>
 import axios from "axios";
 import {reactive} from "vue";
-import lib from "@/scripts/lib";
+import constants from "@/scripts/constants";
 
 export default {
   name: "SearchUserModal",
   props: {show: Boolean},
   setup(props, {emit}) {
     const tableHeaders = ['구분', '이메일', '이름', '연락처', '관리자', '활성'];
-    const authProviders = lib.authProviders;
+    const authProviders = constants.AUTH_PROVIDERS;
 
     const state = reactive({
       users: [],
       selectedUsers: [],
-      form: {authProvider: '', email: '', name: '', phoneNumber: '', adminFlag: '', activateFlag: ''},
+      form: {authProvider: '', email: '', name: '', phoneNumber: '', isAdmin: '', isActivate: ''},
       page: {pageSize: 10, currentPage: 1, totalPages: 0,},
     });
 

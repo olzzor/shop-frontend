@@ -28,7 +28,7 @@
         <div class="type-field" :class="{ 'input-error': state.errorMessage.type }">
           <select class="select-field" v-model="state.form.type">
             <option class="default-option" disabled value="">문의 사항을 선택해주세요.</option>
-            <option v-for="ct in contactTypes" :key="ct" :value="ct">{{ lib.getContactTypeName(ct) }}</option>
+            <option v-for="ct in contactTypes" :key="ct.key" :value="ct.key">{{ ct.description }}</option>
           </select>
         </div>
         <div class="error-message" v-if="state.errorMessage.type">{{ state.errorMessage.type }}</div>
@@ -63,11 +63,12 @@ import {reactive} from "vue";
 import router from "@/scripts/router";
 import axios from "axios";
 import lib from "@/scripts/lib";
+import constants from "@/scripts/constants";
 
 export default {
   name: "ContactUs",
   setup() {
-    const contactTypes = lib.contactTypes;
+    const contactTypes = constants.CONTACT_TYPES;
 
     const state = reactive({
       isSubmitting: false,

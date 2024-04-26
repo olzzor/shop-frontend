@@ -1,0 +1,344 @@
+.recommended-products {
+  padding-block: 20px;
+
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-inline: 15px;
+    margin-bottom: 20px;
+  }
+
+  .content {
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-inline: 15px;
+      gap: 0.1rem;
+      font-size: 0.9rem;
+
+      button {
+        border: none;
+        background-color: transparent;
+
+        &:not(:disabled) .bi {
+          color: black;
+        }
+      }
+
+      span {
+        cursor: pointer;
+        color: gray;
+        margin: 0 2px;
+
+        &.current-page {
+          color: black;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+
+      .item {
+        flex: 0 0 25%;
+        max-width: 25%;
+        padding: 15px;
+
+        .product {
+          border: 1px solid rgba(169, 169, 169, .3);
+
+          .image-section {
+            position: relative;
+
+            .image-container {
+              //display: block;
+              width: 100%;
+              aspect-ratio: 10 / 11;
+              object-fit: cover;
+              //background-size: cover;
+              //background-position: center;
+            }
+
+            .not-in-stock-overlay {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%; /* 오버레이가 이미지와 같은 너비를 가지도록 설정 */
+              height: 100%; /* 오버레이가 이미지와 같은 높이를 가지도록 설정 */
+              background: rgba(0, 0, 0, 0.4); /* 반투명 배경 적용 */
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              z-index: 1;
+
+              .not-in-stock {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: black;
+                color: white;
+                font-size: .85rem;
+                padding: 5px 8px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                width: 130px;
+                text-align: center;
+                z-index: 2;
+              }
+            }
+          }
+
+          .detail-section {
+            flex: 1;
+            display: flex;
+            padding: 10px 15px;
+            justify-content: space-between;
+
+            .info-section {
+              flex: 2;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+
+              .title-row {
+                display: flex;
+                align-items: center;
+                font-size: 0.75rem;
+                font-weight: bold;
+                max-width: 270px;
+
+                .new-label {
+                  background-color: #dc3545;
+                  color: white;
+                  padding: 0.2rem 0.5rem;
+                  margin-right: 0.3rem;
+                  line-height: 1; // 줄 간격을 1로 설정하여 패딩에 의해 높이가 늘어나지 않도록 함.
+                }
+
+                .discount-per {
+                  //display: inline;
+                  white-space: nowrap;
+                  align-items: center;
+                  color: #dc3545;
+                  margin-right: 0.2rem;
+                }
+
+                .name {
+                  //display: inline-block;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+              }
+
+              .pricing-row {
+                font-size: 0.85rem;
+
+                .price-container {
+                  display: flex;
+                  align-items: center;
+                  gap: 0.25rem;
+
+                  .original-price {
+                    color: #6c757d;
+
+                    &.sale {
+                      text-decoration: line-through;
+                    }
+                  }
+
+                  .discounted-price {
+                    color: #dc3545;
+                  }
+                }
+              }
+            }
+
+            .action-buttons {
+              flex: 1;
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@include tablet {
+  .recommended-products {
+    padding-block: 15px;
+    .title {
+      font-size: 15px;
+      margin: 0 5px 0 5px;
+    }
+
+    .content {
+      .pagination {
+        padding-inline: 10px;
+        gap: 0.05rem;
+        font-size: 0.8rem;
+        button {}
+        span {}
+      }
+
+      .grid {
+        .item {
+          flex: 0 0 33.3333%;
+          max-width: 33.3333%;
+          padding: 5px;
+          .product {
+            .image-section {
+              .image-container {}
+              .not-in-stock-overlay {
+                .not-in-stock {}
+              }
+            }
+            .detail-section {
+              padding: 5px 7.5px;
+              .info-section {
+                .title-row {
+                  font-size: 0.65rem;
+                  max-width: 170px;
+                  .new-label {
+                    padding: 0.15rem 0.45rem;
+                  }
+                  .discount-per {}
+                  .name {}
+                }
+                .pricing-row {
+                  font-size: 0.7rem;
+                  .price-container {
+                    .original-price {}
+                    .discounted-price {}
+                  }
+                }
+              }
+              .action-buttons {
+                font-size: 12px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@include mobile {
+  .recommended-products {
+    padding-block: 10px;
+    .title {
+      font-size: 15px;
+      margin: 0 5px 0 5px;
+    }
+
+    .content {
+      .pagination {
+        padding-inline: 5px;
+        gap: 0.01rem;
+        font-size: 0.8rem;
+        button {}
+        span {}
+      }
+
+      .grid {
+        .item {
+          flex: 0 0 50%;
+          max-width: 50%;
+          padding: 5px;
+          .product {
+            .image-section {
+              .image-container {}
+              .not-in-stock-overlay {
+                .not-in-stock {}
+              }
+            }
+            .detail-section {
+              padding: 5px 7.5px;
+              .info-section {
+                .title-row {
+                  font-size: 0.55rem;
+                  max-width: 140px;
+                  .new-label {
+                    padding: 0.1rem 0.35rem;
+                  }
+                  .discount-per {}
+                  .name {}
+                }
+                .pricing-row {
+                  font-size: 0.6rem;
+                  .price-container {
+                    .original-price {}
+                    .discounted-price {}
+                  }
+                }
+              }
+              .action-buttons {
+                font-size: 12px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.slide-in-from-right {
+  animation: slideInFromRight 2s forwards;
+}
+
+.slide-out-to-left {
+  animation: slideOutToLeft 0.5s forwards;
+}
+
+.slide-in-from-left {
+  animation: slideInFromLeft 0.5s forwards;
+}
+
+.slide-out-to-right {
+  animation: slideOutToRight 0.5s forwards;
+}

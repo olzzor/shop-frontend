@@ -10,11 +10,11 @@
           <div class="size">
             {{ ps.size }} <span class="size-stock">(재고: {{ ps.quantity }})</span>
           </div>
-          <span v-if="ps.favorites && ps.favorites.length > 0" role="button" tabindex="0"
-                @click="removeFavorite(ps.favorites[0].id)">
+          <span v-if="ps.wishlists && ps.wishlists.length > 0" role="button" tabindex="0"
+                @click="removeFromWishlist(ps.wishlists[0].id)">
             <i class="bi bi-heart-fill"></i>
           </span>
-          <span v-else role="button" tabindex="0" @click="addFavorite(ps.id)">
+          <span v-else role="button" tabindex="0" @click="addToWishlist(ps.id)">
             <i class="bi bi-heart"></i>
           </span>
         </li>
@@ -41,8 +41,8 @@ export default {
       product: {},
     })
 
-    const addFavorite = (productSizeId) => {
-      axios.post(`/api/favorite/add/${productSizeId}`).then(() => {
+    const addToWishlist = (productSizeId) => {
+      axios.post(`/api/wishlist/add/${productSizeId}`).then(() => {
         load();
 
       }).catch(error => {
@@ -55,8 +55,8 @@ export default {
       });
     };
 
-    const removeFavorite = (favoriteId) => {
-      axios.delete(`/api/favorite/delete/${favoriteId}`).then(() => {
+    const removeFromWishlist = (wishlistId) => {
+      axios.delete(`/api/wishlist/delete/${wishlistId}`).then(() => {
         load();
       })
     };
@@ -64,7 +64,7 @@ export default {
     const load = () => {
       const productId = props.productId;
 
-      axios.get(`/api/product/with-user-favorites/${productId}`).then(({data}) => {
+      axios.get(`/api/product/with-user-wishlists/${productId}`).then(({data}) => {
         state.product = data;
       })
     }
@@ -78,7 +78,7 @@ export default {
 
     return {
       state,
-      addFavorite, removeFavorite,
+      addToWishlist, removeFromWishlist,
       close,
     }
   }
@@ -86,5 +86,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/styles/modules/favorite/select-product-size-modal";
+@import "@/styles/modules/wishlist/select-product-size-modal";
 </style>

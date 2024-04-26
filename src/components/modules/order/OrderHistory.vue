@@ -17,7 +17,7 @@
                 주문 상세
               </router-link>
               <br><br>
-              주문 상태 : {{ lib.getOrderStatusName(order.status) }}
+              주문 상태 : {{ formatter.getOrderStatusName(order.status) }}
               <span v-if="order.status === 'PAYMENT_PENDING'">
                 ({{ getDepositDeadline(order.regDate) }}까지 입금)
                 <i class="bi bi-box-arrow-up-right" @click="openDirectDepositAnnounceModal(state.regDate)"></i>
@@ -28,15 +28,16 @@
               </span><br>
               주문 번호 : {{ order.orderNumber }}<br>
               구매 상품 : {{ order.orderDetails[0].product.name }} 포함 총 {{ getTotalQuantity(order.orderDetails) }}건<br>
-              구매 금액 : {{ lib.getFormattedNumber(order.paymentAmount) }}원<br>
-              주문 날짜 : {{ lib.getFormattedDate(order.regDate, 'YYYY-MM-DD HH:mm') }}<br>
+              구매 금액 : {{ formatter.getFormattedNumber(order.paymentAmount) }}원<br>
+              주문 날짜 : {{ formatter.getFormattedDate(order.regDate, 'YYYY-MM-DD HH:mm') }}<br>
               반품 기간 : {{ getReturnDate(order.regDate) }}까지<br>
             </div>
 
             <div class="action-buttons">
-              <button type="button" class="button btn-edit-review" @click="editReview(order.review.id)" v-if="order.review">리뷰 수정</button>
-              <button type="button" class="button btn-write-review" @click="writeReview(order.id)" v-else>리뷰 작성</button>
-              <button type="button" class="button btn-order-confirm" @click="confirmOrder(order.id)" :disabled="!isConfirmable(order.status)">주문 확정</button>
+              <div v-if="isReviewable(order.status)">
+                <button type="button" class="button btn-edit-review" @click="editReview(order.review.id)" v-if="order.review">리뷰 수정</button>
+                <button type="button" class="button btn-write-review" @click="writeReview(order.id)" v-else>리뷰 작성</button>
+              </div>
               <button type="button" class="button btn-order-cancel" @click="cancelOrder(order.id)" :disabled="!isCancelable(order.status)">주문 취소</button>
             </div>
           </div>
@@ -57,10 +58,10 @@
 
 <script>
 import {onMounted, reactive} from "vue";
-import axios from "axios";
-import lib from "@/scripts/lib";
-import router from "@/scripts/router";
 import dayjs from 'dayjs';
+import axios from "axios";
+import formatter from "@/scripts/formatter";
+import router from "@/scripts/router";
 import DirectDepositAnnounceModal from "@/components/modules/order/OrderDirectDepositAnnounceModal.vue";
 
 export default {
@@ -93,14 +94,16 @@ export default {
       router.push({name: 'EditReview', params: {reviewId: reviewId}});
     };
 
-    const isConfirmable = (status) => {
-      // 주문 상태가 '주문 접수', '주문 확인', '배송 준비' 인 경우, 주문을 확정할 수 있음
-      return status === 'ORDER_RECEIVED' || status === 'ORDER_CONFIRMED' || status === 'SHIPMENT_PREPARING';
+    const isReviewable = (status) => {
+      // 주문 상태가 '결제 완료', '취소 요청', '취소 완료'인 경우에, 리뷰를 작성할 수 있음
+      const reviewableStatuses = ['PAYMENT_COMPLETED', 'CANCEL_REQUESTED', 'CANCEL_COMPLETED'];
+      return reviewableStatuses.includes(status);
     };
 
     const isCancelable = (status) => {
-      // 주문 상태가 '결제 대기', '주문 접수', '주문 확인' 인 경우, 주문을 취소할 수 있음
-      return status === 'PAYMENT_PENDING' || status === 'ORDER_RECEIVED' || status === 'ORDER_CONFIRMED';
+      // 주문 상태가 '결제 대기', '결제 완료'인 경우에, 주문을 취소할 수 있음
+      const cancelableStatuses  = ['PAYMENT_PENDING', 'PAYMENT_COMPLETED'];
+      return cancelableStatuses .includes(status);
     };
 
     /** 페이지 변경 */
@@ -129,15 +132,6 @@ export default {
       return dayjs(date).add(7, 'days').format('YYYY-MM-DD');
     };
 
-    const confirmOrder = (orderId) => {
-      if (window.confirm('주문을 확정하시겠습니까?')) {
-        axios.post(`/api/order/confirm/${orderId}`).then(({data}) => {
-          window.alert(data);
-          window.location.reload();
-        });
-      }
-    };
-
     const cancelOrder = (orderId) => {
       if (window.confirm('주문을 취소하시겠습니까?')) {
         axios.post(`/api/order/cancel/${orderId}`).then(({data}) => {
@@ -150,13 +144,13 @@ export default {
     onMounted(load);
 
     return {
-      lib,
+      formatter,
       state, tableHeaders,
       openDirectDepositAnnounceModal, closeDirectDepositAnnounceModal,
       writeReview, editReview,
-      isConfirmable, isCancelable, goToPage,
+      isReviewable, isCancelable, goToPage,
       getTotalQuantity, getDepositDeadline, getReturnDate,
-      confirmOrder, cancelOrder
+      cancelOrder
     }
   }
 }

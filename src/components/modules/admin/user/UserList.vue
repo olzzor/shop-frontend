@@ -38,7 +38,7 @@
           <th>
             <select class="select-field" v-model="state.form.authProvider">
               <option value="">전체</option>
-              <option v-for="ap in authProviders" :key="ap" :value="ap">{{ ap }}</option>
+              <option v-for="ap in authProviders" :key="ap.key" :value="ap.key">{{ ap.key }}</option>
             </select>
           </th>
 
@@ -47,7 +47,7 @@
           <th><input type="text" class="input-field" v-model="state.form.phoneNumber"></th>
 
           <th>
-            <select class="select-field" v-model="state.form.adminFlag">
+            <select class="select-field" v-model="state.form.isAdmin">
               <option value="">전체</option>
               <option value="true">○</option>
               <option value="false">☓</option>
@@ -55,7 +55,7 @@
           </th>
 
           <th>
-            <select class="select-field" v-model="state.form.activateFlag">
+            <select class="select-field" v-model="state.form.isActivate">
               <option value="">전체</option>
               <option value="true">○</option>
               <option value="false">☓</option>
@@ -101,21 +101,21 @@
           </td>
 
           <td>
-            <select class="select-field" v-model="user.adminFlag" :disabled="!state.isModify[idx].value">
+            <select class="select-field" v-model="user.isAdmin" :disabled="!state.isModify[idx].value">
               <option value="true">○</option>
               <option value="false">☓</option>
             </select>
           </td>
 
           <td>
-            <select class="select-field" v-model="user.activateFlag" :disabled="!state.isModify[idx].value">
+            <select class="select-field" v-model="user.isActivate" :disabled="!state.isModify[idx].value">
               <option value="true">○</option>
               <option value="false">☓</option>
             </select>
           </td>
 
-          <td>{{ lib.getFormattedDate(user.regDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
-          <td>{{ lib.getFormattedDate(user.modDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
+          <td>{{ formatter.getFormattedDate(user.regDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
+          <td>{{ formatter.getFormattedDate(user.modDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
         </tr>
         </tbody>
       </table>
@@ -141,21 +141,22 @@
 
 <script>
 import {onMounted, reactive, ref} from "vue";
-import axios from "axios";
 import dayjs from 'dayjs';
-import lib from "@/scripts/lib";
+import axios from "axios";
+import constants from "@/scripts/constants";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: 'UserList',
   components: {},
   setup() {
     const tableHeaders = ['구분', '이메일', '이름', '전화번호', '관리자 권한', '활성 상태', '등록 날짜', '변경 날짜'];
-    const authProviders = lib.authProviders;
+    const authProviders = constants.AUTH_PROVIDERS;
 
     const state = reactive({
       users: [],
       form: {
-        authProvider: '', email: '', name: '', phoneNumber: '', adminFlag: '', activateFlag: '',
+        authProvider: '', email: '', name: '', phoneNumber: '', isAdmin: '', isActivate: '',
         startRegDate: '', endRegDate: '', startModDate: '', endModDate: '',
       },
       page: {pageSize: 15, currentPage: 1, totalPages: 0,},
@@ -174,10 +175,10 @@ export default {
             + '\t' + data.email
             + '\t' + data.name
             + '\t' + data.phoneNumber
-            + '\t' + (data.adminFlag ? '○' : '☓')
-            + '\t' + (data.activateFlag ? '○' : '☓')
-            + '\t' + lib.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
-            + '\t' + lib.getFormattedDate(data.modDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + (data.isAdmin ? '○' : '☓')
+            + '\t' + (data.isActivate ? '○' : '☓')
+            + '\t' + formatter.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + formatter.getFormattedDate(data.modDate, 'YYYY-MM-DD HH:mm:ss')
             + '\n';
       });
 
@@ -248,7 +249,7 @@ export default {
     const clearSearchConditions = () => {
       state.form = {
         authProvider: '', email: '', name: '', phoneNumber: '',
-        adminFlag: '', activateFlag: '',
+        isAdmin: '', isActivate: '',
         startRegDate: '', endRegDate: '', startModDate: '', endModDate: '',
       };
     };
@@ -273,7 +274,7 @@ export default {
             .map(user => ({
               id: user.id,
               name: user.name,
-              adminFlag: user.adminFlag
+              isAdmin: user.isAdmin
             }));
 
         axios.post("/api/user/update/multiple", args).then(() => {
@@ -303,7 +304,7 @@ export default {
     onMounted(load);
 
     return {
-      lib,
+      formatter,
       tableHeaders, authProviders, state,
       downloadCSV, toggleSelectAll,
       searchCondition, searchFull, clearSearchConditions,

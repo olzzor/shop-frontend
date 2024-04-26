@@ -20,11 +20,17 @@
         align-items: flex-start;
 
         .selected-image-container {
-          display: inline-block;
-          width: 700px;
-          height: 800px;
-          background-size: cover;
-          background-position: center;
+          overflow: hidden;
+
+          .selected-image {
+            //display: inline-block;
+            width: 700px;
+            height: 800px;
+            object-fit: cover;
+            //background-size: cover;
+            //background-position: center;
+            //transform-origin: center;
+          }
         }
 
         .image-wrapper {
@@ -36,16 +42,31 @@
           margin-right: 50px;
 
           .image-list {
-            overflow-y: hidden;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
             gap: 4px;
-          }
 
-          .image-container {
-            display: inline-block;
-            width: 80px;
-            height: 96px;
-            background-size: cover;
-            background-position: center;
+            scrollbar-width: none; /* Firefox 스크롤바 공간 없애기 */
+            -ms-overflow-style: none; /* IE, Edge 스크롤바 숨기기 */
+            &::-webkit-scrollbar { /* Chrome, Safari, Opera 스크롤바 공간 없애기 */
+              display: none;
+            }
+
+            .image-container {
+              //display: inline-block;
+              width: 80px;
+              height: 96px;
+              //background-size: cover;
+              //background-position: center;
+              object-fit: cover; // 이미지 비율 유지하면서 채우기 // TODO 화질 고민...contain이 좋은데 비율 유지하되 채우기가 안됨.
+              cursor: pointer;
+
+              &.selected {
+                border: 1px solid black; // 선택된 이미지에 대한 테두리 스타일
+                outline-offset: -1px;
+              }
+            }
           }
 
           .image-list-navigation {
@@ -81,24 +102,32 @@
         flex-direction: column;
         justify-content: space-between;
 
-        .product-title-row {
+        .title-row {
           font-size: 2rem;
           font-weight: bold;
           white-space: normal;
           margin-bottom: 10px;
 
-          .product-discount-per {
+          .new-label {
+            background-color: #dc3545;
+            color: white;
+            padding: 2px 10px;
+            margin-right: 10px;
+            line-height: 1; // 줄 간격을 1로 설정하여 패딩에 의해 높이가 늘어나지 않도록 함.
+          }
+
+          .discount-per {
             display: inline;
             color: #dc3545;
             margin-right: 5px;
           }
 
-          .product-name {
+          .name {
             display: inline;
           }
         }
 
-        .product-price-row {
+        .price-row {
           font-size: 1.5rem;
 
           .price-container {
@@ -143,6 +172,7 @@
 
             .quantity-control {
               margin-left: 2%;
+
               input[type="number"] {
                 text-align: center;
                 border: none;
@@ -160,6 +190,19 @@
                 background-color: darkgray;
                 color: white;
               }
+            }
+          }
+        }
+
+        .product-details {
+          .description, .size-guide, .exchange-return, .other-inquiry {
+            font-size: .9rem;
+            padding-block: 5px;
+            border-bottom: 1px solid #e3e3e3;
+            &-title {}
+            &-content {
+              font-size: .8rem;
+              padding: 5px 0 0 10px;
             }
           }
         }
@@ -189,7 +232,7 @@
               color: rgb(255, 255, 255);
             }
 
-            &.btn-add-favorite {
+            &.btn-add-wishlist {
               background-color: white;
               color: black;
               border: 1px solid #000;
@@ -255,26 +298,32 @@
           flex-direction: column;
 
           .selected-image-container {
-            width: 100vw;
-            height: 60vh;
-            margin-left: -10px;
+
+            .selected-image {
+              width: 100vw;
+              height: 60vh;
+              margin-left: -10px;
+            }
           }
 
           .image-wrapper {
             flex-direction: row;
             width: 100%;
             height: 100px;
-            margin: 0;
+            margin: 5px;
 
             .image-list {
               display: flex;
               flex-direction: row;
               overflow-x: auto;
-            }
 
-            .image-container {
-              width: 80px;
-              height: 96px;
+              .image-container {
+                width: 80px;
+                height: 96px;
+
+                &.selected {
+                }
+              }
             }
 
             .image-list-navigation {
@@ -293,20 +342,20 @@
 
         .product-info {
           justify-content: flex-start;
-          .product-title-row {
+          .title-row {
             font-size: 1rem;
             margin-bottom: 0;
 
-            .product-discount-per {
+            .discount-per {
               margin-right: 3px;
             }
 
-            .product-name {
+            .name {
               display: inline;
             }
           }
 
-          .product-price-row {
+          .price-row {
             font-size: 1rem;
 
             .price-container {
@@ -361,7 +410,7 @@
               width: 49%;
 
               &.btn-add-cart {}
-              &.btn-add-favorite {}
+              &.btn-add-wishlist {}
             }
           }
         }

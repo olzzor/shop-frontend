@@ -42,9 +42,7 @@
           <th>
             <select class="select-field" v-model="state.form.type">
               <option value="">전체</option>
-              <option v-for="nt in noticeTypes" :key="nt" :value="nt">
-                {{ nt }}
-              </option>
+              <option v-for="nt in noticeTypes" :key="nt.key" :value="nt.key">{{ nt.key }}</option>
             </select>
           </th>
 
@@ -72,9 +70,7 @@
           <th>
             <select class="select-field" v-model="state.form.status">
               <option value="">전체</option>
-              <option v-for="ns in noticeStatuses" :key="ns" :value="ns">
-                {{ lib.getNoticeStatusName(ns) }}
-              </option>
+              <option v-for="ns in noticeStatuses" :key="ns.key" :value="ns.key">{{ ns.description }}</option>
             </select>
           </th>
 
@@ -120,9 +116,7 @@
 
           <td class="column-notice-type">
             <select class="select-field" v-model="n.type" :disabled="!state.isModify[idx].value">
-              <option v-for="nt in noticeTypes" :key="nt" :value="nt">
-                {{ nt }}
-              </option>
+              <option v-for="nt in noticeTypes" :key="nt.key" :value="nt.key">{{ nt.key }}</option>
             </select>
           </td>
 
@@ -154,18 +148,16 @@
 
           <td class="column-notice-status">
             <select class="select-field" v-model="n.status" :disabled="!state.isModify[idx].value">
-              <option v-for="ns in noticeStatuses" :key="ns" :value="ns">
-                {{ lib.getNoticeStatusName(ns) }}
-              </option>
+              <option v-for="ns in noticeStatuses" :key="ns.key" :value="ns.key">{{ ns.description }}</option>
             </select>
           </td>
 
           <td class="column-notice-reg-date">
-            {{ lib.getFormattedDate(n.regDate, 'YYYY-MM-DD HH:mm:ss') }}
+            {{ formatter.getFormattedDate(n.regDate, 'YYYY-MM-DD HH:mm:ss') }}
           </td>
 
           <td class="column-notice-mod-date">
-            {{ lib.getFormattedDate(n.modDate, 'YYYY-MM-DD HH:mm:ss') }}
+            {{ formatter.getFormattedDate(n.modDate, 'YYYY-MM-DD HH:mm:ss') }}
           </td>
         </tr>
         </tbody>
@@ -189,9 +181,10 @@
 
 <script>
 import {onMounted, reactive, ref} from "vue";
-import axios from "axios";
 import dayjs from 'dayjs';
-import lib from "@/scripts/lib";
+import axios from "axios";
+import constants from "@/scripts/constants";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: 'NoticeList',
@@ -199,8 +192,8 @@ export default {
   setup() {
     const tableHeaders = ['구분', '제목', '메인 이미지', '슬라이더 표시', '슬라이더 이미지', '모달 표시', '모달 이미지', '상태', '등록 날짜', '변경 날짜'];
     const sortKey = ['type', 'title', 'status', 'isSliderImage', 'isModalImage', 'regDate', 'modDate'];
-    const noticeTypes = lib.noticeTypes;
-    const noticeStatuses = lib.noticeStatuses;
+    const noticeTypes = constants.NOTICE_TYPES;
+    const noticeStatuses = constants.NOTICE_STATUSES;
 
     const state = reactive({
       notices: [],
@@ -228,9 +221,9 @@ export default {
             + '\t' + '-'
             + '\t' + (data.isModalImage ? '표시' : '비표시')
             + '\t' + '-'
-            + '\t' + lib.getNoticeStatusName(data.status)
-            + '\t' + lib.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
-            + '\t' + lib.getFormattedDate(data.modDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + formatter.getNoticeStatusName(data.status)
+            + '\t' + formatter.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + formatter.getFormattedDate(data.modDate, 'YYYY-MM-DD HH:mm:ss')
             + '\n';
       });
 
@@ -372,7 +365,7 @@ export default {
     onMounted(load);
 
     return {
-      lib, noticeTypes, noticeStatuses,
+      formatter, noticeTypes, noticeStatuses,
       tableHeaders, sortKey, state,
       downloadCSV, clearSearchConditions, searchCondition, searchFull, sort, goToPage,
       toggleSelectAll, modify, changeNotices

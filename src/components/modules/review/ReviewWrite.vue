@@ -68,7 +68,7 @@ export default {
   name: "WriteReview",
   setup() {
     const route = useRoute();
-    const orderId = route.params.orderId;
+    const orderDetailId = route.params.orderDetailId;
     const hoveredStars = ref(0);
     const selectedStars = ref(0);
     const images = ref([]);
@@ -76,7 +76,7 @@ export default {
 
     const state = reactive({
       form: {
-        review: {orderId: orderId, rating: 0, title: "", content: ""},
+        review: {orderDetailId: orderDetailId, rating: 0, title: "", content: ""},
         files: [],
       }
     });
@@ -178,7 +178,7 @@ export default {
 
         }).then(() => {
           window.alert('작성되었습니다.');
-          router.push({name: 'Home'});
+          router.push({name: 'OrderDetailForCustomer', params: { id: route.params.orderId }});
 
         }).catch(error => {
           if (error.response) {

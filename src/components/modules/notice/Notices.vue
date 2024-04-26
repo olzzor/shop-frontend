@@ -13,7 +13,7 @@
           <div class="notice-title"><b>{{ n.title }}</b></div>
           <div class="notice-details">
             <div class="notice-type">{{ n.type }}</div>
-            <div class="notice-date">{{ lib.getFormattedDate(n.regDate, 'YYYY-MM-DD') }}</div>
+            <div class="notice-date">{{ formatter.getFormattedDate(n.regDate, 'YYYY-MM-DD') }}</div>
           </div>
         </div>
       </div>
@@ -27,7 +27,7 @@
 import {onMounted, reactive, watch} from "vue";
 import {useRoute} from "vue-router";
 import axios from "axios";
-import lib from "@/scripts/lib";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: 'Notices',
@@ -50,7 +50,7 @@ export default {
     watch(() => route.params.cat, load);
 
     return {
-      lib,
+      formatter,
       state,
     }
   }

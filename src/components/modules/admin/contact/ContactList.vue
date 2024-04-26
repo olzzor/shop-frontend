@@ -42,9 +42,7 @@
             <th>
               <select class="select-field" v-model="state.form.type">
                 <option value="">전체</option>
-                <option v-for="ct in contactTypes" :key="ct" :value="ct">
-                  {{ lib.getContactTypeName(ct) }}
-                </option>
+                <option v-for="ct in contactTypes" :key="ct.key" :value="ct.key">{{ ct.description }}</option>
               </select>
             </th>
 
@@ -56,9 +54,7 @@
             <th>
               <select class="select-field" v-model="state.form.status">
                 <option value="" disabled selected>문의 상태</option>
-                <option v-for="cs in contactStatuses" :key="cs" :value="cs">
-                  {{ lib.getContactStatusName(cs) }}
-                </option>
+                <option v-for="cs in contactStatuses" :key="cs.key" :value="cs.key">{{ cs.description }}</option>
               </select>
             </th>
 
@@ -98,9 +94,7 @@
 
             <td>
               <select class="select-field" v-model="contact.type" :disabled="!state.isModify[idx].value">
-                <option v-for="ct in contactTypes" :key="ct" :value="ct">
-                  {{ lib.getContactTypeName(ct) }}
-                </option>
+                <option v-for="ct in contactTypes" :key="ct.key" :value="ct.key">{{ ct.description }}</option>
               </select>
             </td>
 
@@ -120,13 +114,11 @@
 
             <td>
               <select class="select-field" v-model="contact.status" :disabled="!state.isModify[idx].value">
-                <option v-for="cs in contactStatuses" :key="cs" :value="cs">
-                  {{ lib.getContactStatusName(cs) }}
-                </option>
+                <option v-for="cs in contactStatuses" :key="cs.key" :value="cs.key">{{ cs.description }}</option>
               </select>
             </td>
 
-            <td>{{ lib.getFormattedDate(contact.regDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
+            <td>{{ formatter.getFormattedDate(contact.regDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
           </tr>
         </tbody>
       </table>
@@ -152,9 +144,10 @@
 
 <script>
 import {onMounted, reactive, ref} from "vue";
-import axios from "axios";
-import lib from "@/scripts/lib";
 import dayjs from "dayjs";
+import axios from "axios";
+import constants from "@/scripts/constants";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: 'ContactList',
@@ -162,8 +155,8 @@ export default {
   setup() {
     const tableHeaders = ['문의 사항', '제목', '문의자 이름', '문의자 이메일', '주문 번호', '상태', '작성 날짜'];
     const sortKey = ['type', 'title', 'inquirerName', 'inquirerEmail', 'orderNumber', 'status', 'regDate'];
-    const contactTypes = lib.contactTypes;
-    const contactStatuses = lib.contactStatuses;
+    const contactTypes = constants.CONTACT_TYPES;
+    const contactStatuses = constants.CONTACT_STATUSES;
 
     const state = reactive({
       contacts: [],
@@ -201,13 +194,13 @@ export default {
 
       tableDatas.forEach((data, idx) => {
         rows += (idx + 1)
-            + '\t' + lib.getContactTypeName(data.type)
+            + '\t' + formatter.getContactTypeName(data.type)
             + '\t' + data.title
             + '\t' + data.inquirerName
             + '\t' + data.inquirerEmail
             + '\t' + data.orderNumber
-            + '\t' + lib.getContactStatusName(data.status)
-            + '\t' + lib.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + formatter.getContactStatusName(data.status)
+            + '\t' + formatter.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
             + '\n';
       });
 
@@ -334,7 +327,7 @@ export default {
     onMounted(load);
 
     return {
-      lib, contactTypes, contactStatuses,
+      formatter, contactTypes, contactStatuses,
       tableHeaders, sortKey, state,
       sort, downloadCSV,
       searchFull, searchCondition, clearSearchConditions,

@@ -24,7 +24,7 @@ export default {
   name: 'Footer',
   data() {
     return {
-      instagramLink: "http://www.instagram.com/olzzor"
+      instagramLink: "http://www.instagram.com/vince_clothes_culture"
     }
   }
 }

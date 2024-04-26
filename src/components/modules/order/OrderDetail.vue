@@ -30,14 +30,21 @@
             <div class="product-details">
               {{ od.product.name }}<br>
               {{ od.productSize.size }}<br><br>
-              {{ lib.getFormattedNumber(calculateItemTotalPrice(od))}}원 (수량: {{ od.quantity }})
+              {{ formatter.getFormattedNumber(calculateItemTotalPrice(od))}}원 (수량: {{ od.quantity }})
             </div>
 
-            <div class="product-shipment">
-              <div class="shipment-status">{{lib.getShipmentStatusName(od.shipment.status)}}</div>
-              <div class="shipment-info">
-                {{ lib.getCourierCompanyName(od.shipment.courierCompany) }}<br>
-                {{ od.shipment.trackingNumber }} <!-- TODO: 링크 작성-->
+            <div class="product-interaction">
+              <div class="product-shipment">
+                <div class="shipment-status">{{formatter.getShipmentStatusName(od.shipment.status)}}</div>
+                <div class="shipment-info">
+                  {{ formatter.getCourierCompanyName(od.shipment.courierCompany) }}<br>
+                  {{ od.shipment.trackingNumber }} <!-- TODO: 링크 작성-->
+                </div>
+              </div>
+
+              <div v-if="state.isReviewable" class="product-review">
+                <button type="button" v-if="od.review" class="button btn-edit-review" @click="editReview(od.review.id)">리뷰 수정</button>
+                <button type="button" v-else class="button btn-write-review" @click="writeReview(od.id)">리뷰 작성</button>
               </div>
             </div>
           </div>
@@ -45,9 +52,9 @@
       </ul>
 
       <div class="pricing-summary">
-        상품 합계 {{ lib.getFormattedNumber(calculateOrderTotalPrice(state.order.orderDetails)) }}원<br>
-        배송비 {{ lib.getFormattedNumber(calculateShipmentPrice(state.order)) }}원<br>
-        합계 {{ lib.getFormattedNumber(state.order.paymentAmount) }}원
+        상품 합계 {{ formatter.getFormattedNumber(calculateOrderTotalPrice(state.order.orderDetails)) }}원<br>
+        배송비 {{ formatter.getFormattedNumber(calculateShipmentPrice(state.order)) }}원<br>
+        합계 {{ formatter.getFormattedNumber(state.order.paymentAmount) }}원
       </div>
     </div>
   </div>
@@ -56,8 +63,9 @@
 <script>
 import {onMounted, reactive} from "vue";
 import axios from "axios";
-import lib from "@/scripts/lib";
+import formatter from "@/scripts/formatter";
 import {useRoute} from "vue-router";
+import router from "@/scripts/router";
 
 export default {
   name: 'OrderDetail',
@@ -67,6 +75,7 @@ export default {
     const orderId = route.params.id;
     const state = reactive({
       order: {},
+      isReviewable: false,
     });
 
     const calculateItemTotalPrice = (orderDetail) => {
@@ -83,18 +92,34 @@ export default {
       return Math.max(order.paymentAmount - calculateOrderTotalPrice(order.orderDetails), 0);
     };
 
+    const canWriteReview = (status) => {
+      // 주문 상태가 '결제 완료', '취소 요청', '취소 완료'인 경우에, 리뷰를 작성할 수 있음
+      const reviewableStatuses = ['PAYMENT_COMPLETED', 'CANCEL_REQUESTED', 'CANCEL_COMPLETED'];
+      return reviewableStatuses.includes(status);
+    };
+
+    const writeReview = (orderDetailId) => {
+      router.push({name: 'WriteReview', params: {orderId: orderId, orderDetailId: orderDetailId}});
+    };
+
+    const editReview = (reviewId) => {
+      router.push({name: 'EditReview', params: {orderId: orderId, reviewId: reviewId}});
+    };
+
     const load = () => {
       axios.get(`/api/order/detail/${orderId}`).then(({data}) => {
         state.order = data;
+        state.isReviewable = canWriteReview(data.status);
       });
     }
 
     onMounted(load);
 
     return {
-      lib,
+      formatter,
       state,
-      calculateItemTotalPrice , calculateOrderTotalPrice, calculateShipmentPrice
+      calculateItemTotalPrice , calculateOrderTotalPrice, calculateShipmentPrice,
+      writeReview, editReview,
     }
   }
 }

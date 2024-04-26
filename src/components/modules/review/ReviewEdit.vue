@@ -63,6 +63,7 @@ import {nextTick, onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import {useRoute} from "vue-router";
 import {isMobile, isTablet} from "@/scripts/mixin";
+import router from "@/scripts/router";
 
 export default {
   name: "EditReview",
@@ -180,7 +181,7 @@ export default {
     }
 
     const load = () => {
-      axios.get(`/api/review/${route.params.reviewId}`).then(({data}) => {
+      axios.get(`/api/review/private/${route.params.reviewId}`).then(({data}) => {
         setLoadData(data);
         autoGrow();
       });
@@ -231,6 +232,7 @@ export default {
 
         }).then(() => {
           window.alert('리뷰가 수정되었습니다.');
+          router.push({name: 'OrderDetailForCustomer', params: { id: route.params.orderId }});
 
         }).catch(error => {
           if (error.response) {

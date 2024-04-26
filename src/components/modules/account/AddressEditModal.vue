@@ -96,8 +96,8 @@ export default {
       state.form.city = data.city;
       state.form.address1 = data.address1;
       state.form.address2 = data.address2;
-      state.form.isApartment = data.apartment;
-      state.form.isDefault = data.default;
+      state.form.isApartment = data.isApartment;
+      state.form.isDefault = data.isDefault;
     };
 
     const searchAddress = () => {

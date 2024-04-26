@@ -194,9 +194,10 @@ export default {
     const login = () => {
       if (checkInput()) {
         axios.post("/api/user/login", state.form).then(({data}) => {
-          store.commit('setAccountId', data.id);
-          store.commit('setAccountRole', data.role);
-          store.commit('setAccountAuthProvider', data.authProvider);
+          // store.commit('setAccountId', data.id);
+          // store.commit('setAccountRole', data.role);
+          // store.commit('setAccountAuthProvider', data.authProvider);
+          store.dispatch('updateUserInfo', {id: data.id, role: data.role, authProvider: data.authProvider,});
 
           // 이메일 저장 체크 박스가 선택된 경우, 로컬 스토리지에 해당 이메일 주소 저장
           if (state.saveEmail) {

@@ -58,11 +58,12 @@
     position: relative;
 
     .image-container {
-      display: block;
+      //display: block;
       width: 100%;
       height: 500px;
-      background-size: cover;
-      background-position: center;
+      object-fit: cover;
+      //background-size: cover;
+      //background-position: center;
     }
 
     button {

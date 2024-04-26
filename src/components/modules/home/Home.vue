@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-    <AvailableProducts :products="state.products" :isSearched="state.isSearched"/>
+    <Products :products="state.products" :isSearched="state.isSearched" @sort-change="handleSortOptionChange"/>
     <button type="button" class="btn-load-more" v-if="state.page.currentPage < state.page.totalPages" @click="loadMore">VIEW MORE</button>
+    <RecommendedProducts />
     <RecentlyViewedProducts />
   </div>
 
@@ -15,25 +16,43 @@
 <script>
 import {onMounted, reactive, watch} from "vue";
 import {onBeforeRouteLeave, useRoute} from "vue-router";
+import {isMobile, isTablet} from "@/scripts/mixin";
 import axios from "axios";
-import AvailableProducts from "@/components/modules/product/ProductsAvailable.vue";
+import store from "@/scripts/store";
+import formatter from "@/scripts/formatter";
+import Products from "@/components/modules/product/Products.vue";
+import RecommendedProducts from "@/components/modules/product/ProductsRecommended.vue";
 import RecentlyViewedProducts from "@/components/modules/product/ProductsRecentlyViewed.vue";
 import NoticeModal from "@/components/modules/notice/NoticeModal.vue";
-import {isMobile, isTablet} from "@/scripts/mixin";
 
 export default {
   name: "Home",
-  components: {AvailableProducts, RecentlyViewedProducts, NoticeModal},
+  components: {Products, RecommendedProducts, RecentlyViewedProducts, NoticeModal},
   setup() {
     const route = useRoute();
+    const flattenCategories = formatter.getFlattenCategories();
     const state = reactive({
       isSearched: false,
+      sortOption: 'regDate,desc', // 기본 정렬 옵션
       products: [],
       page: {pageSize: isMobile()? 2: isTablet()? 3: 4, currentPage: 1, totalPages: 0},
       notices: [],
       currentNoticeModalIndex: 0,
       showNoticeModalOverlay: false, // 복수 공지 모달의 오버레이 중첩 예방을 위해 추가
     });
+
+    const handleSortOptionChange = (newSortOption) => {
+      state.sortOption = newSortOption;
+      state.page.currentPage = 1;
+
+      if (route.query.search) {
+        getProductsByQuery(route.query.search);
+      } else if (route.params.cat) {
+        getProductsByCategory(route.params.cat);
+      } else {
+        getProducts();
+      }
+    };
 
     const handleShowNoticeModalOverlay = () => {
       state.showNoticeModalOverlay = true;
@@ -48,15 +67,15 @@ export default {
     };
 
     const getProducts = () => {
-      axios.get(`/api/product/all?page=0&size=${state.page.pageSize}&sort=regDate,desc`).then(({data}) => {
+      axios.get(`/api/product/all?page=0&size=${state.page.pageSize}&sort=${state.sortOption}`).then(({data}) => {
         state.isSearched = false;
         state.products = data.products;
         state.page.totalPages = data.totalPages;
       });
     };
 
-    const getProductsByCategory = (categoryCode) => {
-      axios.get(`/api/product/category/${categoryCode}?page=0&size=${state.page.pageSize}&sort=regDate,desc`).then(({data}) => {
+    const getProductsByCategory = (categorySlug) => {
+      axios.get(`/api/product/category/${categorySlug}?page=0&size=${state.page.pageSize}&sort=${state.sortOption}`).then(({data}) => {
         state.isSearched = false;
         state.products = data.products;
         state.page.totalPages = data.totalPages;
@@ -64,7 +83,7 @@ export default {
     };
 
     const getProductsByQuery = (searchQuery) => {
-      axios.get(`/api/product/search/${searchQuery}?page=0&size=${state.page.pageSize}&sort=regDate,desc`).then(({data}) => {
+      axios.get(`/api/product/search/${searchQuery}?page=0&size=${state.page.pageSize}&sort=${state.sortOption}`).then(({data}) => {
         state.isSearched = true;
         state.products = data.products;
         state.page.totalPages = data.totalPages;
@@ -78,10 +97,15 @@ export default {
       }
     });
 
-    watch(() => route.params.cat, (newCategoryCode) => {
-      if (newCategoryCode && !route.query.search) {
+    watch(() => route.params.cat, (newCategorySlug) => {
+      if (newCategorySlug && !route.query.search) {
+        // 카테고리 슬러그를 기반으로 카테고리 정보를 찾아 스토어를 업데이트
+        const categoryInfo = flattenCategories.find(c => c.slug === newCategorySlug) || {code: 0, name: '', slug: ''};
+        store.dispatch('updateCurrentCategory', categoryInfo);
+
+        // 카테고리별 상품 목록을 가져오는 함수 호출
         state.page.currentPage = 1;
-        getProductsByCategory(newCategoryCode);
+        getProductsByCategory(newCategorySlug);
       }
     }, { immediate: true });
 
@@ -98,9 +122,7 @@ export default {
         state.notices = data;
       });
 
-      // if (!route.params.cat && store.state.searchResults.length === 0) {
       getProducts();
-      // }
     };
 
     const loadMore = () => {
@@ -109,14 +131,14 @@ export default {
       let apiEndpoint;
       if (route.query.search) { // 검색어에 따른 추가 데이터 로드
         const searchQuery = route.query.search;
-        apiEndpoint = `/api/product/search/${searchQuery}?page=${state.page.currentPage - 1}&size=${state.page.pageSize}&sort=regDate,desc`;
+        apiEndpoint = `/api/product/search/${searchQuery}?page=${state.page.currentPage - 1}&size=${state.page.pageSize}&sort=${state.sortOption}`;
 
       } else if (route.params.cat) { // 카테고리별 추가 데이터 로드
-        const code = route.params.cat;
-        apiEndpoint = `/api/product/category/${code}?page=${state.page.currentPage - 1}&size=${state.page.pageSize}&sort=regDate,desc`;
+        const slug = route.params.cat;
+        apiEndpoint = `/api/product/category/${slug}?page=${state.page.currentPage - 1}&size=${state.page.pageSize}&sort=${state.sortOption}`;
 
       } else { // 전체 상품의 추가 데이터 로드
-        apiEndpoint = `/api/product/all?page=${state.page.currentPage - 1}&size=${state.page.pageSize}&sort=regDate,desc`;
+        apiEndpoint = `/api/product/all?page=${state.page.currentPage - 1}&size=${state.page.pageSize}&sort=${state.sortOption}`;
       }
 
       axios.get(apiEndpoint).then(({data}) => {
@@ -146,7 +168,10 @@ export default {
 
     return {
       state,
-      handleShowNoticeModalOverlay, handleNoticeModalClose, loadMore
+      handleSortOptionChange,
+      handleShowNoticeModalOverlay, handleNoticeModalClose,
+      // sortProducts,
+      loadMore,
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="cart">
-    <div class="title">장바구니</div>
+    <div class="title">카트</div>
 
     <div class="content">
       <div v-if="state.cartProducts.length > 0">
@@ -19,25 +19,24 @@
                   </div>
 
                   <div class="product-details">
-                    <div class="details-wrapper">
-                      <div class="product-title-row">
-                        <span class="title-container">{{ cp.product.name }}</span>
-                        <span class="discount-container" v-if="cp.product.discountPer">{{ cp.product.discountPer }}%↓</span>
-                      </div>
+                    <div class="title-row">
+                      <span class="new-label" v-if="isNew(cp.product.regDate)">NEW</span>
+                      <span class="discount-per" v-if="cp.product.discountPer">{{ cp.product.discountPer }}%↓</span>
+                      <span class="name">{{ cp.product.name }}</span>
+                    </div>
 
-                      <div class="product-size-row">
-                        <div class="size-container">
-                          <small>{{ cp.productSize.size }}</small>
-                        </div>
+                    <div class="size-row">
+                      <div class="size-container">
+                        <small>{{ cp.productSize.size }}</small>
                       </div>
+                    </div>
 
-                      <div class="product-price-row">
-                        <div class="price-container">
-                          <small class="original-price"
-                                 :class="{ 'sale': cp.product.discountPer }">{{ lib.getFormattedNumber(cp.product.price) }}원</small>
-                          <small class="discounted-price"
-                                 v-if="cp.product.discountPer"> {{ lib.getFormattedNumber(price.getDiscountedPrice(cp.product)) }}원</small>
-                        </div>
+                    <div class="price-row">
+                      <div class="price-container">
+                        <small class="original-price"
+                               :class="{ 'sale': cp.product.discountPer }">{{ formatter.getFormattedNumber(cp.product.price) }}원</small>
+                        <small class="discounted-price"
+                               v-if="cp.product.discountPer"> {{ formatter.getFormattedNumber(price.getDiscountedPrice(cp.product)) }}원</small>
                       </div>
                     </div>
                   </div>
@@ -56,30 +55,30 @@
                     </div>
                   </div>
 
-                  <div class="subtotal-coupon-container">
-                    <label>쿠폰</label>
-                    <div class="label-content">
-                      <select class="select-field" v-model="cp.selectedCoupon" @change="updateCoupon(cp)">
-                        <option v-for="ac in cp.availableCoupons" :key="ac.id" :value="ac.id">
-                          {{ ac.name }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
+<!--                  <div class="subtotal-coupon-container">-->
+<!--                    <label>쿠폰</label>-->
+<!--                    <div class="label-content">-->
+<!--                      <select class="select-field" v-model="cp.selectedCoupon" @change="updateCoupon(cp)">-->
+<!--                        <option v-for="ac in cp.availableCoupons" :key="ac.id" :value="ac.id">-->
+<!--                          {{ ac.name }}-->
+<!--                        </option>-->
+<!--                      </select>-->
+<!--                    </div>-->
+<!--                  </div>-->
 
                   <div class="subtotal-price-container">
                     <label>소계</label>
                     <div class="label-content">
-                      <span>{{ lib.getFormattedNumber(price.getFinalDiscountedPrice(cp) * cp.quantity) }}원</span><br>
+                      <span>{{ formatter.getFormattedNumber(price.getFinalDiscountedPrice(cp) * cp.quantity) }}원</span><br>
                       <small v-if="price.getFinalDiscountPrice(cp) > 0" class="discount-text">
-                        (할인 금액 <span class="amount">{{ lib.getFormattedNumber(price.getFinalDiscountPrice(cp) * cp.quantity) }}원</span>)
+                        (할인 금액 <span class="amount">{{ formatter.getFormattedNumber(price.getFinalDiscountPrice(cp) * cp.quantity) }}원</span>)
                       </small>
                     </div>
                   </div>
 
                   <div class="action-icons">
-                    <i class="bi bi-heart-fill" v-if="cp.favoriteInfo.favorite"  @click="removeFavorite(cp.favoriteInfo.id)" :disabled="state.isSubmitting"></i>
-                    <i class="bi bi-heart" v-else @click="addFavorite(cp.productSize.id)" :disabled="state.isSubmitting"></i>
+                    <i class="bi bi-heart-fill" v-if="cp.wishlistInfo.isWishlist"  @click="removeFromWishlist(cp.wishlistInfo.id)" :disabled="state.isSubmitting"></i>
+                    <i class="bi bi-heart" v-else @click="addToWishlist(cp.productSize.id)" :disabled="state.isSubmitting"></i>
                     <i class="bi bi-trash3" @click="removeFromCart(cp.id)" :disabled="state.isSubmitting"></i>
                   </div>
                 </div>
@@ -102,7 +101,7 @@
         </div>
       </div>
 
-      <div class="content no-cart-data" v-else>장바구니가 비어있습니다.</div>
+      <div class="content no-cart-data" v-else>카트가 비어있습니다.</div>
 
     </div>
   </div>
@@ -110,8 +109,9 @@
 
 <script>
 import {computed, reactive} from "vue";
+import dayjs from "dayjs";
 import axios from "axios";
-import lib from "@/scripts/lib";
+import formatter from "@/scripts/formatter";
 import store from "@/scripts/store";
 import router from "@/scripts/router";
 import price from "@/scripts/price";
@@ -127,14 +127,20 @@ export default {
       form: {productId: 0, quantity: 0},
     });
 
-    // 장바구니에 판매 중이지 않은 상품이 있는지 확인
+    // 카트에 판매 중이지 않은 상품이 있는지 확인
     const hasUnavailableProducts = computed(() => {
       return state.cartProducts.some(cp => cp.product.status !== 'ON_SALE');
     });
-    // 장바구니 상품의 수량이 판매가능한 재고인지 확인
+    // 카트 상품의 수량이 판매가능한 재고인지 확인
     const hasOverQuantityProducts = computed(() => {
       return state.cartProducts.some(cp => cp.quantity > cp.productSize.quantity);
     });
+
+    const isNew = (regDate) => {
+      const today = dayjs();
+      const registeredDate = dayjs(regDate);
+      return registeredDate.isAfter(today.subtract(7, 'days'));
+    };
 
     const load = () => {
       axios.get("/api/cart/get").then(({data}) => {
@@ -180,8 +186,8 @@ export default {
       });
     };
 
-    const addFavorite = (productSizeId) => {
-      axios.post(`/api/favorite/add/${productSizeId}`).then(() => {
+    const addToWishlist = (productSizeId) => {
+      axios.post(`/api/wishlist/add/${productSizeId}`).then(() => {
         load();
 
       }).catch(error => {
@@ -194,8 +200,8 @@ export default {
       });
     };
 
-    const removeFavorite = (favoriteId) => {
-      axios.delete(`/api/favorite/delete/${favoriteId}`).then(() => {
+    const removeFromWishlist = (wishlistId) => {
+      axios.delete(`/api/wishlist/delete/${wishlistId}`).then(() => {
         load();
       })
     };
@@ -232,10 +238,10 @@ export default {
     load();
 
     return {
-      lib, price,
+      formatter, price,
       state, hasUnavailableProducts, hasOverQuantityProducts,
-      updateQuantity, updateCoupon,
-      addFavorite, removeFavorite, removeFromCart, checkout,
+      isNew, updateQuantity, updateCoupon,
+      addToWishlist, removeFromWishlist, removeFromCart, checkout,
     };
   }
 }

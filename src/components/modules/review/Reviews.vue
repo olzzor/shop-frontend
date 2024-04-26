@@ -32,16 +32,14 @@
 
         <div class="review-detail">
           <div class="grid">
-<!--            <div class="item" v-for="r in displayedReviewImages" :key="r.id">-->
             <div class="item" v-for="r in state.reviews" :key="r.id">
-
               <div class="review">
                 <div class="product-image-section">
-                  <router-link :to="{ name: 'ProductDetail', params: { id: r.productSizes[currentProductImageIndices[r.id] || 0].product.id }}">
-                    <span class="product-image-container" :style="{backgroundImage: `url(${r.productSizes[currentProductImageIndices[r.id] || 0].product.productImages[0].fileUrl})`}"></span>
+                  <router-link :to="{ name: 'ProductDetail', params: { id: r.productSizes[0].product.id }}">
+                    <img class="product-image-container" :src="`${r.productSizes[0].product.productImages[0].fileUrl}`" />
                   </router-link>
-                  <button type="button" class="btn-product-image-prev" v-if="r.productSizes.length > 1" @click="changeProductImage(r.id, -1)">◀</button>
-                  <button type="button" class="btn-product-image-next" v-if="r.productSizes.length > 1" @click="changeProductImage(r.id, 1)">▶</button>
+<!--                  <button type="button" class="btn-product-image-prev" v-if="r.productSizes.length > 1" @click="changeProductImage(r.id, -1)">◀</button>-->
+<!--                  <button type="button" class="btn-product-image-next" v-if="r.productSizes.length > 1" @click="changeProductImage(r.id, 1)">▶</button>-->
                 </div>
 
                 <div class="review-section">
@@ -56,13 +54,14 @@
                   <div class="content-row" @click="showReviewModal(r.id)">
                     <div class="review-title">{{ r.title }}</div>
                     <div class="review-content">
-                      <p v-html="lib.convertLineBreaks(r.content)"></p>
+                      <p v-html="formatter.convertLineBreaks(r.content)"></p>
                     </div>
                   </div>
 
                   <div class="review-image-row" v-if="r.reviewImages && r.reviewImages.length" @click="showReviewModal(r.id)">
                     <div v-for="(ri, idx) in displayReviewImages(r.id)" :key="idx">
-                      <span class="review-image-container" :style="{backgroundImage: `url(${ri.fileUrl})`}"></span>
+<!--                      <span class="review-image-container" :style="{backgroundImage: `url(${ri.fileUrl})`}"></span>-->
+                      <img class="review-image-container" :src="`${ri.fileUrl}`" />
                     </div>
                     <button type="button" class="btn-review-image-prev" v-if="r.reviewImages.length > 5" @click="changeReviewImage($event, r.id, -1)">◀</button>
                     <button type="button" class="btn-review-image-next" v-if="r.reviewImages.length > 5" @click="changeReviewImage($event, r.id, 1)">▶</button>
@@ -89,7 +88,7 @@
 <script>
 import {onMounted, reactive} from "vue";
 import axios from "axios";
-import lib from "@/scripts/lib";
+import formatter from "@/scripts/formatter";
 import ReviewModal from "@/components/modules/review/ReviewModal.vue";
 
 export default {
@@ -97,7 +96,6 @@ export default {
   components: {ReviewModal},
   props: {productId: {type: Number, required: true}},
   setup() {
-    const currentProductImageIndices = reactive({});
     const currentReviewImageIndices = reactive({});
     const state = reactive({
       showReviewModal: false, selectedReviewId: null,
@@ -133,12 +131,13 @@ export default {
       return displayImages;
     };
 
-    const changeProductImage = (reviewId, direction) => {
-      const totalImages = state.reviews.find(r => r.id === reviewId).productSizes.length;
-      const currentIndex = currentProductImageIndices[reviewId] || 0;
-      const nextIndex = (currentIndex + direction + totalImages) % totalImages;
-      currentProductImageIndices[reviewId] = nextIndex;
-    };
+    // 20240416 삭제
+    // const changeProductImage = (reviewId, direction) => {
+    //   const totalImages = state.reviews.find(r => r.id === reviewId).productSizes.length;
+    //   const currentIndex = currentProductImageIndices[reviewId] || 0;
+    //   const nextIndex = (currentIndex + direction + totalImages) % totalImages;
+    //   currentProductImageIndices[reviewId] = nextIndex;
+    // };
 
     const changeReviewImage = (event, reviewId, direction) => {
       event.stopPropagation(); // 이벤트 버블링 중단
@@ -178,11 +177,11 @@ export default {
     onMounted(load);
 
     return {
-      lib,
+      formatter,
       state,
-      currentProductImageIndices, currentReviewImageIndices,
+      currentReviewImageIndices,
       showReviewModal,
-      displayReviewImages, changeProductImage, changeReviewImage,
+      displayReviewImages, changeReviewImage,
       load, loadMore
     }
   }

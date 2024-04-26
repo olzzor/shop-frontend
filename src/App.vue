@@ -33,9 +33,10 @@ export default {
 
     const check = () => {
       axios.get("/api/user/check").then(({data}) => {
-        store.commit("setAccountId", data.id || 0);
-        store.commit("setAccountRole", data.role || '');
-        store.commit('setAccountAuthProvider', data.authProvider || '');
+        // store.commit("setAccountId", data.id || 0);
+        // store.commit("setAccountRole", data.role || '');
+        // store.commit('setAccountAuthProvider', data.authProvider || '');
+        store.dispatch('updateUserInfo', {id: data.id || 0, role: data.role || '', authProvider: data.authProvider || '',});
       });
     };
 

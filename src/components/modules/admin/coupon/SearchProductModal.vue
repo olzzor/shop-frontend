@@ -12,7 +12,7 @@
             <th>
               <select class="select-field" v-model="state.form.categoryCode">
                 <option value="">전체</option>
-                <option v-for="cc in categoryCodes" :key="cc" :value="cc">{{ lib.getCategoryName(cc) }}</option>
+                <option v-for="fc in flattenCategories" :key="fc.code" :value="fc.code">{{ fc.name }}</option>
               </select>
             </th>
             <th><input type="text" class="input-field" v-model="state.form.name" @keyup.enter="searchCondition"></th>
@@ -20,7 +20,7 @@
             <th><input type="text" class="input-field" v-model="state.form.discountPer" @keyup.enter="searchCondition"></th>
             <th>
               <select class="select-field" v-model="state.form.status">
-                <option v-for="s in productStatuses" :key="s" :value="s">{{ lib.getProductStatusName(s) }}</option>
+                <option v-for="ps in productStatuses" :key="ps.key" :value="ps.key">{{ ps.description }}</option>
               </select>
             </th>
           </tr>
@@ -36,11 +36,11 @@
           <tr class="content" v-for="(product, idx) in state.products" :key="idx">
             <td class="column-check-box"><input type="checkbox" :name="'productSelection'" :value="product" v-model="state.selectedProducts"></td>
             <td class="column-no">{{ idx + 1 }}</td>
-            <td class="column-product-category">{{ lib.getCategoryName(product.category.code) }}</td>
+            <td class="column-product-category">{{ product.category.name }}</td>
             <td class="column-product-name">{{ product.name }}</td>
             <td class="column-product-price">{{ product.price }}</td>
             <td class="column-product-discount-per">{{ product.discountPer }}</td>
-            <td class="column-product-status">{{ lib.getProductStatusName(product.status) }}</td>
+            <td class="column-product-status">{{ formatter.getProductStatusName(product.status) }}</td>
           </tr>
         </tbody>
       </table>
@@ -63,23 +63,24 @@
 
 <script>
 import {reactive} from "vue";
-import lib from "@/scripts/lib";
 import axios from "axios";
+import constants from "@/scripts/constants";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: "SearchProductModal",
   props: {show: Boolean},
   setup(props, {emit}) {
     const tableHeaders = ['카테고리', '이름', '가격', '할인율', '상태'];
-    const categoryCodes = lib.categoryCodes;
-    const productStatuses = lib.productStatuses;
+    const flattenCategories = formatter.getFlattenCategories();
+    const productStatuses = constants.PRODUCT_STATUSES;
 
     const state = reactive({
       products: [],
       selectedProducts: [],
       form: {categoryCode: '', code: '', name: '', price: '', discountPer: '', status: '',},
       page: {pageSize: 5, currentPage: 1, totalPages: 0,},
-    })
+    });
 
     const searchCondition = () => {
       state.page.currentPage = 1;
@@ -124,8 +125,9 @@ export default {
     }
 
     return {
-      lib,
-      state, tableHeaders, productStatuses, categoryCodes,
+      formatter,
+      flattenCategories,
+      state, tableHeaders, productStatuses,
       goToPage, searchCondition, select, cancel, closeModal
     }
   }

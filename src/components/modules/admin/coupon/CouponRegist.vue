@@ -11,7 +11,7 @@
         <div class="select-container">
           <select class="select-field" id="coupon-type" v-model="state.form.type" @keyup.enter="createCoupon">
             <option disabled value="">유형을 선택해주세요.</option>
-            <option v-for="ct in couponTypes" :key="ct" :value="ct">{{ lib.getCouponTypeName(ct) }}</option>
+            <option v-for="ct in couponTypes" :key="ct.key" :value="ct.key">{{ ct.description }}</option>
           </select>
           <div class="error-message" v-if="state.errorMessage.type">{{ state.errorMessage.type }}</div>
         </div>
@@ -57,7 +57,7 @@
           <div class="discount-wrapper">
             <select class="select-field" :class="{ 'input-error': state.errorMessage.discountType }"
                     v-model="state.form.discountType" @keyup.enter="createCoupon">
-              <option v-for="type in discountTypes" :key="type" :value="type">{{ lib.getDiscountTypeName(type) }}</option>
+              <option v-for="dt in discountTypes" :key="dt.key" :value="dt.key">{{ dt.description }}</option>
             </select>
             <input type="number" min="0"  class="input-field" v-model.number="state.form.discountValue">
           </div>
@@ -67,32 +67,31 @@
       <div class="target-container">
         <label class="input-label" for="coupon-target">대상</label>
         <div class="input-container">
-          <div class="target-type">
-            <input type="radio" v-model="state.targetType" value="CATEGORY"/>카테고리<br>
-            <input type="radio" v-model="state.targetType" value="PRODUCT"/>상품
-          </div>
+          <div class="target-category-product">
+            <div class="target-type">
+              <input type="radio" v-model="state.targetType" value="CATEGORY"/>카테고리<br>
+              <input type="radio" v-model="state.targetType" value="PRODUCT"/>상품
+            </div>
 
-          <div class="select-target">
-            <div class="target-category" v-if="state.targetType === 'CATEGORY'">
-              <input type="checkbox" v-model="selectedAll" @change="toggleAllCategories"/>
-              <label><b>전체 선택</b></label>
-              <div v-for="cc in categoryCodes" :key="cc">
-                <input type="checkbox" :value="cc" :class="{ 'input-error': state.errorMessage.target }"
-                       v-model="state.form.categories" @keyup.enter="createCoupon"/>
-                <label>{{ lib.getCategoryName(cc) }}</label>
+            <div class="select-target">
+              <div class="target-category" v-if="state.targetType === 'CATEGORY'">
+                <div v-for="sc in state.selectedCategories" :key="sc.code">{{ sc.name }}</div>
+                <button type="button" class="btn-select-category" @click="showSearchCategoryModal = true">선택</button>
+              </div>
+
+              <div class="target-product" v-else>
+                <div v-for="sp in state.selectedProducts" :key="sp.id">{{ sp.name }}</div>
+                <button type="button" class="btn-select-product" @click="showSearchProductModal = true">선택</button>
               </div>
             </div>
-
-            <div class="target-product" v-else>
-              <div v-for="sp in state.selectedProducts" :key="sp.id">{{ sp.name }}</div>
-              <button type="button" class="btn-select-product" @click="showSearchProductModal = true">선택</button>
-            </div>
           </div>
 
-          <div class="target-user">유저</div>
-          <div class="select-target">
-            <div v-for="su in state.selectedUsers" :key="su.id">{{ su.email }}</div>
-            <button type="button" class="btn-select-user" @click="showSearchUserModal = true">선택</button>
+          <div class="target-user">
+            <div class="target-type">유저</div>
+            <div class="select-target">
+              <div v-for="su in state.selectedUsers" :key="su.id">{{ su.email }}</div>
+              <button type="button" class="btn-select-user" @click="showSearchUserModal = true">선택</button>
+            </div>
           </div>
 
           <div class="error-message" v-if="state.errorMessage.target">{{ state.errorMessage.target }}</div>
@@ -115,7 +114,7 @@
         <label class="input-label" for="coupon-status">상태</label>
         <div class="select-container">
           <select class="select-field" id="coupon-status" v-model="state.form.status" @keyup.enter="createCoupon">
-            <option v-for="cs in couponStatuses" :key="cs" :value="cs">{{ lib.getCouponStatusName(cs) }}</option>
+            <option v-for="cs in couponStatuses" :key="cs.key" :value="cs.key">{{ cs.description }}</option>
           </select>
           <div class="error-message" v-if="state.errorMessage.status">{{ state.errorMessage.status }}</div>
         </div>
@@ -123,33 +122,38 @@
     </div>
   </div>
 
+  <SearchCategoryModal :show="showSearchCategoryModal" @close="showSearchCategoryModal = false" @category-selected="handleCategorySelected"></SearchCategoryModal>
   <SearchProductModal :show="showSearchProductModal" @close="showSearchProductModal = false" @product-selected="handleProductSelected"></SearchProductModal>
   <SearchUserModal :show="showSearchUserModal" @close="showSearchUserModal = false" @user-selected="handleUserSelected"></SearchUserModal>
 
 </template>
 
 <script>
-import {computed, nextTick, onMounted, reactive, ref} from "vue";
+import {nextTick, onMounted, reactive, ref} from "vue";
 import axios from "axios";
-import lib from "@/scripts/lib";
+import constants from "@/scripts/constants";
+import formatter from "@/scripts/formatter";
+import SearchCategoryModal from "@/components/modules/admin/coupon/SearchCategoryModal.vue";
 import SearchProductModal from "@/components/modules/admin/coupon/SearchProductModal.vue";
 import SearchUserModal from "@/components/modules/admin/coupon/SearchUserModal.vue";
 
 export default {
   name: "CouponRegist",
-  components: {SearchProductModal, SearchUserModal},
+  components: {SearchCategoryModal, SearchProductModal, SearchUserModal},
   setup() {
-    const categoryCodes = lib.categoryCodes;
-    const discountTypes = lib.discountTypes;
-    const couponTypes = lib.couponTypes;
-    const couponStatuses = lib.couponStatuses;
+    const discountTypes = constants.DISCOUNT_TYPES;
+    const couponTypes = constants.COUPON_TYPES;
+    const couponStatuses = constants.COUPON_STATUSES;
 
+    const showSearchCategoryModal = ref(false);
     const showSearchProductModal = ref(false);
     const showSearchUserModal = ref(false);
+
     const state = reactive({
       isSubmitting: false,
       form: {type: '', code: '', name: '', detail: '', minAmount: 0, discountType: '', discountValue: 0, startValidDate: '', endValidDate: '', categories: [], products: [], users: [], status: '',},
       targetType: 'CATEGORY', // 'CATEGORY' or 'PRODUCT'
+      selectedCategories: [],
       selectedProducts: [],
       selectedUsers: [],
       errorMessage: {},
@@ -163,9 +167,27 @@ export default {
         categories: [], products: [], users: [],
         status: '',
       };
+      state.selectedCategories = [];
       state.selectedProducts = [];
       state.selectedUsers = [];
       state.errorMessage = {};
+    };
+
+    const handleCategorySelected = (selectedCategories) => {
+      if (selectedCategories && selectedCategories.length > 0) { // 선택된 상품이 있을 경우
+        state.selectedCategories = selectedCategories.map(selectedCategory => {
+          return {
+            code: selectedCategory.code,
+            name: selectedCategory.name
+          };
+        });
+
+      } else { // 선택된 카테고리가 없거나 취소 버튼을 클릭한 경우
+        state.selectedCategories = [];
+      }
+
+      state.form.categories = state.selectedCategories.map(selectedCategory => selectedCategory.code);
+      showSearchCategoryModal.value = false;
     };
 
     const handleProductSelected = (selectedProducts) => {
@@ -200,23 +222,6 @@ export default {
 
       state.form.users = state.selectedUsers.map(selectedUser => selectedUser.id);
       showSearchUserModal.value = false;
-    };
-
-    const selectedAll = computed({
-      get: () => {
-        return state.form.categories.length === categoryCodes.length;
-      },
-      set: (e) => {
-        state.form.categories = e ? categoryCodes : [];
-      },
-    });
-
-    const toggleAllCategories = () => {
-      if (selectedAll.value) {
-        state.form.categories = [...categoryCodes];
-      } else {
-        state.form.categories = [];
-      }
     };
 
     const checkInput = () => {
@@ -323,6 +328,12 @@ export default {
       }
     };
 
+    const getFlattenCategories = () => {
+      return formatter.getFlattenCategories().map(cat => {
+        return { code: cat.code, name: cat.name };
+      });
+    };
+
     const autoGrow = () => {
       nextTick(() => {
         const textarea = document.querySelector('#coupon-detail');
@@ -331,14 +342,19 @@ export default {
       });
     };
 
-    onMounted(autoGrow);
+    const load = () => {
+      state.form.categories = getFlattenCategories();
+      autoGrow();
+    };
+
+    onMounted(load);
 
     return {
-      lib, categoryCodes, discountTypes, couponTypes, couponStatuses,
-      showSearchProductModal, showSearchUserModal,
+      discountTypes, couponTypes, couponStatuses,
+      showSearchCategoryModal, showSearchProductModal, showSearchUserModal,
       state,
-      handleProductSelected, handleUserSelected,
-      autoGrow, createCoupon, toggleAllCategories, selectedAll,
+      handleCategorySelected, handleProductSelected, handleUserSelected,
+      autoGrow, createCoupon,
     }
   }
 }

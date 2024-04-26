@@ -12,7 +12,7 @@
         <div class="select-container">
           <select class="select-field" id="notice-type" v-model="state.form.notice.type">
             <option value="" disabled>구분</option>
-            <option v-for="nt in noticeTypes" :key="nt" :value="nt">{{ nt }}</option>
+            <option v-for="nt in noticeTypes" :key="nt.key" :value="nt.key">{{ nt.key }}</option>
           </select>
           <div class="error-message" v-if="state.errorMessage.type">{{ state.errorMessage.type }}</div>
         </div>
@@ -48,9 +48,7 @@
         <label class="input-label" for="notice-status">상태 <span class="required">*</span></label>
         <select class="select-field" id="notice-status" v-model="state.form.notice.status">
           <option value="" disabled>상태</option>
-          <option v-for="ns in noticeStatuses" :key="ns" :value="ns">
-            {{ lib.getNoticeStatusName(ns) }}
-          </option>
+          <option v-for="ns in noticeStatuses" :key="ns.key" :value="ns.key">{{ ns.description }}</option>
         </select>
       </div>
 
@@ -98,14 +96,15 @@ import {reactive, ref} from "vue";
 import axios from "axios";
 import lib from "@/scripts/lib";
 import CKEditor from "@/components/common/CKEditor.vue";
+import constants from "@/scripts/constants";
 // import ToastUIEditor from "@/components/common/ToastUIEditor.vue";
 
 export default {
   name: "NoticeRegist",
   components: {CKEditor},
   setup() {
-    const noticeTypes = lib.noticeTypes;
-    const noticeStatuses = lib.noticeStatuses;
+    const noticeTypes = constants.NOTICE_TYPES;
+    const noticeStatuses = constants.NOTICE_STATUSES;
 
     const editorContent = ref('');
     const state = reactive({

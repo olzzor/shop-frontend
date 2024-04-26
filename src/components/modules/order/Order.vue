@@ -85,13 +85,13 @@ export default {
 
     const payment = () => {
       const checkoutDetailsInfo = checkoutDetailsRef.value.getCheckoutDetails();
-      const pg = checkoutDetailsInfo.paymentMethod;
+      const paymentMethod = checkoutDetailsInfo.paymentMethod;
 
-      IMP.init(iamport.getUserCodeByPg(pg)); // 가맹점 식별 코드
+      IMP.init(iamport.getUserCodeByPg(paymentMethod.pg)); // 가맹점 식별 코드
 
       IMP.request_pay({ // param
-        pg: pg, // PG사
-        pay_method: iamport.getMethodsByPg(pg), // 결제수단
+        pg: paymentMethod.pg, // PG사
+        pay_method: paymentMethod.pay_method, // 결제수단
         merchant_uid: new Date().getTime(), // 주문번호
         name: "주문명: 테스트", // 주문명
         amount: paymentAmount.value, // 결제금액
@@ -181,6 +181,14 @@ export default {
         });
 
         store.commit('setCartProducts', state.cartProducts);
+
+      }).catch(error => {
+        if (error.response) {
+          const errorMessage = error.response.data.message || '오류가 발생했습니다. 다시 시도해주세요.';
+          window.alert(errorMessage);
+        } else {
+          window.alert('오류가 발생했습니다. 다시 시도해주세요.');
+        }
       });
     };
 

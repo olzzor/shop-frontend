@@ -50,7 +50,7 @@
             <th><input type="text" class="input-field" v-model="state.form.userEmail"></th>
 
             <th>
-              <select class="select-field" v-model="state.form.activateFlag">
+              <select class="select-field" v-model="state.form.isActivate">
                 <option value="">전체</option>
                 <option value="true">◯</option>
                 <option value="false">✕</option>
@@ -104,18 +104,18 @@
             <td class="column-review-content ellipsis">{{ review.content }}</td>
             <td class="column-review-user-email">{{ review.userEmail }}</td>
 
-            <td class="column-review-activate-flag">
-              <select class="select-field" v-model="review.activateFlag" :disabled="!state.isModify[idx].value">
+            <td class="column-review-is-activate">
+              <select class="select-field" v-model="review.isActivate" :disabled="!state.isModify[idx].value">
                 <option value="true">○</option>
                 <option value="false">☓</option>
               </select>
             </td>
 
             <td class="column-review-reg-date">
-              {{ lib.getFormattedDate(review.regDate, 'YYYY-MM-DD HH:mm:ss') }}
+              {{ formatter.getFormattedDate(review.regDate, 'YYYY-MM-DD HH:mm:ss') }}
             </td>
             <td class="column-review-mod-date">
-              {{ lib.getFormattedDate(review.modDate, 'YYYY-MM-DD HH:mm:ss') }}
+              {{ formatter.getFormattedDate(review.modDate, 'YYYY-MM-DD HH:mm:ss') }}
             </td>
           </tr>
         </tbody>
@@ -142,21 +142,21 @@
 
 <script>
 import {onMounted, reactive, ref} from "vue";
-import axios from "axios";
 import dayjs from 'dayjs';
-import lib from "@/scripts/lib";
+import axios from "axios";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: 'ReviewList',
   components: {},
   setup() {
     const tableHeaders = ['평점', '제목', '내용', '작성자 이메일', '활성 상태', '작성 날짜', '변경 날짜'];
-    const sortKey = ['rating', 'title', 'content', 'userEmail', 'activateFlag', 'regDate', 'modDate'];
+    const sortKey = ['rating', 'title', 'content', 'userEmail', 'isActivate', 'regDate', 'modDate'];
 
     const state = reactive({
       reviews: [],
       form: {
-        rating: '', title: '', content: '', userEmail: '', activateFlag: '',
+        rating: '', title: '', content: '', userEmail: '', isActivate: '',
         startRegDate: '', endRegDate: '', startModDate: '', endModDate: '',
       },
       page: {pageSize: 15, currentPage: 1, totalPages: 0},
@@ -191,11 +191,11 @@ export default {
         rows += (idx + 1)
             + '\t' + data.rating
             + '\t' + data.title
-            + '\t' + lib.convertSpaces(data.content)
+            + '\t' + formatter.convertSpaces(data.content)
             + '\t' + data.userEmail
-            + '\t' + (data.activateFlag ? '○': '☓')
-            + '\t' + lib.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
-            + '\t' + lib.getFormattedDate(data.modDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + (data.isActivate ? '○': '☓')
+            + '\t' + formatter.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + formatter.getFormattedDate(data.modDate, 'YYYY-MM-DD HH:mm:ss')
             + '\n';
       });
 
@@ -265,7 +265,7 @@ export default {
 
     const clearSearchConditions = () => {
       state.form = {
-        rating: '', title: '', content: '', userEmail: '', activateFlag: '',
+        rating: '', title: '', content: '', userEmail: '', isActivate: '',
         startRegDate: '', endRegDate: '', startModDate: '', endModDate: ''
       };
     };
@@ -289,7 +289,7 @@ export default {
         const args = state.reviews.filter((review, idx) => state.isModify[idx].value)
           .map(review => ({
             id: review.id,
-            activateFlag: review.activateFlag
+            isActivate: review.isActivate
           }));
 
         axios.post("/api/review/update/multiple", args).then(() => {
@@ -319,7 +319,7 @@ export default {
     onMounted(load);
 
     return {
-      lib,
+      formatter,
       tableHeaders, sortKey, state,
       sort, downloadCSV,
       searchFull, searchCondition, clearSearchConditions,

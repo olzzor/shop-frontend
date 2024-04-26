@@ -60,10 +60,10 @@
       <div class="payment-methods">
         <label for="paymentMethod">결제 수단 선택</label>
         <div class="payment-methods-field" :class="{ 'input-error': state.errorMessage.paymentMethod }">
-          <div class="payment-method" v-for="pg in pgs" :key="pg.value">
-            <input type="radio" v-model="state.form.paymentMethod" :value="pg.value" name="paymentMethod" />
-            <img class="payment-logo" v-if="pg.logo" :src="pg.logo" :alt="pg.label" />
-            <span v-else>{{ pg.label }}</span>
+          <div class="payment-method" v-for="pm in paymentMethods" :key="pm.id">
+            <input type="radio" v-model="state.form.paymentMethod" :value="pm" name="paymentMethod" />
+            <img class="payment-logo" v-if="pm.logo" :src="pm.logo" :alt="pm.label" />
+            <span v-else>{{ pm.label }}</span>
           </div>
         </div>
         <div class="error-message" v-if="state.errorMessage.paymentMethod">{{ state.errorMessage.paymentMethod }}</div>
@@ -75,18 +75,19 @@
 <script>
 import {onMounted, reactive} from "vue";
 import axios from "axios";
-import {PGS} from "@/scripts/iamport";
+import {PAYMENT_METHODS} from "@/scripts/iamport";
 
 export default {
   name: "CheckoutDetails",
   setup(props, {emit}) {
-    const pgs = PGS.concat([
-      { value: 'direct_bank', label: '무통장입금', logo: '' },
-    ]);
+    // const pgs = PGS.concat([
+    //   { value: 'direct_bank', label: '무통장입금', logo: '' },
+    // ]);
+    const paymentMethods = PAYMENT_METHODS;
 
     const state = reactive({
       defaultAddress: {},
-      form: {email: "", name: "", zipCode: "", province: "", city: "", address1: "", address2: "", phone: "", paymentMethod: "",},
+      form: {email: "", name: "", zipCode: "", province: "", city: "", address1: "", address2: "", phone: "", paymentMethod: {},},
       errorMessage: {},
       isApartment: false,
     })
@@ -179,7 +180,7 @@ export default {
         result = false;
       }
 
-      if (!state.form.paymentMethod) {
+      if (!state.form.paymentMethod) { // TODO {}로 수정 대응
         state.errorMessage.paymentMethod = "결제 수단을 선택해주세요.";
         result = false;
       }
@@ -207,7 +208,7 @@ export default {
     onMounted(load);
 
     return {
-      pgs, state,
+      paymentMethods, state,
       setDefaultAddress, searchAddress, getCheckoutDetails,
       checkInput, invokeOrder
     };

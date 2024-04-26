@@ -135,10 +135,28 @@ header {
             color: #fff;
             font-weight: bold;
           }
+
+          .bi {
+            color: white;
+            margin-left: 5px;
+          }
         }
 
         .category-title {
           margin-bottom: 15px;
+          padding-left: 0;
+        }
+        .category-content {
+          .main-category {}
+          .sub-category {
+
+            &.show {
+              // transition 혹은 animation 넣고싶은데 잘 안됨
+            }
+            &.hide {
+              // transition 혹은 animation 넣고싶은데 잘 안됨
+            }
+          }
         }
       }
     }

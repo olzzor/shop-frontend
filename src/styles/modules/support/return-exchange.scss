@@ -1,0 +1,40 @@
+.return-exchange {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 90px;
+  margin-inline: auto;
+  max-width: 1000px;
+
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding-inline: 15px;
+  }
+
+  .content {
+    padding-inline: 15px;
+  }
+}
+
+@include mobile {
+  .return-exchange {
+    .title {
+      font-size: 16px;
+      margin-bottom: 10px;
+      padding-inline: 0;
+
+      .btn-contact-us {
+        font-size: 0.7rem;
+        width: 95px;
+        height: 23px;
+        line-height: 23px;
+      }
+    }
+
+    .content {
+      padding-inline: 0;
+    }
+  }
+}

@@ -35,6 +35,7 @@
           <div v-if="showProductLink">
             <router-link to="/product-regist" class="link">상품 등록</router-link>
             <router-link to="/product-list" class="link">상품 목록</router-link>
+            <router-link to="/recommended-product-list" class="link">추천 상품 목록</router-link>
           </div>
 
           <div class="link-head" @click="toggleLinks('customers')">

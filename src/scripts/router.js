@@ -9,7 +9,7 @@ const defaultRoutes = [
     {path: '/cart', name: 'Cart', component: () => import('@/components/modules/cart/Cart.vue')},
     {path: '/order', name: 'Order', component: () => import('@/components/modules/order/Order.vue')},
     {path: '/order/redirect/iamport', name: 'OrderRedirectIamport', component: () => import('@/components/modules/order/OrderRedirectIamport.vue')},
-    {path: '/favorite', name: 'Favorite', component: () => import('@/components/modules/favorite/Favorite.vue')},
+    {path: '/wishlist', name: 'Wishlist', component: () => import('@/components/modules/wishlist/Wishlist.vue')},
     {path: '/recently-viewed-products', name: 'ProductsRecentlyViewed', component: () => import('@/components/modules/product/ProductsRecentlyViewed.vue')},
     {path: '/sign-up', name: 'SignUp', component: () => import('@/components/modules/account/SignUp.vue')},
 
@@ -32,19 +32,20 @@ const defaultRoutes = [
     {path: '/member/reset-password/:token', name: 'ResetPassword', component: () => import('@/components/modules/account/PasswordReset.vue')},
 
     {path: '/customer/contact-detail/:id', name: 'ContactDetail', component: () => import('@/components/modules/contact/ContactDetail.vue')},
-    {path: '/support', name: 'Support', component: () => import('@/components/modules/support/Support.vue')},
     {path: '/customer/order-detail/:id', name: 'OrderDetailForCustomer', component: () => import('@/components/modules/order/OrderDetail.vue')},
 
     // {path: '/customer/contact-us', name: 'ContactUs', component: () => import('@/components/modules/support/ContactUs.vue')},
     // {path: '/customer/support', name: 'CustomerSupport', component: () => import('@/components/modules/support/CustomerSupport.vue')},
-    {path: '/customer/FAQ', name: 'FrequentlyAskedQuestions', component: () => import('@/components/modules/support/FrequentlyAskedQuestions.vue')},
+    {path: '/support', name: 'Support', component: () => import('@/components/modules/support/Support.vue')},
+    {path: '/support/FAQ', name: 'FrequentlyAskedQuestions', component: () => import('@/components/modules/support/FrequentlyAskedQuestions.vue')},
+    {path: '/support/return-exchange', name: 'ReturnExchange', component: () => import('@/components/modules/support/ReturnExchange.vue')},
 
     {path: '/modal/search-product', name: 'SearchProductModal', component: () => import('@/components/modules/admin/coupon/SearchProductModal.vue')},
     {path: '/modal/search-user', name: 'SearchUserModal', component: () => import('@/components/modules/admin/coupon/SearchUserModal.vue')},
     {path: '/modal/notice', name: 'NoticeModal', component: () => import('@/components/modules/notice/NoticeModal.vue')},
 
-    {path: '/review-write/:orderId', name: 'WriteReview', component: () => import('@/components/modules/review/ReviewWrite.vue')},
-    {path: '/review-edit/:reviewId', name: 'EditReview', component: () => import('@/components/modules/review/ReviewEdit.vue')},
+    {path: '/review-write/:orderId/:orderDetailId', name: 'WriteReview', component: () => import('@/components/modules/review/ReviewWrite.vue')},
+    {path: '/review-edit/:orderId/:reviewId', name: 'EditReview', component: () => import('@/components/modules/review/ReviewEdit.vue')},
     {path: '/reviews', name: 'Reviews', component: () => import('@/components/modules/review/Reviews.vue')},
 
     {path: '/test', component: testDaumAPI},
@@ -70,6 +71,7 @@ const adminRoutes = [
             {path: '/product-regist', name: 'AdminProductRegist', component: () => import('@/components/modules/admin/product/ProductRegist.vue')},
             {path: '/product-list', name: 'AdminProductList', component: () => import('@/components/modules/admin/product/ProductList.vue')},
             {path: '/product-update/:id', name: 'AdminProductUpdate', component: () => import('@/components/modules/admin/product/ProductUpdate.vue')},
+            {path: '/recommended-product-list', name: 'AdminRecommendedProductList', component: () => import('@/components/modules/admin/recommended-product/RecommendedProductList.vue')},
             {path: '/coupon-regist', name: 'AdminCouponRegist', component: () => import('@/components/modules/admin/coupon/CouponRegist.vue')},
             {path: '/coupon-list', name: 'AdminCouponList', component: () => import('@/components/modules/admin/coupon/CouponList.vue')},
             {path: '/coupon-update/:id', name: 'AdminCouponUpdate', component: () => import('@/components/modules/admin/coupon/CouponUpdate.vue')},

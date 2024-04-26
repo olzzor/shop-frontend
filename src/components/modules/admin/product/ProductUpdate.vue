@@ -29,21 +29,41 @@
 
         <tr>
           <td class="table-title">상품 분류</td>
-          <td>{{ lib.getCategoryName(state.product.categoryCode) }}</td>
+          <td>{{ state.product.categoryName }}</td>
           <td>
-            <select class="select-field" v-model="state.form.product.categoryCode">
-              <option disabled value="">상품 분류</option>
-              <option v-for="categoryCode in categoryCodes" :key="categoryCode" :value="categoryCode">
-                {{ lib.getCategoryName(categoryCode) }}
-              </option>
-            </select>
+            <div class="category-input-container">
+              <!-- 대카테고리 -->
+              <div class="select-container">
+                <select class="select-field" id="product-category-main"
+                        v-model="state.categorySelection.selectedMainCategoryCode" @change="updateSubCategories">
+                  <option disabled value="">카테고리를 선택해주세요.</option>
+                  <option v-for="cat in categories" :key="cat.code" :value="cat.code">{{ cat.name }}</option>
+                </select>
+              </div>
+
+              <!-- 소카테고리 -->
+              <div class="select-container">
+                <select class="select-field" id="product-category"
+                        v-model="state.form.product.categoryCode" :disabled="state.categorySelection.isSubCategoryDisabled">
+                  <option disabled value="">카테고리를 선택해주세요.</option>
+                  <option v-for="cat in state.categorySelection.subCategories" :key="cat.code" :value="cat.code">{{ cat.name }}</option>
+                </select>
+              </div>
+            </div>
+<!--            <select class="select-field" v-model="state.form.product.categoryCode">-->
+<!--              <option disabled value="">상품 분류</option>-->
+<!--              <option v-for="fc in flattenCategories" :key="fc.code" :value="fc.code">{{ fc.name }}</option>-->
+<!--            </select>-->
           </td>
         </tr>
 
         <tr>
           <td class="table-title">상품 명</td>
           <td>{{ state.product.name }}</td>
-          <td><input type="text" class="input-field" v-model="state.form.product.name" /></td>
+          <td>
+            <input type="text" class="input-field" v-model="state.form.product.name" />
+            <div class="error-message" v-if="state.errorMessage.name">{{ state.errorMessage.name }}</div>
+          </td>
         </tr>
 
         <tr>
@@ -65,15 +85,26 @@
         </tr>
 
         <tr>
-          <td class="table-title">설명</td>
-          <td v-html="lib.convertLineBreaks(state.product.detail)"></td>
-          <td><textarea class="input-field" id="product-detail"
-                        v-model="state.form.product.detail" @input="autoGrow" /></td>
+          <td class="table-title">제품 설명</td>
+          <td v-html="formatter.convertLineBreaks(state.product.detail.description)"></td>
+          <td>
+            <textarea class="input-field" v-model="state.form.detail.description" @input="autoGrow" />
+            <div class="error-message" v-if="state.errorMessage.detailDescription">{{ state.errorMessage.detailDescription }}</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="table-title">사이즈 가이드</td>
+          <td v-html="formatter.convertLineBreaks(state.product.detail.sizeGuide)"></td>
+          <td>
+            <textarea class="input-field" v-model="state.form.detail.sizeGuide" @input="autoGrow" />
+            <div class="error-message" v-if="state.errorMessage.detailSizeGuide">{{ state.errorMessage.detailSizeGuide }}</div>
+          </td>
         </tr>
 
         <tr>
           <td class="table-title">가격</td>
-          <td>{{ lib.getFormattedNumber(state.product.price) }}원</td>
+          <td>{{ formatter.getFormattedNumber(state.product.price) }}원</td>
           <td>
             <input type="number" class="input-field" min="1" placeholder="가격"
                    v-model="state.form.product.price" :disabled="state.product.status === 'ON_SALE'" />
@@ -83,7 +114,7 @@
 
         <tr>
           <td class="table-title">할인율</td>
-          <td>{{ lib.getFormattedNumber(state.product.discountPer) }}%</td>
+          <td>{{ formatter.getFormattedNumber(state.product.discountPer) }}%</td>
           <td>
             <input type="number" class="input-field" min="0" max="99" placeholder="할인율"
                    v-model="state.form.product.discountPer" :disabled="state.product.status === 'ON_SALE'" />
@@ -115,15 +146,25 @@
           </td>
         </tr>
 
+        <!-- 20240411 추가 -->
+        <tr>
+          <td class="table-title">표시 유무</td>
+          <td>{{ state.product.isDisplay ? '표시': '비표시'}}</td>
+          <td>
+            <select class="select-field" v-model="state.form.product.isDisplay">
+              <option :value="true">표시</option>
+              <option :value="false">비표시</option>
+            </select>
+          </td>
+        </tr>
+
         <tr>
           <td class="table-title">판매 상태</td>
-          <td>{{ lib.getProductStatusName(state.product.status) }}</td>
+          <td>{{ formatter.getProductStatusName(state.product.status) }}</td>
           <td>
             <select class="select-field" v-model="state.form.product.status">
               <option disabled value="">판매 상태</option>
-              <option v-for="status in productStatuses" :key="status" :value="status">
-                {{ lib.getProductStatusName(status) }}
-              </option>
+              <option v-for="ps in productStatuses" :key="ps.key" :value="ps.key">{{ ps.description }}</option>
             </select>
           </td>
         </tr>
@@ -137,31 +178,52 @@
 import {nextTick, onMounted, reactive, ref} from "vue";
 import {useRoute} from "vue-router";
 import axios from "axios";
-import lib from "@/scripts/lib";
+import constants from "@/scripts/constants";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: 'ProductUpdate',
   components: {},
   setup() {
-    const categoryCodes = lib.categoryCodes;
-    const productStatuses = lib.productStatuses;
+    const flattenCategories = formatter.getFlattenCategories();
+    const categories = constants.CATEGORIES;
+    const productStatuses = constants.PRODUCT_STATUSES;
 
     const route = useRoute();
     const images = ref([]);
     const imageInput = ref(null);
 
     const state = reactive({
+      categorySelection: {selectedMainCategoryCode: '', subCategories: [], isSubCategoryDisabled: true,},
       product: {
-        id: 0, categoryCode: '', code: '', name: '', price: 1, discountPer: 0, detail: '', status: '',
+        id: 0, categoryCode: '', categoryName: '', code: '', name: '', price: 1, discountPer: 0, isDisplay: true, status: '',
+        detail: {},
+        productSizes: [],
         productImages: []
       },
       form: {
-        product: {id: 0, categoryCode: '', code: '', name: '', price: 1, discountPer: 0, detail: '', status: '',},
+        product: {id: 0, categoryCode: '', code: '', name: '', price: 1, discountPer: 0, isDisplay: true, status: '',},
+        detail: {id: 0, description: '', sizeGuide: ''},
         sizes: [],
         files: [],
       },
       errorMessage: {},
     });
+
+    const updateSubCategories = () => {
+      const category = categories.find(cat => cat.code === state.categorySelection.selectedMainCategoryCode);
+
+      if (category && category.subCategories) { // 서브 카테고리가 존재하는 경우
+        state.categorySelection.isSubCategoryDisabled = false; // 서브 카테고리 셀렉트 박스 활성
+        state.categorySelection.subCategories = category.subCategories; // 서브 카테고리값 취득
+        state.form.product.categoryCode = ''; // 카테고리 선택값 초기화
+
+      } else { // 서브 카테고리가 존재하지 않는 경우
+        state.categorySelection.isSubCategoryDisabled = true; // 서브 카테고리 셀렉트 박스 비활성
+        state.categorySelection.subCategories = [];
+        state.form.product.categoryCode = category.code; // 카테고리 선택값으로 메인 카테고리 코드값 사용
+      }
+    };
 
     const showImage = (fileUrl) => {
       window.open(fileUrl, '_blank');
@@ -197,7 +259,20 @@ export default {
 
     const checkInput = () => {
       let result = true;
+
+      const MAX_NAME_LENGTH = 100;
+      const MAX_DETAIL_DESCRIPTION_LENGTH = 2000;
+      const MAX_DETAIL_SIZE_GUIDE_LENGTH = 2000;
+
       state.errorMessage = {};
+
+      if (state.form.product.name.length === 0) {
+        state.errorMessage.name = "상품명을 입력해주세요.";
+        result = false;
+      } else if (state.form.product.name.length > MAX_NAME_LENGTH) {
+        state.errorMessage.name = `상품명은 ${MAX_NAME_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
+        result = false;
+      }
 
       if (state.form.product.price == null || state.form.product.price === '') {
         state.errorMessage.price = "가격을 입력해주세요.";
@@ -215,6 +290,16 @@ export default {
         result = false;
       }
 
+      if (state.form.detail.description && state.form.detail.description.length > MAX_DETAIL_DESCRIPTION_LENGTH) {
+        state.errorMessage.detailDescription = `제품 설명은 ${MAX_DETAIL_DESCRIPTION_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
+        result = false;
+      }
+
+      if (state.form.detail.sizeGuide && state.form.detail.sizeGuide.length > MAX_DETAIL_SIZE_GUIDE_LENGTH) {
+        state.errorMessage.detailSizeGuide = `사이즈 가이드는 ${MAX_DETAIL_SIZE_GUIDE_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
+        result = false;
+      }
+
       return result;
     };
 
@@ -222,7 +307,8 @@ export default {
       if (checkInput()) {
         const formData = new FormData();
 
-        formData.append('product', JSON.stringify(state.form.product));
+        formData.append('product', JSON.stringify(state.form.product))
+        formData.append('detail', JSON.stringify(state.form.detail));
         formData.append('sizes', JSON.stringify(state.form.sizes));
         state.form.files.forEach(file => {
           formData.append('files', file);
@@ -251,25 +337,31 @@ export default {
     const setLoadData = (data) => {
       state.product = {
         id: data.id,
-        code: data.code,
         categoryCode: data.category.code,
+        categoryName: data.category.name,
+        code: data.code,
         name: data.name,
         price: data.price,
         discountPer: data.discountPer,
-        detail: data.detail,
+        isDisplay: data.isDisplay, // 20240411 추가
         status: data.status,
+        detail: data.detail, // 20240403 추가
         productSizes: data.productSizes,
         productImages: data.productImages,
       };
       state.form.product = {
         id: data.id,
         code: data.code,
-        categoryCode: data.category.code,
         name: data.name,
         price: data.price,
         discountPer: data.discountPer,
-        detail: data.detail,
+        isDisplay: data.isDisplay, // 20240411 추가
         status: data.status,
+      };
+      state.form.detail = { // 20240403 추가
+        id: data.detail.id,
+        description: data.detail.description,
+        sizeGuide: data.detail.sizeGuide,
       };
       state.form.sizes = data.productSizes.map(ps => ({
         id: ps.id,
@@ -278,23 +370,40 @@ export default {
         adjustmentQuantity: ps.quantity,
       }));
       state.form.files = [];
+
+      /** 입력 카테고리 초기 선택값 설정 */
+      // 변경 전 카테고리 코드가 일치하는 서브 카테고리를 갖는 메인 카테고리 취득
+      const categoryCodeBefore = state.product.categoryCode;
+      const selectedCategory = categories.find(cat => cat.subCategories?.some(subCat => subCat.code === categoryCodeBefore));
+
+      if (selectedCategory) { // 카테고리가 취득된 경우
+        state.categorySelection.selectedMainCategoryCode = selectedCategory.code; // 해당 카테고리 코드를 변경 후 메인 카테고리 초기값으로 설정
+        updateSubCategories(); // 메인 카테고리에 속한 서브 카테고리 목록 업데이트
+        state.form.product.categoryCode = categoryCodeBefore; // 변경 전 카테고리 코드를 변경 후 카테고리 코드 초기값으로 설정
+
+      } else { // 카테고리가 취득되지 않은 경우 (변경 전 카테고리 코드가 메인 카테고리인 경우로, 서브 카테고리를 갖지않는 카테고리에 해당됨)
+        state.categorySelection.selectedMainCategoryCode = categoryCodeBefore; // 변경 전 카테고리 코드를 변경 후 메인 카테고리 초기값으로 설정
+        state.form.product.categoryCode = categoryCodeBefore; // 변경 전 카테고리 코드를 변경 후 카테고리 코드 초기값으로 설정
+      }
     };
 
     const autoGrow = () => {
       nextTick(() => {
-        const textarea = document.querySelector('#product-detail');
-        if (textarea) {
+        const textareas = document.querySelectorAll('textarea.input-field');
+        textareas.forEach(textarea => {
           textarea.style.height = '100px';
-          textarea.style.height = (textarea.scrollHeight < 250 ? textarea.scrollHeight : 250) + 'px';
-        }
+          textarea.style.height = (textarea.scrollHeight < 150 ? textarea.scrollHeight : 150) + 'px';
+        });
       });
     };
 
     onMounted(load);
 
     return {
-      lib, categoryCodes, productStatuses,
+      formatter,
+      categories, flattenCategories, productStatuses,
       imageInput, images, state,
+      updateSubCategories,
       showImage, clickImageInput, previewImage, dropImage, deleteImage,
       updateProduct, autoGrow
     }

@@ -42,9 +42,7 @@
             <th>
               <select class="select-field" v-model="state.form.type">
                 <option value="">전체</option>
-                <option v-for="ct in couponTypes" :key="ct" :value="ct">
-                  {{ lib.getCouponTypeName(ct) }}
-                </option>
+                <option v-for="ct in couponTypes" :key="ct.key" :value="ct.key">{{ ct.description }}</option>
               </select>
             </th>
 
@@ -55,9 +53,7 @@
             <th>
               <select class="select-field" v-model="state.form.discountType">
                 <option value="">전체</option>
-                <option v-for="dt in discountTypes" :key="dt" :value="dt">
-                  {{ lib.getDiscountTypeName(dt) }}
-                </option>
+                <option v-for="dt in discountTypes" :key="dt.key" :value="dt.key">{{ dt.description }}</option>
               </select>
             </th>
 
@@ -87,9 +83,7 @@
             <th>
               <select class="select-field" v-model="state.form.status">
                 <option value="">전체</option>
-                <option v-for="cs in couponStatuses" :key="cs" :value="cs">
-                  {{ lib.getCouponStatusName(cs) }}
-                </option>
+                <option v-for="cs in couponStatuses" :key="cs.key" :value="cs.key">{{ cs.description }}</option>
               </select>
             </th>
           </tr>
@@ -121,9 +115,7 @@
 
             <td class="column-coupon-type">
               <select class="select-field" v-model="coupon.type" :disabled="!state.isModify[idx].value">
-                <option v-for="ct in couponTypes" :key="ct" :value="ct">
-                  {{ lib.getCouponTypeName(ct) }}
-                </option>
+                <option v-for="ct in couponTypes" :key="ct.key" :value="ct.key">{{ ct.description }}</option>
               </select>
             </td>
 
@@ -137,11 +129,11 @@
                      v-model="coupon.name" :disabled="!state.isModify[idx].value">
             </td>
 
-            <td class="column-coupon-min-amount">{{ lib.getFormattedNumber(coupon.minAmount) }} 원</td>
-            <td class="column-coupon-discount-type">{{ lib.getDiscountTypeName(coupon.discountType) }}</td>
+            <td class="column-coupon-min-amount">{{ formatter.getFormattedNumber(coupon.minAmount) }} 원</td>
+            <td class="column-coupon-discount-type">{{ formatter.getDiscountTypeName(coupon.discountType) }}</td>
 
             <td class="column-coupon-discount-value">
-              <span v-if="coupon.discountType === 'AMOUNT_DISCOUNT'">{{ lib.getFormattedNumber(coupon.discountValue) }} 원</span>
+              <span v-if="coupon.discountType === 'AMOUNT_DISCOUNT'">{{ formatter.getFormattedNumber(coupon.discountValue) }} 원</span>
               <span v-else>{{ coupon.discountValue }} %</span>
             </td>
 
@@ -152,18 +144,16 @@
             </td>
 
             <td class="column-coupon-start-valid-date">
-              {{ lib.getFormattedDate(coupon.startValidDate, 'YYYY-MM-DD HH:mm:ss') }}
+              {{ formatter.getFormattedDate(coupon.startValidDate, 'YYYY-MM-DD HH:mm:ss') }}
             </td>
 
             <td class="column-coupon-end-valid-date">
-              {{ lib.getFormattedDate(coupon.endValidDate, 'YYYY-MM-DD HH:mm:ss') }}
+              {{ formatter.getFormattedDate(coupon.endValidDate, 'YYYY-MM-DD HH:mm:ss') }}
             </td>
 
             <td class="column-coupon-status">
               <select class="select-field" v-model="coupon.status" :disabled="!state.isModify[idx].value">
-                <option v-for="cs in couponStatuses" :key="cs" :value="cs">
-                  {{ lib.getCouponStatusName(cs) }}
-                </option>
+                <option v-for="cs in couponStatuses" :key="cs.key" :value="cs.key">{{ cs.description }}</option>
               </select>
             </td>
           </tr>
@@ -191,9 +181,11 @@
 
 <script>
 import {onMounted, reactive, ref} from "vue";
-import axios from "axios";
 import dayjs from 'dayjs';
+import axios from "axios";
 import lib from "@/scripts/lib";
+import constants from "@/scripts/constants";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: 'CouponList',
@@ -201,9 +193,9 @@ export default {
   setup() {
     const tableHeaders = ['구분', '코드', '이름', '최소 이용 금액', '할인 대상', '할인 금액/율', '대상', '유효기간 (시작)', '유효기간 (종료)', '상태'];
     const sortKey = ['type', 'code', 'name', 'minAmount', 'discountType', 'discountValue', 'startValidDate', 'endValidDate', 'status'];
-    const couponTypes = lib.couponTypes;
-    const discountTypes = lib.discountTypes;
-    const couponStatuses = lib.couponStatuses;
+    const couponTypes = constants.COUPON_TYPES;
+    const discountTypes = constants.DISCOUNT_TYPES;
+    const couponStatuses = constants.COUPON_STATUSES;
 
     const state = reactive({
       coupons: [],
@@ -241,16 +233,16 @@ export default {
 
       tableDatas.forEach((data, idx) => {
         rows += (idx + 1)
-            + '\t' + lib.getCouponTypeName(data.type)
+            + '\t' + formatter.getCouponTypeName(data.type)
             + '\t' + data.code
             + '\t' + data.name
             + '\t' + data.minAmount
-            + '\t' + lib.getDiscountTypeName(data.discountType)
+            + '\t' + formatter.getDiscountTypeName(data.discountType)
             + '\t' + data.discountValue + (data.discountType === 'AMOUNT_DISCOUNT' ? '원' : '%')
             + '\t' + getTargetUserEmails(data.users) + ', ' + getTargetCategoryNames(data.categories) + ', ' + getTargetProductNames(data.products)
-            + '\t' + lib.getFormattedDate(data.startValidDate, 'YYYY-MM-DD HH:mm:ss')
-            + '\t' + lib.getFormattedDate(data.endValidDate, 'YYYY-MM-DD HH:mm:ss')
-            + '\t' + lib.getCouponStatusName(data.status)
+            + '\t' + formatter.getFormattedDate(data.startValidDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + formatter.getFormattedDate(data.endValidDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + formatter.getCouponStatusName(data.status)
             + '\n';
       });
 
@@ -283,12 +275,11 @@ export default {
     const getTargetCategoryNames = (couponCategories) => `카테고리: ${getCategoryNames(couponCategories) || "대상 없음"}`;
     const getTargetProductNames = (couponProducts) => `상품: ${getProductNames(couponProducts) || "대상 없음"}`;
 
-
     const getCategoryNames = (targetCategories) => {
       if (lib.categoryCodes.length === targetCategories.length) {
         return '전체';
       } else {
-        return targetCategories.map(tc => lib.getCategoryName(tc.code)).join(', ');
+        return targetCategories.map(tc => tc.name).join(', ');
       }
     };
 
@@ -398,7 +389,8 @@ export default {
     onMounted(load);
 
     return {
-      lib, discountTypes, couponTypes, couponStatuses,
+      lib, formatter,
+      discountTypes, couponTypes, couponStatuses,
       tableHeaders, sortKey, state,
       sort, downloadCSV,
       getTargetUserEmails, getTargetCategoryNames, getTargetProductNames,

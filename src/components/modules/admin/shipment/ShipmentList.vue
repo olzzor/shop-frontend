@@ -41,18 +41,14 @@
             <th>
               <select class="select-field" v-model="state.form.courierCompany">
                 <option value="">전체</option>
-                <option v-for="cc in courierCompanies" :key="cc" :value="cc">
-                  {{ lib.getCourierCompanyName(cc) }}
-                </option>
+                <option v-for="cc in courierCompanies" :key="cc.key" :value="cc.key">{{ cc.description }}</option>
               </select>
             </th>
             <th><input type="text" class="input-field" v-model="state.form.trackingNumber"></th>
             <th>
               <select class="select-field" v-model="state.form.shipmentStatus">
                 <option value="">전체</option>
-                <option v-for="s in shipmentStatuses" :key="s" :value="s">
-                  {{ lib.getShipmentStatusName(s) }}
-                </option>
+                <option v-for="ss in shipmentStatuses" :key="ss.key" :value="ss.key">{{ ss.description }}</option>
               </select>
             </th>
             <th><input type="text" class="input-field" v-model="state.form.recipientName"></th>
@@ -98,9 +94,7 @@
 
             <td>
               <select class="select-field" v-model="shipment.courierCompany" :disabled="!state.isModify[idx].value">
-                <option v-for="cc in courierCompanies" :key="cc" :value="cc">
-                  {{ lib.getCourierCompanyName(cc) }}
-                </option>
+                <option v-for="cc in courierCompanies" :key="cc.key" :value="cc.key">{{ cc.description }}</option>
               </select>
             </td>
 
@@ -111,9 +105,7 @@
 
             <td>
               <select class="select-field" v-model="shipment.status" :disabled="!state.isModify[idx].value">
-                <option v-for="s in shipmentStatuses" :key="s" :value="s">
-                  {{ lib.getShipmentStatusName(s) }}
-                </option>
+                <option v-for="ss in shipmentStatuses" :key="ss.key" :value="ss.key">{{ ss.description }}</option>
               </select>
             </td>
 
@@ -140,9 +132,9 @@
               </div>
             </td>
 
-            <td>{{ lib.getFormattedDate(shipment.regDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
+            <td>{{ formatter.getFormattedDate(shipment.regDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
 
-            <td>{{ lib.getFormattedDate(shipment.modDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
+            <td>{{ formatter.getFormattedDate(shipment.modDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
           </tr>
         </tbody>
       </table>
@@ -168,9 +160,10 @@
 
 <script>
 import {reactive, ref} from "vue";
-import axios from "axios";
 import dayjs from 'dayjs';
-import lib from "@/scripts/lib";
+import axios from "axios";
+import constants from "@/scripts/constants";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: 'ShipmentList',
@@ -178,8 +171,8 @@ export default {
   setup() {
     const tableHeaders = ['택배사', '송장번호', '배송상태', '수령인', '연락처', '배송지', '주문번호', '주문상품', '배송정보 입력날짜', '배송정보 수정날짜'];
     const sortKey = ['orderNumber', 'courier', 'trackingNumber', 'status', 'regDate', 'modDate'];
-    const courierCompanies = lib.courierCompanies;
-    const shipmentStatuses = lib.shipmentStatuses;
+    const courierCompanies = constants.COURIER_COMPANIES;
+    const shipmentStatuses = constants.SHIPMENT_STATUSES;
 
     const state = reactive({
       shipments: [],
@@ -223,16 +216,16 @@ export default {
 
       tableDatas.forEach((data, idx) => {
         rows += (idx + 1)
-            + '\t' + lib.getCourierCompanyName(data.courierCompany)
+            + '\t' + formatter.getCourierCompanyName(data.courierCompany)
             + '\t' + data.trackingNumber
-            + '\t' + lib.getShipmentStatusName(data.status)
+            + '\t' + formatter.getShipmentStatusName(data.status)
             + '\t' + data.recipientName
             + '\t' + data.recipientPhone
             + '\t' + data.shippingAddress
             + '\t' + data.orderDetails[0].order.orderNumber
             + '\t' + data.orderDetails.map(od => getShippingProduct(od)).join(', ')
-            + '\t' + lib.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
-            + '\t' + lib.getFormattedDate(data.modDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + formatter.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + formatter.getFormattedDate(data.modDate, 'YYYY-MM-DD HH:mm:ss')
             + '\n';
       });
 
@@ -360,7 +353,7 @@ export default {
     load();
 
     return {
-      lib, courierCompanies, shipmentStatuses,
+      formatter, courierCompanies, shipmentStatuses,
       tableHeaders, sortKey, state,
       sort, getShippingProduct, downloadCSV, toggleSelectAll,
       clearSearchConditions, searchCondition, searchFull,

@@ -6,8 +6,9 @@ const store = createStore({
     state() {
         return {
             token: null,
-            account: {id: 0, role:'', authProvider:''},
+            user: {id: 0, role:'', authProvider:''},
             searchResults: [],
+            currentCategory: {code: 0, name:'', slug: ''},
             showLinks: {notices: false, orders: false, products: false, customers: false, promotions: false, stats: false},
             icons: {notices: 'bi bi-chevron-bar-down', orders: 'bi bi-chevron-bar-down', products: 'bi bi-chevron-bar-down', customers: 'bi bi-chevron-bar-down', promotions: 'bi bi-chevron-bar-down', stats: 'bi bi-chevron-bar-down'},
             cartProducts: [],
@@ -18,9 +19,13 @@ const store = createStore({
     getters:{
         token(state) {return state.token;},
 
-        userId(state) {return state.account.id;},
-        userRole(state) {return state.account.role;},
-        userAuthProvider(state) {return state.account.authProvider;},
+        userId(state) {return state.user.id;},
+        userRole(state) {return state.user.role;},
+        userAuthProvider(state) {return state.user.authProvider;},
+
+        categoryCode(state) {return state.currentCategory.code;},
+        categoryName(state) {return state.currentCategory.name;},
+        categorySlug(state) {return state.currentCategory.slug;},
 
         showNoticeLink(state) {return state.showLinks.notices;},
         showOrderLink(state) {return state.showLinks.orders;},
@@ -44,14 +49,22 @@ const store = createStore({
         setToken(state, token) {
             state.token = token;
         },
-        setAccountId(state, id) {
-            state.account.id = id;
+        setUserInfo(state, userInfo) {
+            state.user.id = userInfo.id;
+            state.user.role = userInfo.role;
+            state.user.authProvider = userInfo.authProvider;
         },
-        setAccountRole(state, role) {
-            state.account.role = role;
+        setUserId(state, id) {
+            state.user.id = id;
         },
-        setAccountAuthProvider(state, authProvider) {
-            state.account.authProvider = authProvider;
+        setUserRole(state, role) {
+            state.user.role = role;
+        },
+        setUserAuthProvider(state, authProvider) {
+            state.user.authProvider = authProvider;
+        },
+        setCurrentCategory(state, category) {
+            state.currentCategory = category;
         },
         // setSearchResults(state, searchResults) {
         //     state.searchResults = searchResults;
@@ -74,21 +87,28 @@ const store = createStore({
     },
 
     /** Actions: 비동기 작업을 처리하는 함수 (값을 변경하는 메소드는 mutations에 작성하고 나머지 메소드는 actions에 작성) */
-    actions:{},
+    actions:{
+        updateUserInfo({ commit }, userInfo) {
+            commit('setUserInfo', userInfo);
+        },
+        updateCurrentCategory({ commit }, category) {
+            commit('setCurrentCategory', category);
+        },
+    },
 
     /** Modules: 애플리케이션의 여러 부분을 모듈화하여 관리 */
     modules: {},
 });
 
 // test
-store.watch((state) => state.account.id, (newId, oldId) => {
-    console.log('Account ID changed:', oldId, '=>', newId);
+store.watch((state) => state.user.id, (newId, oldId) => {
+    console.log('User ID changed:', oldId, '=>', newId);
 });
-store.watch((state) => state.account.role, (newRole, oldRole) => {
-    console.log('Account ROLE changed:', oldRole, '=>', newRole);
+store.watch((state) => state.user.role, (newRole, oldRole) => {
+    console.log('User ROLE changed:', oldRole, '=>', newRole);
 });
-store.watch((state) => state.account.authProvider, (newAuthProvider, oldAuthProvider) => {
-    console.log('Account AUTH PROVIDER changed:', oldAuthProvider, '=>', newAuthProvider);
+store.watch((state) => state.user.authProvider, (newAuthProvider, oldAuthProvider) => {
+    console.log('User AUTH PROVIDER changed:', oldAuthProvider, '=>', newAuthProvider);
 });
 
 export default store;

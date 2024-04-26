@@ -1,8 +1,8 @@
 <template>
-  <div class="recently-viewed-products" v-if="state.recentlyViewed.length > 0">
+  <div class="recently-viewed-products" v-if="state.recentlyViewedProducts && state.recentlyViewedProducts.length > 0">
 
     <div class="title">
-      최근 본 상품
+      RECENTLY VIEWED
     </div>
 
     <div class="content">
@@ -13,32 +13,37 @@
       </div>
 
       <div class="grid">
-        <div class="item" v-for="(rv, idx) in state.recentlyViewed" :key="idx">
+        <div class="item" v-for="(rv, idx) in state.recentlyViewedProducts" :key="idx">
 
           <div class="product">
             <div class="image-section">
               <router-link :to="{ name: 'ProductDetail', params: { id: rv.product.id }}">
-                <span class="image-container" :style="{backgroundImage: `url(${rv.product.productImages[0].fileUrl})`}"/>
+<!--                <span class="image-container" :style="{backgroundImage: `url(${rv.product.productImages[0].fileUrl})`}"/>-->
+                <img class="image-container" :src="`${rv.product.productImages[0].fileUrl}`" />
+                <div v-if="rv.product.status !== 'ON_SALE'" class="not-in-stock-overlay">
+                  <div class="not-in-stock">NOT IN STOCK</div>
+                </div>
               </router-link>
             </div>
 
             <div class="detail-section">
               <div class="info-section">
                 <div class="title-row">
+                  <span class="new-label" v-if="isNew(rv.product.regDate)">NEW</span>
                   <span class="discount-per" v-if="rv.product.discountPer">{{ rv.product.discountPer }}%↓</span>
                   <span class="name">{{ rv.product.name }} &nbsp;</span>
                 </div>
 
                 <div class="pricing-row">
                   <div class="price-container">
-                    <small class="original-price" :class="{ 'sale': rv.product.discountPer }">{{ lib.getFormattedNumber(rv.product.price) }}원</small>
-                    <small class="discounted-price" v-if="rv.product.discountPer"> {{ lib.getFormattedNumber(rv.product.price - (rv.product.price * rv.product.discountPer / 100)) }}원</small>
+                    <small class="original-price" :class="{ 'sale': rv.product.discountPer }">{{ formatter.getFormattedNumber(rv.product.price) }}원</small>
+                    <small class="discounted-price" v-if="rv.product.discountPer"> {{ formatter.getFormattedNumber(rv.product.price - (rv.product.price * rv.product.discountPer / 100)) }}원</small>
                   </div>
                 </div>
               </div>
 
               <div class="action-buttons">
-                <span role="button" tabindex="0" @click="handleAddFavorite(rv.product.id)">
+                <span role="button" tabindex="0" @click="handleSelectProductSizeModal(rv.product.id)">
                   <i class="bi bi-heart"></i>
                 </span>
               </div>
@@ -54,12 +59,13 @@
 </template>
 
 <script>
-import {computed, reactive, ref, watchEffect} from "vue";
-import axios from "axios";
-import lib from "@/scripts/lib";
-import store from "@/scripts/store";
+import {computed, nextTick, reactive, ref, watchEffect} from "vue";
 import {isMobile, isTablet} from "@/scripts/mixin";
-import SelectProductSize from "@/components/modules/favorite/SelectProductSizeModal.vue";
+import dayjs from "dayjs";
+import axios from "axios";
+import formatter from "@/scripts/formatter";
+import store from "@/scripts/store";
+import SelectProductSize from "@/components/modules/wishlist/SelectProductSizeModal.vue";
 
 export default {
   name: 'RecentlyViewedProducts',
@@ -69,16 +75,42 @@ export default {
     const showSelectProductSizeModal = ref(false);
     const selectedProductId = ref(null);
     const state = reactive({
-      recentlyViewed: [],
+      recentlyViewedProducts: [],
       page: {pageSize: isMobile()? 2: isTablet()? 3: 4, currentPage: 1, totalPages: 0},
     });
 
+    const isNew = (regDate) => {
+      const today = dayjs();
+      const registeredDate = dayjs(regDate);
+      return registeredDate.isAfter(today.subtract(7, 'days'));
+    };
+
     const goToPage = (page) => {
+      const direction = page > state.page.currentPage ? 'right' : 'left'; // 추가
       state.page.currentPage = page;
+
+      nextTick(() => {
+        applySlideAnimation(direction);
+      });
+
       getRecentlyViewedProducts();
     };
 
-    const handleAddFavorite = (productId) => {
+    const applySlideAnimation = (direction) => {
+      const grid = document.querySelector('.grid');
+
+      // 기존의 애니메이션 클래스 제거
+      grid.classList.remove('slide-in-from-right', 'slide-in-from-left');
+
+      // 방향에 따른 애니메이션 클래스 추가
+      if (direction === 'right') {
+        grid.classList.add('slide-in-from-right');
+      } else {
+        grid.classList.add('slide-in-from-left');
+      }
+    };
+
+    const handleSelectProductSizeModal = (productId) => {
       if (isLoggedIn.value) {
         selectedProductId.value = productId; // 선택한 제품 ID 설정
         showSelectProductSizeModal.value = true; // 사이즈 선택 모달 표시
@@ -91,7 +123,7 @@ export default {
     const getRecentlyViewedProducts = () => {
       if (isLoggedIn.value) {
         axios.get("/api/recently-viewed-product/get-by-database?page=" + (state.page.currentPage - 1) + "&size=" + state.page.pageSize).then(({data}) => {
-          state.recentlyViewed = data.recentlyViewedProducts;
+          state.recentlyViewedProducts = data.recentlyViewedProducts;
           state.page.totalPages = data.totalPages;
         });
 
@@ -109,7 +141,7 @@ export default {
 
           // 상품 아이디 목록을 사용하여 서버에서 상품 정보를 가져옴
           axios.post("/api/recently-viewed-product/get-by-localstorage", slicedrecentlyViewedProducts).then(({data}) => {
-            state.recentlyViewed = data;
+            state.recentlyViewedProducts = data;
           });
         }
       }
@@ -118,10 +150,11 @@ export default {
     watchEffect(getRecentlyViewedProducts);
 
     return {
-      lib,
+      formatter,
       state,
       showSelectProductSizeModal, selectedProductId,
-      handleAddFavorite,
+      isNew,
+      handleSelectProductSizeModal,
       goToPage
     }
   }

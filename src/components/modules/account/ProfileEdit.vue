@@ -126,9 +126,7 @@ export default {
         axios.post("/api/user/withdraw").then(() => {
           alert('탈퇴되었습니다.');
           store.commit('setToken', 0);
-          store.commit('setAccountId', 0);
-          store.commit('setAccountRole', '');
-          store.commit('setAccountAuthProvider', '');
+          store.dispatch('updateUserInfo', {id: 0, role: '', authProvider: '',});
           router.push({name: 'Home'});
         });
       }

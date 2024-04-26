@@ -81,53 +81,51 @@
               }
 
               .product-details {
+                font-size: 0.9rem;
                 flex-grow: 1; /* 가능한 모든 여유 공간을 차지하도록 설정 */
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
                 padding-block: 30px;
 
-                .details-wrapper {
-                  justify-content: flex-start;
+                .title-row {
+                  display: block; // 블록 레벨 요소, 자동 줄바꿈 처리
+                  font-weight: bold;
 
-                  .product-title-row {
-                    display: block; // 블록 레벨 요소, 자동 줄바꿈 처리
-                    font-size: 0.9rem;
-                    font-weight: bold;
-
-                    .title-container, .discount-container {
-                      display: inline;
-                    }
-
-                    .title-container {
-                      white-space: normal; /* 자동으로 줄바꿈 */
-                    }
-
-                    .discount-container {
-                      margin-left: 0.2rem;
-                      color: #dc3545;
-                    }
+                  .new-label {
+                    background-color: #dc3545;
+                    color: white;
+                    padding: 0.1rem 0.5rem;
+                    margin-right: 0.3rem;
+                    line-height: 1; // 줄 간격을 1로 설정하여 패딩에 의해 높이가 늘어나지 않도록 함.
                   }
 
-                  .product-price-row {
-                    font-size: 0.9rem;
+                  .discount-per {
+                    color: #dc3545;
+                    margin-right: 0.2rem;
+                  }
 
-                    .price-container {
-                      display: flex; /* Use flexbox for the price container */
-                      align-items: center;
-                      gap: 0.25rem;
+                  .name {}
+                }
 
-                      .original-price {
-                        color: darkgray;
+                .size-row {}
 
-                        &.sale {
-                          text-decoration: line-through;
-                        }
+                .price-row {
+                  .price-container {
+                    display: flex; /* Use flexbox for the price container */
+                    align-items: center;
+                    gap: 0.25rem;
+
+                    .original-price {
+                      color: darkgray;
+
+                      &.sale {
+                        text-decoration: line-through;
                       }
+                    }
 
-                      .discounted-price {
-                        color: #dc3545;
-                      }
+                    .discounted-price {
+                      color: #dc3545;
                     }
                   }
                 }
@@ -138,7 +136,8 @@
               display: flex;
               flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
               flex-direction: column;
-              justify-content: space-between;
+              justify-content: flex-start;
+              //justify-content: space-between;
               width: 190px;
               height: 100%;
               padding-block: 30px;
@@ -173,6 +172,7 @@
                 }
               }
 
+               // TODO: 하단으로 안떨어짐...
               .action-icons {
                 display: flex; /* 아이콘들을 수평으로 배치 */
                 justify-content: space-between;
@@ -266,22 +266,23 @@
                 }
 
                 .product-details {
-                  .details-wrapper {
-                    .product-title-row {
-                      font-size: 0.75rem;
-                      .title-container, .discount-container {}
-                      .title-container {}
-                      .discount-container {}
+                  font-size: 0.75rem;
+                  .title-row {
+                    .new-label {
+                      padding: 0.1rem 0.4rem;
                     }
+                    .discount-per {}
+                    .name {}
+                  }
 
-                    .product-price-row {
-                      font-size: 0.75rem;
-                      .price-container {
-                        .original-price {
-                          &.sale {}
-                        }
-                        .discounted-price {}
+                  .size-row {}
+
+                  .price-row {
+                    .price-container {
+                      .original-price {
+                        &.sale {}
                       }
+                      .discounted-price {}
                     }
                   }
                 }
@@ -290,10 +291,10 @@
               .product-subtotal {
                 width: 90%;
                 height: 100%;
-                font-size: 0.75rem;
                 padding-block: 10px;
                 margin-inline: 20px;
                 .subtotal-quantity-container, .subtotal-coupon-container, .subtotal-price-container {
+                  font-size: 0.75rem;
                   label {}
                   .label-content {}
                   .select-field {}

@@ -27,6 +27,7 @@
     font-size: 12px;
 
     table {
+      table-layout: fixed;  // 테이블 레이아웃을 고정으로 설정
       width: 100%;
       border-collapse: collapse;
 
@@ -80,6 +81,16 @@
           color: #dc3545;
           font-size: .75rem;
         }
+
+        .category-input-container {
+          display: flex;
+          flex-direction: row;
+          padding-block: 5px;
+          gap: 10px;
+          .select-field {
+            width: 200px;
+          }
+        }
       }
     }
   }
@@ -97,8 +108,8 @@
   .image {
     position: relative;
     display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    flex-wrap: nowrap;  // 내부 항목을 줄바꿈 없이 한 줄로 표시
+    overflow-x: auto;   // 컨테이너의 내용이 넘칠 경우 가로 스크롤 생성
 
     .image-box {
       position: relative;

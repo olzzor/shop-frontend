@@ -7,17 +7,17 @@
         <li v-for="(contact, idx) in state.contacts" :key="idx">
           <div class="contact">
             <div class="contact-header">
-              <span class="contact-title">[{{ lib.getContactTypeName(contact.type) }}] {{ contact.title }}</span>
+              <span class="contact-title">[{{ formatter.getContactTypeName(contact.type) }}] {{ contact.title }}</span>
               <span class="contact-inquirer">{{ contact.inquirerName }} ({{ contact.inquirerEmail }})</span>
             </div>
 
             <div class="contact-body">
-              <span class="contact-content" v-html="lib.convertLineBreaks(contact.content)"></span>
+              <span class="contact-content" v-html="formatter.convertLineBreaks(contact.content)"></span>
             </div>
 
             <div class="contact-footer">
-              <span class="contact-date">{{ lib.getFormattedDate(contact.regDate, 'YYYY-MM-DD HH:mm:ss') }}</span>
-              <span class="contact-status">{{ lib.getContactStatusName(contact.status) }}</span>
+              <span class="contact-date">{{ formatter.getFormattedDate(contact.regDate, 'YYYY-MM-DD HH:mm:ss') }}</span>
+              <span class="contact-status">{{ formatter.getContactStatusName(contact.status) }}</span>
             </div>
           </div>
         </li>
@@ -41,7 +41,7 @@
 import {onMounted, reactive} from "vue";
 import {useRoute} from "vue-router";
 import axios from "axios";
-import lib from "@/scripts/lib";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: 'ContactUpdate',
@@ -81,7 +81,7 @@ export default {
     onMounted(load);
 
     return {
-      lib,
+      formatter,
       tableHeaders, state,
       answer
     }

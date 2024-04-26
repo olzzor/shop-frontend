@@ -56,29 +56,60 @@
             flex-grow: 1;
           }
 
-          .product-shipment {
+          .product-interaction {
             align-items: center;
             flex: 0 0 auto; /* 고정 크기, 변경 불가능 */
             margin: 10px 20px 10px 20px;
 
-            .shipment-status {
-              padding: 0.35em 0.65em;
-              border: 1px solid black; /* 테두리 추가 */
-              background-color: #e3e3e3;
-              color: black;
-              width: 6rem;
-              /* 내용 중앙 정렬 */
-              display: flex;
-              align-items: center; /* 수직 중앙 정렬 */
-              justify-content: center; /* 수평 중앙 정렬 */
+            .product-shipment {
+              .shipment-status {
+                padding: 0.35em 0.65em;
+                border: 1px solid black; /* 테두리 추가 */
+                background-color: #e3e3e3;
+                color: black;
+                width: 6rem;
+                /* 내용 중앙 정렬 */
+                display: flex;
+                align-items: center; /* 수직 중앙 정렬 */
+                justify-content: center; /* 수평 중앙 정렬 */
+              }
+
+              .shipment-info {
+                margin-top: 10px;
+                /* 내용 중앙 정렬 */
+                display: flex;
+                align-items: center; /* 수직 중앙 정렬 */
+                justify-content: center; /* 수평 중앙 정렬 */
+              }
             }
 
-            .shipment-info {
-              margin-top: 10px;
-              /* 내용 중앙 정렬 */
-              display: flex;
-              align-items: center; /* 수직 중앙 정렬 */
-              justify-content: center; /* 수평 중앙 정렬 */
+            .product-review {
+              .button {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                border-width: 0.0625rem;
+                font-size: .75rem;
+                width: 100px;
+
+                &.btn-write-review {
+                  background-color: black;
+                  color: white;
+                  height: 2.3rem;
+                  font-weight: 700;
+                  margin-bottom: 12px;
+                }
+
+                &.btn-edit-review {
+                  border-color: black;
+                  color: black;
+                  height: 2.3rem;
+                  font-weight: 700;
+                  margin-bottom: 12px;
+                }
+              }
             }
           }
         }
@@ -138,7 +169,7 @@
               flex: 2; // 가변 너비 설정, product-image 보다 크게 설정
             }
 
-            .product-shipment {
+            .product-interaction {
               display: flex; // Flexbox 적용
               flex-direction: row; // 가로 방향으로 설정
               justify-content: space-between;
@@ -148,18 +179,44 @@
               width: 100%; // 전체 너비 차지
               order: 3; // 다음 행에 배치
 
-              .shipment-status {
-                padding: 0.35em 0.65em;
-                color: black;
-                width: 6rem;
+              .product-shipment {
+                .shipment-status {
+                  padding: 0.35em 0.65em;
+                  color: black;
+                  width: 6rem;
+                }
+
+                .shipment-info {
+                  margin-top: 10px;
+                  /* 내용 중앙 정렬 */
+                  display: flex;
+                  align-items: center; /* 수직 중앙 정렬 */
+                  justify-content: center; /* 수평 중앙 정렬 */
+                }
               }
 
-              .shipment-info {
-                margin-top: 10px;
-                /* 내용 중앙 정렬 */
-                display: flex;
-                align-items: center; /* 수직 중앙 정렬 */
-                justify-content: center; /* 수평 중앙 정렬 */
+              .product-review {
+                .button {
+                  border-width: 0.0625rem;
+                  font-size: .7rem;
+                  width: 95px;
+
+                  .btn-write-review, .btn-edit-review {
+                    order: 1; // 왼쪽에 위치하도록 순서 설정
+                  }
+
+                  &.btn-write-review {
+                    height: 1.7rem;
+                    font-weight: 500;
+                    margin-bottom: 5px;
+                  }
+
+                  &.btn-edit-review {
+                    height: 1.7rem;
+                    font-weight: 500;
+                    margin-bottom: 5px;
+                  }
+                }
               }
             }
           }

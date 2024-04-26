@@ -9,13 +9,13 @@
 
       <div class="notice-date">
         <small>
-          {{ lib.getFormattedDate(state.notice.regDate, 'YYYY-MM-DD') }}
-          <span v-if="isModDateAfterRegDate">(최근 수정 {{ lib.getFormattedDate(state.notice.modDate, 'YYYY-MM-DD') }})</span>
+          {{ formatter.getFormattedDate(state.notice.regDate, 'YYYY-MM-DD') }}
+          <span v-if="isModDateAfterRegDate">(최근 수정 {{ formatter.getFormattedDate(state.notice.modDate, 'YYYY-MM-DD') }})</span>
         </small>
       </div>
 
       <div class="notice-content">
-        <div class="ck-content" v-html="lib.convertMarkdownToHtml(state.notice.content)"></div>
+        <div class="ck-content" v-html="formatter.convertMarkdownToHtml(state.notice.content)"></div>
       </div>
     </div>
   </div>
@@ -25,7 +25,7 @@
 import {computed, onMounted, reactive} from "vue";
 import {useRoute} from "vue-router";
 import axios from "axios";
-import lib from "@/scripts/lib";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: "NoticeDetail",
@@ -61,8 +61,8 @@ export default {
 
     const isModDateAfterRegDate = computed(() => {
       // 년월일 형식으로 날짜 포맷팅
-      const modDateFormatted = lib.getFormattedDate(state.notice.modDate, 'YYYY-MM-DD');
-      const regDateFormatted = lib.getFormattedDate(state.notice.regDate, 'YYYY-MM-DD');
+      const modDateFormatted = formatter.getFormattedDate(state.notice.modDate, 'YYYY-MM-DD');
+      const regDateFormatted = formatter.getFormattedDate(state.notice.regDate, 'YYYY-MM-DD');
 
       // 문자열 비교로 날짜 비교
       return modDateFormatted > regDateFormatted;
@@ -80,7 +80,7 @@ export default {
     onMounted(load);
 
     return {
-      lib,
+      formatter,
       state,
       isModDateAfterRegDate,
     }

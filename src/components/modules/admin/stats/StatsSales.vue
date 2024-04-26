@@ -18,7 +18,7 @@
         <select class="select-field" v-model="state.form.type">
           <option disabled value="">단위</option>
           <option v-for="type in periodTypes" :key="type" :value="type">
-            {{ lib.getPeriodTypeName(type) }}
+            {{ formatter.getPeriodTypeName(type) }}
           </option>
         </select>
         <input type="date" class="input-field date" v-model="state.form.startDate">
@@ -37,10 +37,10 @@
 
 <script>
 import {onMounted, reactive, ref} from "vue";
-import axios from "axios";
 import dayjs from 'dayjs';
+import axios from "axios";
 import Chart from "chart.js/auto";
-import lib from "@/scripts/lib";
+import formatter from "@/scripts/formatter";
 import 'chartjs-adapter-date-fns';
 
 export default {
@@ -143,7 +143,7 @@ export default {
     onMounted(load);
 
     return {
-      lib,
+      formatter,
       state, chartCanvas, periodTypes,
       runBatch, showChart,
     }

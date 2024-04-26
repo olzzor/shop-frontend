@@ -10,13 +10,13 @@
         <li v-for="(contact, idx) in state.contacts" :key="idx">
           <div class="contact">
             <div class="contact-details">
-              <span class="contact-title">[{{ lib.getContactTypeName(contact.type) }}] {{ contact.title }}</span>
-              <span class="contact-date">{{ lib.getFormattedDate(contact.regDate, 'YYYY-MM-DD HH:mm:ss') }}</span>
+              <span class="contact-title">[{{ formatter.getContactTypeName(contact.type) }}] {{ contact.title }}</span>
+              <span class="contact-date">{{ formatter.getFormattedDate(contact.regDate, 'YYYY-MM-DD HH:mm:ss') }}</span>
             </div>
 
             <div class="contact-status">
               <router-link :to="{ name: 'ContactDetail', params: { id: contact.id }}">
-                {{ lib.getContactStatusName(contact.status) }}
+                {{ formatter.getContactStatusName(contact.status) }}
               </router-link>
             </div>
           </div>
@@ -33,7 +33,7 @@
 <script>
 import {onMounted, reactive} from "vue";
 import axios from "axios";
-import lib from "@/scripts/lib";
+import formatter from "@/scripts/formatter";
 import ContactUsModal from "@/components/modules/contact/ContactUsModal.vue";
 
 export default {
@@ -69,7 +69,7 @@ export default {
     onMounted(load);
 
     return {
-      lib,
+      formatter,
       state,
       load,
     }

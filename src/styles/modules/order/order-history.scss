@@ -76,14 +76,6 @@
                 margin-bottom: 12px;
               }
 
-              &.btn-order-confirm {
-                background-color: transparent;
-                border-color: black;
-                color: black;
-                height: 1.7rem;
-                margin-bottom: 4px;
-              }
-
               &.btn-order-cancel {
                 background-color: transparent;
                 border-color: black;
@@ -171,7 +163,7 @@
                   order: 1; // 왼쪽에 위치하도록 순서 설정
                 }
 
-                .btn-order-confirm, .btn-order-cancel {
+                .btn-order-cancel {
                   order: 2; // 오른쪽에 위치하도록 순서 설정
                   justify-content: flex-end;
                 }
@@ -185,11 +177,6 @@
                 &.btn-edit-review {
                   height: 1.7rem;
                   font-weight: 500;
-                  margin-bottom: 5px;
-                }
-
-                &.btn-order-confirm {
-                  height: 1.7rem;
                   margin-bottom: 5px;
                 }
 

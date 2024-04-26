@@ -48,10 +48,7 @@
             <th>
               <select class="select-field" v-model="state.form.orderStatus">
                 <option value="">전체</option>
-                <option v-for="status in orderStatuses" :key="status" :value="status">{{
-                    lib.getOrderStatusName(status)
-                  }}
-                </option>
+                <option v-for="os in orderStatuses" :key="os.key" :value="os.key">{{ os.description }}</option>
               </select>
             </th>
             <th>
@@ -96,7 +93,7 @@
             </td>
 
             <td class="column-order-payment-method">{{ order.paymentMethod }} {{ order.cardNumber }}</td>
-            <td class="column-order-payment-amount">{{ lib.getFormattedNumber(order.paymentAmount) }}원</td>
+            <td class="column-order-payment-amount">{{ formatter.getFormattedNumber(order.paymentAmount) }}원</td>
 
             <td class="column-order-product-name">
               {{ getOrderProducts(order.orderDetails) }}
@@ -104,13 +101,11 @@
 
             <td class="column-order-status">
               <select class="select-field" v-model="order.status" :disabled="!state.isModify[idx].value">
-                <option v-for="status in orderStatuses" :key="status" :value="status">
-                  {{ lib.getOrderStatusName(status) }}
-                </option>
+                <option v-for="os in orderStatuses" :key="os.key" :value="os.key">{{ os.description }}</option>
               </select>
             </td>
 
-            <td class="column-order-reg-date">{{ lib.getFormattedDate(order.regDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
+            <td class="column-order-reg-date">{{ formatter.getFormattedDate(order.regDate, 'YYYY-MM-DD HH:mm:ss') }}</td>
           </tr>
         </tbody>
       </table>
@@ -136,9 +131,10 @@
 
 <script>
 import {reactive, ref} from "vue";
-import axios from "axios";
 import dayjs from 'dayjs';
-import lib from "@/scripts/lib";
+import axios from "axios";
+import formatter from "@/scripts/formatter";
+import constants from "@/scripts/constants";
 
 export default {
   name: 'OrderList',
@@ -146,8 +142,7 @@ export default {
   setup() {
     const tableHeaders = ['주문 번호', '주문자 이메일', '결제 수단', '결제 금액', '구입 항목', '주문 상태', '주문 날짜',];
     const sortKey = ['orderNumber', 'buyerEmail', 'paymentMethod', 'paymentAmount', 'orderProducts', 'status', 'regDate'];
-    const orderStatuses = lib.orderStatuses;
-    const shipmentStatuses = lib.shipmentStatuses;
+    const orderStatuses = constants.ORDER_STATUSES;
 
     const state = reactive({
       orders: [],
@@ -176,10 +171,10 @@ export default {
             + '\t' + data.orderNumber
             + '\t' + data.buyerEmail
             + '\t' + data.paymentMethod + ' ' + data.cardNumber
-            + '\t' + lib.getFormattedNumber(data.paymentAmount) + '원'
+            + '\t' + formatter.getFormattedNumber(data.paymentAmount) + '원'
             + '\t' + getOrderProducts(data.orderDetails)
-            + '\t' + lib.getOrderStatusName(data.status)
-            + '\t' + lib.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + formatter.getOrderStatusName(data.status)
+            + '\t' + formatter.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
             + '\n';
       });
 
@@ -329,8 +324,8 @@ export default {
     load();
 
     return {
-      lib,
-      tableHeaders, orderStatuses, shipmentStatuses, state, sortKey,
+      formatter,
+      tableHeaders, orderStatuses, state, sortKey,
       getOrderProducts, downloadCSV, toggleSelectAll, clearSearchConditions, searchCondition, searchFull, modify, changeOrders, goToPage, sort,
       getTotalQuantity, getTotalPrice,
     }

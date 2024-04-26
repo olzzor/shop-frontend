@@ -4,6 +4,7 @@
 
     <div class="content">
       <p>
+        <i class="bi bi-emoji-smile"></i> 상세 설명과 사이즈 변경은 해당 상품의 번호 링크를 클릭하여 진행해주세요.<br>
         <i class="bi bi-emoji-smile"></i> 변경 방법: 변경하고자 하는 대상의 체크 박스 선택
         <i class="bi bi-arrow-right"></i> 변경 내용 입력 <i class="bi bi-arrow-right"></i> '변경하기' 버튼 클릭<br>
         <span style="color: #dc3545;">
@@ -32,9 +33,7 @@
           <th>
             <select class="select-field" v-model="state.form.categoryCode">
               <option value="">전체</option>
-              <option v-for="cc in categoryCodes" :key="cc" :value="cc">
-                {{ lib.getCategoryName(cc) }}
-              </option>
+              <option v-for="fc in flattenCategories" :key="fc.code" :value="fc.code">{{ fc.name }}</option>
             </select>
           </th>
 
@@ -61,11 +60,17 @@
           </th>
 
           <th>
+            <select class="select-field" v-model="state.form.isDisplay">
+              <option value="">전체</option>
+              <option value="true">표시</option>
+              <option value="false">비표시</option>
+            </select>
+          </th>
+
+          <th>
             <select class="select-field" v-model="state.form.status">
               <option value="">전체</option>
-              <option v-for="status in productStatuses" :key="status" :value="status">
-                {{ lib.getProductStatusName(status) }}
-              </option>
+              <option v-for="ps in productStatuses" :key="ps.key" :value="ps.key">{{ ps.description }}</option>
             </select>
           </th>
         </tr>
@@ -97,21 +102,19 @@
 
           <td class="column-product-category">
             <select class="select-field" v-model="product.category.code" :disabled="!state.isModify[idx].value">
-              <option v-for="cc in categoryCodes" :key="cc" :value="cc">
-                {{ lib.getCategoryName(cc) }}
-              </option>
+              <option v-for="fc in flattenCategories" :key="fc.code" :value="fc.code">{{ fc.name }}</option>
             </select>
           </td>
 
           <td class="column-product-image">
             <div class="product-image">
-              <img :src="`${product.productImages[0].fileUrl}`"/>
+              <img :src="`${product.productImages[0].fileUrl}`" />
             </div>
           </td>
 
           <td class="column-product-name">
             <div class="product-name">
-                <input type="text" class="input-field" id="product-name" v-model="product.name" :disabled="!state.isModify[idx].value">
+              <input type="text" class="input-field" id="product-name" v-model="product.name" :disabled="!state.isModify[idx].value">
             </div>
           </td>
 
@@ -132,18 +135,23 @@
           </td>
 
           <td class="column-product-reg-date">
-            {{ lib.getFormattedDate(product.regDate, 'YYYY-MM-DD HH:mm:ss') }}
+            {{ formatter.getFormattedDate(product.regDate, 'YYYY-MM-DD HH:mm:ss') }}
           </td>
 
           <td class="column-product-mod-date">
-            {{ lib.getFormattedDate(product.modDate, 'YYYY-MM-DD HH:mm:ss') }}
+            {{ formatter.getFormattedDate(product.modDate, 'YYYY-MM-DD HH:mm:ss') }}
+          </td>
+
+          <td class="column-product-is-display">
+            <select class="select-field" v-model="product.isDisplay" :disabled="!state.isModify[idx].value">
+              <option :value="true">표시</option>
+              <option :value="false">비표시</option>
+            </select>
           </td>
 
           <td class="column-product-status">
             <select class="select-field" v-model="product.status" :disabled="!state.isModify[idx].value">
-              <option v-for="status in productStatuses" :key="status" :value="status">
-                {{ lib.getProductStatusName(status) }}
-              </option>
+              <option v-for="ps in productStatuses" :key="ps.key" :value="ps.key">{{ ps.description }}</option>
             </select>
           </td>
         </tr>
@@ -163,24 +171,25 @@
 
 <script>
 import {onMounted, reactive, ref} from "vue";
-import axios from "axios";
-import lib from "@/scripts/lib";
 import dayjs from "dayjs";
+import axios from "axios";
+import constants from "@/scripts/constants";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: 'ProductList',
   components: {},
   setup() {
-    const tableHeaders = ['카테고리', '이미지', '품명', '사이즈', '가격', '할인율', '등록 날짜', '변경 날짜', '상태'];
-    const sortKey = ['category', '', 'name', 'productSize', 'price', 'discountPer', 'regDate', 'modDate', 'status'];
-    const categoryCodes = lib.categoryCodes;
-    const productStatuses = lib.productStatuses;
+    const tableHeaders = ['카테고리', '이미지', '품명', '사이즈', '가격', '할인율', '등록 날짜', '변경 날짜', '표시', '상태'];
+    const sortKey = ['category', '', 'name', 'productSize', 'price', 'discountPer', 'regDate', 'modDate', 'isDisplay', 'status'];
+    const flattenCategories = formatter.getFlattenCategories();
+    const productStatuses = constants.PRODUCT_STATUSES;
 
     const state = reactive({
       products: [],
       form: {
-        categoryCode: '', name: '', productSize: '', price: '', discountPer: '', status: '',
-        startRegDate: '', endRegDate: '', startModDate: '', endModDate: ''
+        categoryCode: '', name: '', productSize: '', price: '', discountPer: '', isDisplay: '',
+        status: '', startRegDate: '', endRegDate: '', startModDate: '', endModDate: ''
       },
       page: {pageSize: 5, currentPage: 1, totalPages: 0},
       sortDirections: {},
@@ -199,15 +208,16 @@ export default {
 
       tableDatas.forEach((data, idx) => {
         rows += (idx + 1)
-            + '\t' + lib.getCategoryName(data.category.code)
+            + '\t' + data.category.name
             + '\t' + '-'
             + '\t' + data.name
             + '\t' + data.productSizes.map(ps => getProductSize(ps)).join(', ')
-            + '\t' + lib.getFormattedNumber(data.price) + ' 원'
+            + '\t' + formatter.getFormattedNumber(data.price) + ' 원'
             + '\t' + data.discountPer + ' %'
-            + '\t' + lib.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
-            + '\t' + lib.getFormattedDate(data.modDate, 'YYYY-MM-DD HH:mm:ss')
-            + '\t' + lib.getProductStatusName(data.status)
+            + '\t' + formatter.getFormattedDate(data.regDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + formatter.getFormattedDate(data.modDate, 'YYYY-MM-DD HH:mm:ss')
+            + '\t' + (data.isDisplay ? '표시': '비표시')
+            + '\t' + formatter.getProductStatusName(data.status)
             + '\n';
       });
 
@@ -277,8 +287,8 @@ export default {
 
     const clearSearchConditions = () => {
       state.form = {
-        categoryCode: '', name: '', price: '', discountPer: '', status: '',
-        startRegDate: '', endRegDate: '', startModDate: '', endModDate: '',
+        categoryCode: '', name: '', price: '', discountPer: '', isDisplay: true,
+        status: '', startRegDate: '', endRegDate: '', startModDate: '', endModDate: '',
       };
     };
 
@@ -321,6 +331,7 @@ export default {
               name: product.name,
               price: product.price,
               discountPer: product.discountPer,
+              isDisplay: product.isDisplay,
               status: product.status
             }));
 
@@ -357,7 +368,8 @@ export default {
     onMounted(load);
 
     return {
-      lib, productStatuses, categoryCodes,
+      formatter,
+      productStatuses, flattenCategories,
       tableHeaders, sortKey, state,
       getProductSize, downloadCSV, clearSearchConditions, searchCondition, searchFull, sort, goToPage,
       toggleSelectAll, modify, changeProducts,
