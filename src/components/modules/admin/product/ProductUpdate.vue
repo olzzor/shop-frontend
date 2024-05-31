@@ -94,13 +94,19 @@
         </tr>
 
         <tr>
-          <td class="table-title">사이즈 가이드</td>
-          <td v-html="formatter.convertLineBreaks(state.product.detail.sizeGuide)"></td>
-          <td>
-            <textarea class="input-field" v-model="state.form.detail.sizeGuide" @input="autoGrow" />
-            <div class="error-message" v-if="state.errorMessage.detailSizeGuide">{{ state.errorMessage.detailSizeGuide }}</div>
-          </td>
+          <td class="table-title">상세 내용</td>
+          <td>(생략)</td>
+          <td><router-link :to="{ name: 'AdminProductDetailContentUpdate', params: { id: state.product.detail.id }}">내용 변경</router-link></td>
         </tr>
+
+<!--        <tr>-->
+<!--          <td class="table-title">사이즈 가이드</td>-->
+<!--          <td v-html="formatter.convertLineBreaks(state.product.detail.sizeGuide)"></td>-->
+<!--          <td>-->
+<!--            <textarea class="input-field" v-model="state.form.detail.sizeGuide" @input="autoGrow" />-->
+<!--            <div class="error-message" v-if="state.errorMessage.detailSizeGuide">{{ state.errorMessage.detailSizeGuide }}</div>-->
+<!--          </td>-->
+<!--        </tr>-->
 
         <tr>
           <td class="table-title">가격</td>
@@ -139,8 +145,7 @@
               </div>
               <div class="upload-box" @click="clickImageInput" @drop.prevent="dropImage" @dragover.prevent>
                 <p>+</p>
-                <input type="file" multiple accept="image/*" ref="imageInput" @change="previewImage"
-                       style="display: none">
+                <input type="file" multiple accept="image/*" ref="imageInput" @change="previewImage" style="display: none">
               </div>
             </div>
           </td>
@@ -192,6 +197,7 @@ export default {
     const route = useRoute();
     const images = ref([]);
     const imageInput = ref(null);
+    const existingImages = ref([]);
 
     const state = reactive({
       categorySelection: {selectedMainCategoryCode: '', subCategories: [], isSubCategoryDisabled: true,},
@@ -239,6 +245,11 @@ export default {
       const files = Array.from(event.target.files);
       for (let file of files) {
         images.value.push(URL.createObjectURL(file));
+        existingImages.value.push({
+          displayOrder: (existingImages.value.length > 0)
+              ? existingImages.value[existingImages.value.length - 1].displayOrder + 1
+              : 0
+        });
       }
       state.form.files = state.form.files.concat(files);
     };
@@ -248,13 +259,29 @@ export default {
       const files = Array.from(event.dataTransfer.files);
       for (let file of files) {
         images.value.push(URL.createObjectURL(file));
+        existingImages.value.push({
+          displayOrder: (existingImages.value.length > 0)
+              ? existingImages.value[existingImages.value.length - 1].displayOrder + 1
+              : 0
+        });
       }
       state.form.files = state.form.files.concat(files);
     };
 
     const deleteImage = (index) => {
-      images.value.splice(index, 1);
-      state.form.files.splice(index, 1);
+      if (window.confirm("이미지를 삭제하시겠습니까?")) {
+        // 미리보기 이미지 및 파일 제거
+        images.value.splice(index, 1);
+        state.form.files.splice(index, 1);
+
+        // existingImages 에서 해당 항목 제거
+        existingImages.value.splice(index, 1);
+
+        // displayOrder 갱신
+        for (let i = index; i < existingImages.value.length; i++) {
+          existingImages.value[i].displayOrder -= 1;
+        }
+      }
     };
 
     const checkInput = () => {
@@ -310,6 +337,7 @@ export default {
         formData.append('product', JSON.stringify(state.form.product))
         formData.append('detail', JSON.stringify(state.form.detail));
         formData.append('sizes', JSON.stringify(state.form.sizes));
+        formData.append('existingImages', JSON.stringify(existingImages.value));
         state.form.files.forEach(file => {
           formData.append('files', file);
         });
@@ -367,6 +395,7 @@ export default {
         id: ps.id,
         size: ps.size,
         quantity: ps.quantity,
+        // adjustmentQuantity 는 백엔드에서 재고 업데이트의 경우, 프론트에서 입력된 수정 전후의 수량차로 갱신하기 위함. 업데이트 시 실시간으로 상품이 판매되어 수량이 변경된 경우에 대비하기 위함.
         adjustmentQuantity: ps.quantity,
       }));
       state.form.files = [];
@@ -385,14 +414,25 @@ export default {
         state.categorySelection.selectedMainCategoryCode = categoryCodeBefore; // 변경 전 카테고리 코드를 변경 후 메인 카테고리 초기값으로 설정
         state.form.product.categoryCode = categoryCodeBefore; // 변경 전 카테고리 코드를 변경 후 카테고리 코드 초기값으로 설정
       }
+
+      /** 상품 이미지 초기값 설정 */
+      // 리뷰의 이미지 정보를 images ref와 existingImages ref에 설정
+      if (data.productImages && data.productImages.length > 0) {
+        images.value = data.productImages.map(img => img.fileUrl);
+        existingImages.value = data.productImages.map(img => ({
+          id: img.id,
+          fileName: img.fileName,
+          displayOrder: img.displayOrder
+        }));
+      }
     };
 
     const autoGrow = () => {
       nextTick(() => {
         const textareas = document.querySelectorAll('textarea.input-field');
         textareas.forEach(textarea => {
-          textarea.style.height = '100px';
-          textarea.style.height = (textarea.scrollHeight < 150 ? textarea.scrollHeight : 150) + 'px';
+          textarea.style.height = 'auto';
+          textarea.style.height = textarea.scrollHeight + 'px';
         });
       });
     };

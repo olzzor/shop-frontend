@@ -59,8 +59,7 @@
             통계 관리<i :class="classStatsIcon"></i>
           </div>
           <div v-if="showStatsLink">
-            <router-link to="/stats-sales" class="link">매출 분석 (날짜)</router-link>
-            <router-link to="/stats-sales-category" class="link">매출 분석 (카테고리)</router-link>
+            <router-link to="/stats-sales" class="link">매출 분석</router-link>
           </div>
         </div>
       </div>

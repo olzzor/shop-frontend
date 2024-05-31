@@ -71,6 +71,7 @@ const adminRoutes = [
             {path: '/product-regist', name: 'AdminProductRegist', component: () => import('@/components/modules/admin/product/ProductRegist.vue')},
             {path: '/product-list', name: 'AdminProductList', component: () => import('@/components/modules/admin/product/ProductList.vue')},
             {path: '/product-update/:id', name: 'AdminProductUpdate', component: () => import('@/components/modules/admin/product/ProductUpdate.vue')},
+            {path: '/product-detail-content-update/:id', name: 'AdminProductDetailContentUpdate', component: () => import('@/components/modules/admin/product/ProductDetailContentUpdate.vue')},
             {path: '/recommended-product-list', name: 'AdminRecommendedProductList', component: () => import('@/components/modules/admin/recommended-product/RecommendedProductList.vue')},
             {path: '/coupon-regist', name: 'AdminCouponRegist', component: () => import('@/components/modules/admin/coupon/CouponRegist.vue')},
             {path: '/coupon-list', name: 'AdminCouponList', component: () => import('@/components/modules/admin/coupon/CouponList.vue')},

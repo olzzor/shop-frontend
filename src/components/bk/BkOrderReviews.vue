@@ -45,13 +45,13 @@
 
                 <div class="right-side">
                   <div class="review-writer">{{ r.userEmail }}</div>
-                  <div class="review-date">{{ lib.getFormattedDate(r.regDate, 'YYYY/MM/DD') }}</div>
+                  <div class="review-date">{{ formatter.getFormattedDate(r.regDate, 'YYYY/MM/DD') }}</div>
                 </div>
               </div>
 
               <div class="content-container">
                 <div class="review-content">
-                  <p v-html="lib.convertLineBreaks(r.content)"></p>
+                  <p v-html="formatter.convertLineBreaks(r.content)"></p>
                 </div>
   <!--              <div class="review-images">-->
   <!--                <img v-for="ri in r.reviewImages" :key="ri.id" :src="`${ri.filePath}${ri.fileName}`" />-->
@@ -80,7 +80,7 @@
 <script>
 import {onMounted, reactive} from "vue";
 import axios from "axios";
-import lib from "@/scripts/lib";
+import formatter from "@/scripts/formatter";
 
 export default {
   name: "OrderReviews",
@@ -114,7 +114,7 @@ export default {
     onMounted(load);
 
     return {
-      lib,
+      formatter,
       state,
       load, loadMore
     }

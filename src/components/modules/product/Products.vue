@@ -2,9 +2,6 @@
   <div class="products">
 
     <div class="title" :class="{'style-home': isHomePage, 'style-searched': isSearched, 'style-category': !isHomePage && !isSearched}">
-<!--      <div v-if="isHomePage">상품</div>-->
-<!--      <div v-else-if="isSearched" style="margin-top: 70px">검색 결과</div>-->
-<!--      <div v-else style="margin-top: 40px">{{ currentCategoryName }}</div>-->
       <div class="product-title">
         <span v-if="isHomePage">NEW</span>
         <span v-else-if="isSearched">검색 결과</span>
@@ -25,40 +22,42 @@
       <div class="grid">
         <div class="item" v-for="(product, idx) in products" :key="idx">
 
-          <div class="product">
+          <div class="product"
+               @mouseover="showProductDetails(idx)" @mouseleave="hideProductDetails()"
+               @touchstart="showProductDetails(idx)" @touchend="hideProductDetails()" @touchcancel="hideProductDetails()">
             <div v-if="product.productImages && product.productImages.length > 0" class="image-section">
               <router-link :to="{ name: 'ProductDetail', params: { id: product.id }}">
-<!--                <span class="image-container" :style="{backgroundImage: `url(${product.productImages[0].fileUrl})`}" />-->
                 <img class="image-container" :src="`${product.productImages[0].fileUrl}`" />
                 <div v-if="product.status !== 'ON_SALE'" class="not-in-stock-overlay">
                   <div class="not-in-stock">NOT IN STOCK</div>
                 </div>
-              </router-link>
-            </div>
-            <div v-else class="image-section"><span class="image-container"/></div>
 
-            <div class="detail-section">
-              <div class="info-section">
-                <div class="title-row">
-                  <span class="new-label" v-if="isNew(product.regDate)">NEW</span>
-                  <span class="discount-per" v-if="product.discountPer">{{ product.discountPer }}%↓</span>
-                  <span class="name">{{ product.name }}</span>
-                </div>
+                <div class="detail-section" v-show="activeProductIndex === idx">
+                  <div class="product-info">
+                    <div class="title-row">
+                      <span class="new-label" v-if="isNew(product.regDate)">NEW</span>
+                      <span class="discount-per" v-if="product.discountPer">{{ product.discountPer }}%↓</span>
+                      <span class="name">{{ product.name }}</span>
+                    </div>
 
-                <div class="pricing-row">
-                  <div class="price-container">
-                    <small class="original-price" :class="{ 'sale': product.discountPer }">{{ formatter.getFormattedNumber(product.price) }}원</small>
-                    <small class="discounted-price" v-if="product.discountPer">{{ formatter.getFormattedNumber(product.price - (product.price * product.discountPer / 100)) }}원</small>
+                    <div class="pricing-row">
+                      <div class="price-container">
+                        <small class="original-price" :class="{ 'sale': product.discountPer }">{{ formatter.getFormattedNumber(product.price) }}원</small>
+                        <small class="discounted-price" v-if="product.discountPer">{{ formatter.getFormattedNumber(product.price - (product.price * product.discountPer / 100)) }}원</small>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </router-link>
 
-              <div class="action-buttons">
-                <span role="button" tabindex="0" @click="handleSelectProductSizeModal(product.id)">
-                  <i class="bi bi-heart"></i>
-                </span>
-              </div>
+<!--                20240508 위시리스트 버튼 삭제-->
+<!--                <div class="action-buttons">-->
+<!--                  <span role="button" tabindex="0" @click="handleSelectProductSizeModal(product.id)">-->
+<!--                    <i class="bi bi-heart"></i>-->
+<!--                  </span>-->
+<!--                </div>-->
             </div>
+            <div v-else class="image-section"><span class="image-container"/></div>
           </div>
         </div>
       </div>
@@ -90,6 +89,15 @@ export default {
     const showSelectProductSizeModal = ref(false);
     const selectedProductId = ref(null);
     const sortOption = ref('regDate,desc');
+    const activeProductIndex = ref(null);
+
+    const showProductDetails = (index) => {
+      activeProductIndex.value = index;
+    };
+
+    const hideProductDetails = () => {
+      activeProductIndex.value = null;
+    };
 
     const changeSortOption = (newSortOption) => {
       // 'sort-change' 이벤트를 발생시키고, 선택된 정렬 옵션을 인자로 전달
@@ -126,6 +134,7 @@ export default {
       isHomePage, currentCategoryName,
       showSelectProductSizeModal, selectedProductId,
       sortOption, changeSortOption,
+      activeProductIndex, showProductDetails, hideProductDetails,
       isNew,
       handleSelectProductSizeModal,
     };

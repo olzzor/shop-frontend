@@ -26,7 +26,7 @@
   .content {
     font-size: 12px;
 
-    .category-container, .name-container, .price-container, .discount-container, .size-container, .detail-container, .images-container, .display-container {
+    .category-container, .name-container, .price-container, .discount-container, .size-container, .detail-description-container, .detail-content-container, .images-container, .display-container {
       display: flex;
       flex-direction: row;
       border-bottom: 1px solid #e3e3e3;
@@ -72,6 +72,14 @@
             width: 70px; /* 원하는 길이로 조정 */
           }
         }
+      }
+    }
+
+    .detail-container {
+      min-height: 510px;
+
+      #product-detail {
+        width: 90%;
       }
     }
 

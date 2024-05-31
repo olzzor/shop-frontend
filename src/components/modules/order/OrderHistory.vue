@@ -34,10 +34,6 @@
             </div>
 
             <div class="action-buttons">
-              <div v-if="isReviewable(order.status)">
-                <button type="button" class="button btn-edit-review" @click="editReview(order.review.id)" v-if="order.review">리뷰 수정</button>
-                <button type="button" class="button btn-write-review" @click="writeReview(order.id)" v-else>리뷰 작성</button>
-              </div>
               <button type="button" class="button btn-order-cancel" @click="cancelOrder(order.id)" :disabled="!isCancelable(order.status)">주문 취소</button>
             </div>
           </div>
@@ -61,7 +57,6 @@ import {onMounted, reactive} from "vue";
 import dayjs from 'dayjs';
 import axios from "axios";
 import formatter from "@/scripts/formatter";
-import router from "@/scripts/router";
 import DirectDepositAnnounceModal from "@/components/modules/order/OrderDirectDepositAnnounceModal.vue";
 
 export default {
@@ -84,20 +79,6 @@ export default {
     const closeDirectDepositAnnounceModal = () => {
       state.directDepositAnnounceModal.deadline = '';
       state.directDepositAnnounceModal.show = false;
-    };
-
-    const writeReview = (orderId) => {
-      router.push({name: 'WriteReview', params: {orderId: orderId}});
-    };
-
-    const editReview = (reviewId) => {
-      router.push({name: 'EditReview', params: {reviewId: reviewId}});
-    };
-
-    const isReviewable = (status) => {
-      // 주문 상태가 '결제 완료', '취소 요청', '취소 완료'인 경우에, 리뷰를 작성할 수 있음
-      const reviewableStatuses = ['PAYMENT_COMPLETED', 'CANCEL_REQUESTED', 'CANCEL_COMPLETED'];
-      return reviewableStatuses.includes(status);
     };
 
     const isCancelable = (status) => {
@@ -147,8 +128,7 @@ export default {
       formatter,
       state, tableHeaders,
       openDirectDepositAnnounceModal, closeDirectDepositAnnounceModal,
-      writeReview, editReview,
-      isReviewable, isCancelable, goToPage,
+      isCancelable, goToPage,
       getTotalQuantity, getDepositDeadline, getReturnDate,
       cancelOrder
     }

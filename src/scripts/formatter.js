@@ -108,6 +108,12 @@ export default {
         return couponStatus ? couponStatus.description : couponStatus;
     },
 
+    /** 공지 상태 이름을 가져오는 함수 */
+    getNoticeStatusName(status) {
+        const noticeStatus = constants.NOTICE_STATUSES.find(cs => cs.key === status);
+        return noticeStatus ? noticeStatus.description : noticeStatus;
+    },
+
     convertLineBreaks(str) {
         return str ? str.replace(/\n/g, '<br>') : '';
     },

@@ -4,6 +4,11 @@
   <div class="modal-content" v-if="state.show">
     <form @submit.prevent="inquiry">
 
+      <div class="product-inquiry-title" v-if="isProductInquiry">
+        <span>{{state.form.product.name}}</span>
+        <i class="bi" :class="privateIconClass" @click="togglePrivate"></i>
+      </div>
+
       <div class="inquirer-email-field" :class="{ 'input-error': state.errorMessage.inquirerEmail }">
         <input type="text" class="input-field" id="inquirer-email" placeholder="이메일" autocomplete="email"
                v-model="state.form.inquirerEmail"/>
@@ -66,7 +71,10 @@ import constants from "@/scripts/constants";
 
 export default {
   name: "ContactUsModal",
-  props: {show: Boolean},
+  props: {
+    show: Boolean,
+    product: Object, type: String, // 상품 문의용
+  },
   emits: ['close'],
   setup(props, {emit}) {
     const contactTypes = constants.CONTACT_TYPES;
@@ -74,9 +82,25 @@ export default {
     const state = reactive({
       isSubmitting: false,
       show: true,
-      form: {inquirerEmail: "", inquirerName: "", orderNumber: "", type: "", title: "", content: "",},
+      form: {
+        inquirerEmail: "",
+        inquirerName: "",
+        orderNumber: "",
+        product: props.product || {id:0, name:''},
+        type: props.type || "",
+        title: "",
+        content: "",
+        isPrivate: true,
+      },
       errorMessage: {},
-    })
+    });
+
+    const isProductInquiry = computed(() => state.form.type === 'PRODUCT_INFO');
+    const privateIconClass = computed(() => state.form.isPrivate ? 'bi-lock' : 'bi-unlock');
+
+    const togglePrivate = () => {
+      state.form.isPrivate = !state.form.isPrivate;
+    };
 
     const initUser = (data) => {
       state.form.inquirerEmail = data.email;
@@ -186,8 +210,8 @@ export default {
 
     return {
       store,
-      contactTypes, state,
-      inquiry, close,
+      contactTypes, state, isProductInquiry, privateIconClass,
+      togglePrivate, inquiry, close,
     }
   }
 }

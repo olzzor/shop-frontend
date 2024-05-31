@@ -45,8 +45,8 @@
             <span class="name">{{ state.product.name }}</span>
           </div>
 
-          <!-- 가격 -->
-          <div class="price-row">
+          <div class="price-actions-row">
+            <!-- 가격 -->
             <div class="price-container">
               <small class="original-price" :class="{ 'sale': state.product.discountPer }">
                 {{ formatter.getFormattedNumber(state.product.price) }}원
@@ -55,6 +55,72 @@
                 {{ formatter.getFormattedNumber(price.getDiscountedPrice(state.product)) }}원
               </small>
             </div>
+
+            <!-- 위시리스트 버튼 -->
+            <div class="action-container">
+              <button type="button" class="button btn-add-wishlist"
+                      @click="isWishlist ? removeFromWishlist() : addToWishlist()" :disabled="state.isSubmitting">
+                <span v-if="isWishlist"><i class="bi bi-heart-fill"></i></span>
+                <span v-else><i class="bi bi-heart"></i></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- 상세 -->
+          <div class="product-details">
+            <div class="description" v-if="state.product.detail && state.product.detail.description">
+              <span v-html="formatter.convertLineBreaks(state.product.detail.description)"></span>
+            </div>
+<!--            &lt;!&ndash; 제품 설명 &ndash;&gt;-->
+<!--            <div class="description">-->
+<!--              <div class="description-title" @click="toggleShowDetail('description')">-->
+<!--                <span>제품 설명 </span>-->
+<!--                <i class="bi" :class="{'bi-chevron-down': !state.showDetail.description, 'bi-chevron-up': state.showDetail.description}"></i>-->
+<!--              </div>-->
+<!--              <div v-if="state.showDetail.description" class="description-content">-->
+<!--                <span v-if="state.product.detail.description" v-html="formatter.convertLineBreaks(state.product.detail.description)"></span>-->
+<!--                <span v-else>설명이 없습니다.</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; 사이즈 가이드 &ndash;&gt;-->
+<!--            <div class="size-guide">-->
+<!--              <div class="size-guide-title" @click="toggleShowDetail('sizeGuide')">-->
+<!--                <span>사이즈 가이드 </span>-->
+<!--                <i class="bi" :class="{'bi-chevron-down': !state.showDetail.sizeGuide, 'bi-chevron-up': state.showDetail.sizeGuide}"></i>-->
+<!--              </div>-->
+<!--              <div v-if="state.showDetail.sizeGuide" class="size-guide-content">-->
+<!--                <span v-if="state.product.detail.sizeGuide" v-html="formatter.convertLineBreaks(state.product.detail.sizeGuide)"></span>-->
+<!--                <span v-else>설명이 없습니다.</span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; 교환 및 환불 &ndash;&gt;-->
+<!--            <div class="exchange-return">-->
+<!--              <div class="exchange-return-title" @click="toggleShowDetail('exchangeReturn')">-->
+<!--                <span>교환 및 환불 </span>-->
+<!--                <i class="bi" :class="{'bi-chevron-down': !state.showDetail.exchangeReturn, 'bi-chevron-up': state.showDetail.exchangeReturn}"></i>-->
+<!--              </div>-->
+<!--              <div v-if="state.showDetail.exchangeReturn" class="exchange-return-content">-->
+<!--                <span>-->
+<!--                  빈티지의류 특성 상 교환 및 환불이 어렵습니다.<br>-->
+<!--                  신중한 구매 부탁 드리겠습니다.-->
+<!--                </span>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; 기타 문의 &ndash;&gt;-->
+<!--            <div class="other-inquiry">-->
+<!--              <div class="other-inquiry-title" @click="toggleShowDetail('otherInquiry')">-->
+<!--                <span>기타 문의 </span>-->
+<!--                <i class="bi" :class="{'bi-chevron-down': !state.showDetail.otherInquiry, 'bi-chevron-up': state.showDetail.otherInquiry}"></i>-->
+<!--              </div>-->
+<!--              <div v-if="state.showDetail.otherInquiry" class="other-inquiry-content">-->
+<!--                <span>-->
+<!--                  기타 문의 사항은 아래로 문의 부탁드립니다.<br>-->
+<!--                  오픈 카카오: https://open.kakao.com/d/sW3ukRnc-->
+<!--                </span>-->
+<!--              </div>-->
+<!--            </div>-->
           </div>
 
           <!-- 선택 옵션 -->
@@ -63,11 +129,12 @@
               <div class="product-sizes">
                 <select class="select-field" v-model="state.selectedSizeId">
                   <option v-if="state.product.productSizes && state.product.productSizes.length > 1"
-                          value="0" disabled>사이즈를 선택해주세요.
+                          value="0" disabled>size (필수)
                   </option>
                   <option v-for="ps in state.product.productSizes" :key="ps.id" :value="ps.id"
                           :disabled="ps.quantity === 0">
                     {{ ps.size }}<!-- <span class="size-stock">(재고: {{ ps.quantity }})</span> -->
+                    <span v-if="ps.quantity === 0"> (품절)</span>
                   </option>
                 </select>
               </div>
@@ -80,82 +147,85 @@
             </div>
           </div>
 
-          <!-- 상세 -->
-          <div class="product-details">
-            <!-- 제품 설명 -->
-            <div class="description">
-              <div class="description-title" @click="toggleShowDetail('description')">
-                <span>제품 설명 </span>
-                <i class="bi" :class="{'bi-chevron-down': !state.showDetail.description, 'bi-chevron-up': state.showDetail.description}"></i>
-              </div>
-              <div v-if="state.showDetail.description" class="description-content">
-                <span v-if="state.product.detail.description" v-html="formatter.convertLineBreaks(state.product.detail.description)"></span>
-                <span v-else>설명이 없습니다.</span>
-              </div>
-            </div>
-            <!-- 사이즈 가이드 -->
-            <div class="size-guide">
-              <div class="size-guide-title" @click="toggleShowDetail('sizeGuide')">
-                <span>사이즈 가이드 </span>
-                <i class="bi" :class="{'bi-chevron-down': !state.showDetail.sizeGuide, 'bi-chevron-up': state.showDetail.sizeGuide}"></i>
-              </div>
-              <div v-if="state.showDetail.sizeGuide" class="size-guide-content">
-                <span v-if="state.product.detail.sizeGuide" v-html="formatter.convertLineBreaks(state.product.detail.sizeGuide)"></span>
-                <span v-else>설명이 없습니다.</span>
-              </div>
-            </div>
-            <!-- 교환 및 환불 -->
-            <div class="exchange-return">
-              <div class="exchange-return-title" @click="toggleShowDetail('exchangeReturn')">
-                <span>교환 및 환불 </span>
-                <i class="bi" :class="{'bi-chevron-down': !state.showDetail.exchangeReturn, 'bi-chevron-up': state.showDetail.exchangeReturn}"></i>
-              </div>
-              <div v-if="state.showDetail.exchangeReturn" class="exchange-return-content">
-                <span>
-                  빈티지의류 특성 상 교환 및 환불이 어렵습니다.<br>
-                  신중한 구매 부탁 드리겠습니다.
-                </span>
-              </div>
-            </div>
-            <!-- 기타 문의 -->
-            <div class="other-inquiry">
-              <div class="other-inquiry-title" @click="toggleShowDetail('otherInquiry')">
-                <span>기타 문의 </span>
-                <i class="bi" :class="{'bi-chevron-down': !state.showDetail.otherInquiry, 'bi-chevron-up': state.showDetail.otherInquiry}"></i>
-              </div>
-              <div v-if="state.showDetail.otherInquiry" class="other-inquiry-content">
-                <span>
-                  기타 문의 사항은 아래로 문의 부탁드립니다.<br>
-                  오픈 카카오: https://open.kakao.com/d/sW3ukRnc
-                </span>
-              </div>
-            </div>
-          </div>
-
           <!-- 액션 버튼 -->
           <div class="actions">
             <button type="button" class="button btn-add-cart"
                     @click="addToCart(state.selectedSizeId)" :disabled="state.isSubmitting">
               카트 추가
             </button>
-            <button type="button" class="button btn-add-wishlist"
-                    @click="isWishlist ? removeFromWishlist() : addToWishlist()" :disabled="state.isSubmitting">
-              <span v-if="isWishlist">위시리스트 삭제</span>
-              <span v-else>위시리스트 추가</span>
-            </button>
           </div>
         </div>
       </div>
 
-      <!-- 리뷰 섹션 추가 -->
-<!--      <div class="review-section">-->
-<!--        <ProductReviews :productId="Number(route.params.id)" />-->
-<!--      </div>-->
+      <!-- 상세 정보 섹션 추가 -->
+      <div class="product-detail-section">
+        <div class="content" v-if="state.product.detail && state.product.detail.content">
+          <span v-html="state.product.detail.content"></span>
+        </div>
+
+        <div class="announce">
+          - 라이트하우스에서 판매하는 빈티지 제품들은 새상품이 아닌 중고 상품으로, 컨디션에 민감하신 분들은 신중한 구매결정 부탁드립니다.<br>
+          - 간혹 오프라인 스토어에서 판매된 제품이 품절 처리가 되어있지 않은 경우가 있어요. 양해 부탁드립니다.<br>
+          - 제품의 실측은 측정 위치, 재는 방법에 따라 오차가 있을 수 있습니다.<br>
+          - 오프라인 스토어는 매 주 월요일,화요일 휴무로 해당 기간 주문건은 수요일 일괄 발송됩니다. (주말 주문건은 월요일 발송!)<br>
+          - 택배는 롯데택배로 발송됩니다. (기본 3,000 / 제주 및 산간지역 6,000)
+        </div>
+      </div>
+
+      <!-- Q&A 섹션 추가 -->
+      <div class="qa-section">
+        <b>Q&A (<span class="count-inquiries">{{ state.totalContacts }}</span>)</b><br>
+        구매하시려는 상품에 대해 궁금한 점이 있으면 문의주세요.
+
+        <div class="actions">
+          <button type="button" class="button btn-inquiry-product" @click="showContactUsModal('PRODUCT_INFO')">상품문의</button>
+          <button type="button" class="button btn-inquiry-personal" @click="showContactUsModal('PERSONAL')">1:1 문의</button>
+        </div>
+
+        <div class="contacts" v-if="state.contacts.length > 0">
+          <div class="pagination" v-if="state.page.totalPages > 1">
+            <button type="button" @click="goToPage(state.page.currentPage - 1)" :disabled="state.page.currentPage === 1"><i class="bi bi-caret-left-fill"></i></button>
+            <span v-for="page in state.page.totalPages" :key="page" :class="{ 'current-page': state.page.currentPage === page }" @click="goToPage(page)"> {{ page }} </span>
+            <button type="button" @click="goToPage(state.page.currentPage + 1)" :disabled="state.page.currentPage === state.page.totalPages"><i class="bi bi-caret-right-fill"></i></button>
+          </div>
+
+          <table>
+            <thead>
+              <tr><th></th><th>제목</th><th>답변</th><th>작성자</th><th v-if="!isMobile">작성 날짜</th></tr>
+            </thead>
+            <tbody>
+              <template v-for="contact in state.contacts" :key="contact.id">
+                <tr class="inquiry-title" @click="toggleContactContent(contact)">
+                  <td class="is-private-col"><i class="bi" :class="contact.isPrivate ? 'bi-lock' : 'bi-unlock'"></i></td>
+                  <td class="title-col">{{ contact.title }}</td>
+                  <td class="status-col">{{ formatter.getContactStatusName(contact.status) }}</td>
+                  <td class="inquirer-email-col">{{ contact.inquirerEmail }}</td>
+                  <td class="reg-date-col" v-if="!isMobile">{{ formatter.getFormattedDate(contact.regDate, 'YYYY-MM-DD') }}</td>
+                </tr>
+                <tr class="inquiry-content" v-if="!contact.isPrivate && state.selectedContactId === contact.id">
+                  <td class="inquiry-content-empty-col"></td>
+                  <td class="inquiry-content-col" :colspan="isMobile ? 3 : 4">{{ contact.content }}</td>
+                </tr>
+                <tr class="answer-content" v-if="!contact.isPrivate && state.selectedContactId === contact.id && contact.status === 'ANSWERED'">
+                  <td class="answer-content-empty-col"></td>
+                  <td class="answer-content-col" :colspan="isMobile ? 3 : 4"><span class="indent">└</span>{{ state.selectedContactAnswerContent }}</td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="contacts no-contact-data" v-else>등록된 문의가 없습니다.</div>
+      </div>
     </div>
 
     <div class="not-in-stock-overlay" v-if="!state.isLoading && state.product.status !== 'ON_SALE'">
       <div class="not-in-stock">NOT IN STOCK</div>
     </div>
+
+    <ContactUsModal v-if="state.showContactUsModal" :show="state.showContactUsModal"
+                    :type="state.contact.type" :product="state.contact.product"
+                    @close="state.showContactUsModal = false" @updated="load" />
   </div>
 </template>
 
@@ -169,9 +239,11 @@ import formatter from "@/scripts/formatter";
 import price from "@/scripts/price";
 import router from "@/scripts/router";
 import store from "@/scripts/store";
+import ContactUsModal from "@/components/modules/contact/ContactUsModal.vue";
 
 export default {
   name: "ProductDetail",
+  components: {ContactUsModal},
   data() {
     return {
       product: Object,
@@ -191,7 +263,15 @@ export default {
       selectedImageIndex: 0,
       selectedSizeId: 0,
       selectedQuantity: 1,
-      showDetail: {description: false, sizeGuide: false, exchangeReturn: false, otherInquiry: false}
+      showDetail: {description: false, sizeGuide: false, exchangeReturn: false, otherInquiry: false},
+      // 문의 관련
+      showContactUsModal: false,
+      totalContacts: 0,
+      selectedContactId: 0,
+      selectedContactAnswerContent: '',
+      contact: {type: '', product: {id:0, name:''}},
+      contacts: [],
+      page: {pageSize: 5, currentPage: 1, totalPages: 0},
     });
 
     const isNew = (regDate) => {
@@ -202,6 +282,19 @@ export default {
 
     const toggleShowDetail = (key) => {
       state.showDetail[key] = !state.showDetail[key];
+    };
+
+    const toggleContactContent = (contact) => {
+      if (state.selectedContactId === contact.id) {
+        state.selectedContactId = null;
+        state.selectedContactAnswerContent = '';
+
+      } else {
+        state.selectedContactId = contact.id;
+
+        if (contact.status === 'ANSWERED')
+        getProductContactAnswer(contact.id);
+      }
     };
 
     // TODO: 인증서 해결 후 모바일 대응 추가할 것. touchmove, touchend
@@ -352,6 +445,26 @@ export default {
       state.selectedImageIndex = index;
     };
 
+    const getProductContactList = () => {
+      axios.get(`/api/contact/list/${productId}?page=${state.page.currentPage - 1}&size=${state.page.pageSize}&sort=regDate,desc`).then(({data}) => {
+        state.contacts = data.contacts;
+        state.totalContacts = data.totalContacts;
+        state.page.totalPages = data.totalPages;
+
+      }).catch(() => {
+        window.alert('오류가 발생했습니다. 다시 시도해주세요.');
+      });
+    };
+
+    const getProductContactAnswer = (contactId) => {
+      axios.get(`/api/contact/answer/${contactId}`).then(({data}) => {
+        state.selectedContactAnswerContent  = data;
+
+      }).catch(() => {
+        window.alert('오류가 발생했습니다. 다시 시도해주세요.');
+      });
+    };
+
     const load = () => {
       state.isLoading = true; // 상품 정보 요청 전 로딩 상태를 true로 설정
 
@@ -364,6 +477,9 @@ export default {
         recordRecentlyViewedProduct();
         checkWishlist();
         recordProductViewLog();
+
+        state.page.currentPage = 1;
+        getProductContactList();
 
       }).catch(error => {
         if (error.response) {
@@ -413,6 +529,25 @@ export default {
       }
     };
 
+    const showContactUsModal = (type) => {
+      if (type === 'PRODUCT_INFO') {
+        // 상품 문의의 경우
+        state.contact.type = type;
+        state.contact.product = state.product;
+
+      } else {
+        // 1:1 문의의 경우
+        state.contact.type = '';
+        state.contact.product = {id: 0, name:''};
+      }
+      state.showContactUsModal = true;
+    };
+
+    const goToPage = (page) => {
+      state.page.currentPage = page;
+      getProductContactList();
+    };
+
     watch(() => state.selectedSizeId, (newSizeId, oldSizeId) => {
       if (newSizeId !== oldSizeId) {
         checkWishlist();
@@ -423,6 +558,7 @@ export default {
 
     return {
       formatter, price,
+      isMobile,
       route, state, isWishlist, imageListRef,
       isNew,
       zoom,
@@ -431,6 +567,8 @@ export default {
       addToWishlist, removeFromWishlist, checkWishlist,
       toggleShowDetail,
       selectImage, addToCart,
+      load,
+      toggleContactContent, showContactUsModal, goToPage,
     }
   }
 }

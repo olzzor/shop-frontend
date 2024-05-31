@@ -1,8 +1,8 @@
 <template>
   <div class="home">
+    <RecommendedProducts />
     <Products :products="state.products" :isSearched="state.isSearched" @sort-change="handleSortOptionChange"/>
     <button type="button" class="btn-load-more" v-if="state.page.currentPage < state.page.totalPages" @click="loadMore">VIEW MORE</button>
-    <RecommendedProducts />
     <RecentlyViewedProducts />
   </div>
 
@@ -16,7 +16,7 @@
 <script>
 import {onMounted, reactive, watch} from "vue";
 import {onBeforeRouteLeave, useRoute} from "vue-router";
-import {isMobile, isTablet} from "@/scripts/mixin";
+import {isMobile} from "@/scripts/mixin";
 import axios from "axios";
 import store from "@/scripts/store";
 import formatter from "@/scripts/formatter";
@@ -35,7 +35,7 @@ export default {
       isSearched: false,
       sortOption: 'regDate,desc', // 기본 정렬 옵션
       products: [],
-      page: {pageSize: isMobile()? 2: isTablet()? 3: 4, currentPage: 1, totalPages: 0},
+      page: {pageSize: isMobile()? 4: 6, currentPage: 1, totalPages: 0},
       notices: [],
       currentNoticeModalIndex: 0,
       showNoticeModalOverlay: false, // 복수 공지 모달의 오버레이 중첩 예방을 위해 추가

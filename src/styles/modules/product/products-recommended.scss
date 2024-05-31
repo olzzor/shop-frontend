@@ -9,35 +9,6 @@
   }
 
   .content {
-    .pagination {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding-inline: 15px;
-      gap: 0.1rem;
-      font-size: 0.9rem;
-
-      button {
-        border: none;
-        background-color: transparent;
-
-        &:not(:disabled) .bi {
-          color: black;
-        }
-      }
-
-      span {
-        cursor: pointer;
-        color: gray;
-        margin: 0 2px;
-
-        &.current-page {
-          color: black;
-          font-weight: bold;
-        }
-      }
-    }
-
     .grid {
       display: flex;
       flex-wrap: wrap;
@@ -48,7 +19,7 @@
         padding: 15px;
 
         .product {
-          border: 1px solid rgba(169, 169, 169, .3);
+          border: none;
 
           .image-section {
             position: relative;
@@ -91,82 +62,54 @@
               }
             }
           }
-
-          .detail-section {
-            flex: 1;
-            display: flex;
-            padding: 10px 15px;
-            justify-content: space-between;
-
-            .info-section {
-              flex: 2;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-
-              .title-row {
-                display: flex;
-                align-items: center;
-                font-size: 0.75rem;
-                font-weight: bold;
-                max-width: 270px;
-
-                .new-label {
-                  background-color: #dc3545;
-                  color: white;
-                  padding: 0.2rem 0.5rem;
-                  margin-right: 0.3rem;
-                  line-height: 1; // 줄 간격을 1로 설정하여 패딩에 의해 높이가 늘어나지 않도록 함.
-                }
-
-                .discount-per {
-                  //display: inline;
-                  white-space: nowrap;
-                  align-items: center;
-                  color: #dc3545;
-                  margin-right: 0.2rem;
-                }
-
-                .name {
-                  //display: inline-block;
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                }
-              }
-
-              .pricing-row {
-                font-size: 0.85rem;
-
-                .price-container {
-                  display: flex;
-                  align-items: center;
-                  gap: 0.25rem;
-
-                  .original-price {
-                    color: #6c757d;
-
-                    &.sale {
-                      text-decoration: line-through;
-                    }
-                  }
-
-                  .discounted-price {
-                    color: #dc3545;
-                  }
-                }
-              }
-            }
-
-            .action-buttons {
-              flex: 1;
-              display: flex;
-              align-items: center;
-              justify-content: flex-end;
-            }
-          }
         }
       }
+    }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+
+      .page-bar {
+        background-color: #ccc;
+        width: 25px;
+        height: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &.active {
+          background-color: black;
+        }
+      }
+
+      //display: flex;
+      //justify-content: flex-end;
+      //align-items: center;
+      //padding-inline: 15px;
+      //gap: 0.1rem;
+      //font-size: 0.9rem;
+      //
+      //button {
+      //  border: none;
+      //  background-color: transparent;
+      //
+      //  &:not(:disabled) .bi {
+      //    color: black;
+      //  }
+      //}
+      //
+      //span {
+      //  cursor: pointer;
+      //  color: gray;
+      //  margin: 0 2px;
+      //
+      //  &.current-page {
+      //    color: black;
+      //    font-weight: bold;
+      //  }
+      //}
     }
   }
 }

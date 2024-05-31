@@ -25,29 +25,6 @@
                 </div>
               </router-link>
             </div>
-
-            <div class="detail-section">
-              <div class="info-section">
-                <div class="title-row">
-                  <span class="new-label" v-if="isNew(rv.product.regDate)">NEW</span>
-                  <span class="discount-per" v-if="rv.product.discountPer">{{ rv.product.discountPer }}%↓</span>
-                  <span class="name">{{ rv.product.name }} &nbsp;</span>
-                </div>
-
-                <div class="pricing-row">
-                  <div class="price-container">
-                    <small class="original-price" :class="{ 'sale': rv.product.discountPer }">{{ formatter.getFormattedNumber(rv.product.price) }}원</small>
-                    <small class="discounted-price" v-if="rv.product.discountPer"> {{ formatter.getFormattedNumber(rv.product.price - (rv.product.price * rv.product.discountPer / 100)) }}원</small>
-                  </div>
-                </div>
-              </div>
-
-              <div class="action-buttons">
-                <span role="button" tabindex="0" @click="handleSelectProductSizeModal(rv.product.id)">
-                  <i class="bi bi-heart"></i>
-                </span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -61,7 +38,6 @@
 <script>
 import {computed, nextTick, reactive, ref, watchEffect} from "vue";
 import {isMobile, isTablet} from "@/scripts/mixin";
-import dayjs from "dayjs";
 import axios from "axios";
 import formatter from "@/scripts/formatter";
 import store from "@/scripts/store";
@@ -78,12 +54,6 @@ export default {
       recentlyViewedProducts: [],
       page: {pageSize: isMobile()? 2: isTablet()? 3: 4, currentPage: 1, totalPages: 0},
     });
-
-    const isNew = (regDate) => {
-      const today = dayjs();
-      const registeredDate = dayjs(regDate);
-      return registeredDate.isAfter(today.subtract(7, 'days'));
-    };
 
     const goToPage = (page) => {
       const direction = page > state.page.currentPage ? 'right' : 'left'; // 추가
@@ -153,7 +123,6 @@ export default {
       formatter,
       state,
       showSelectProductSizeModal, selectedProductId,
-      isNew,
       handleSelectProductSizeModal,
       goToPage
     }

@@ -83,25 +83,15 @@
         </div>
       </div>
 
-      <!-- 사이즈 가이드 -->
-      <div class="detail-container">
-        <label class="input-label" for="product-detail">사이즈 가이드</label>
-        <div class="input-container">
-          <textarea class="input-field" id="product-detail" placeholder="설명을 입력해주세요."
-                    v-model="state.form.detail.sizeGuide" @input="autoGrow"/>
-          <div class="error-message" v-if="state.errorMessage.detailSizeGuide">{{ state.errorMessage.detailSizeGuide }}</div>
-        </div>
-      </div>
-
-      <!-- 제품 설명 -->
-      <div class="detail-container">
-        <label class="input-label" for="product-detail">제품 설명</label>
-        <div class="input-container">
-          <textarea class="input-field" id="product-detail" placeholder="설명을 입력해주세요."
-                    v-model="state.form.detail.description" @input="autoGrow"/>
-          <div class="error-message" v-if="state.errorMessage.detailDescription">{{ state.errorMessage.detailDescription }}</div>
-        </div>
-      </div>
+<!--      &lt;!&ndash; 사이즈 가이드 &ndash;&gt;-->
+<!--      <div class="detail-container">-->
+<!--        <label class="input-label" for="product-detail">사이즈 가이드</label>-->
+<!--        <div class="input-container">-->
+<!--          <textarea class="input-field" id="product-detail" placeholder="설명을 입력해주세요."-->
+<!--                    v-model="state.form.detail.sizeGuide" @input="autoGrow"/>-->
+<!--          <div class="error-message" v-if="state.errorMessage.detailSizeGuide">{{ state.errorMessage.detailSizeGuide }}</div>-->
+<!--        </div>-->
+<!--      </div>-->
 
       <!-- 이미지 -->
       <div class="images-container">
@@ -114,6 +104,25 @@
           <p>+</p>
           <input type="file" id="product-images" multiple accept="image/*" ref="imageInput" style="display: none"
                  @change="previewImage" />
+        </div>
+      </div>
+
+      <!-- 제품 설명 -->
+      <div class="detail-description-container">
+        <label class="input-label" for="product-detail-description">제품 설명</label>
+        <div class="input-container">
+          <textarea class="input-field" id="product-detail-description" placeholder="설명을 입력해주세요."
+                    v-model="state.form.detail.description" @input="autoGrow"/>
+          <div class="error-message" v-if="state.errorMessage.detailDescription">{{ state.errorMessage.detailDescription }}</div>
+        </div>
+      </div>
+
+      <!-- 상세 정보 -->
+      <div class="detail-content-container">
+        <label class="input-label" for="product-detail-content">상세 정보</label>
+        <div class="input-container">
+          <CKEditor id="product-detail-content" v-model="editorContent" :uploadType="'products'"/>
+          <div class="error-message" v-if="state.errorMessage.detailContent">{{ state.errorMessage.detailContent }}</div>
         </div>
       </div>
 
@@ -137,23 +146,25 @@
 import {nextTick, onMounted, reactive, ref} from "vue";
 import axios from "axios";
 import lib from "@/scripts/lib";
+import CKEditor from "@/components/common/CKEditor.vue";
 import constants from "@/scripts/constants";
 
 export default {
   name: "ProductRegist",
-  components: {},
+  components: {CKEditor},
   setup() {
     const categories = constants.CATEGORIES;
     const images = ref([]);
     const imageInput = ref(null);
 
+    const editorContent = ref('');
     const state = reactive({
       isSubmitting: false,
       categorySelection: {selectedMainCategoryCode: '', subCategories: [], isSubCategoryDisabled: true,},
       form: {
         product: {categoryCode: '', name: '', price: 1, discountPer: 0, isDisplay: true},
         sizes: [{size: '', quantity: 1}],
-        detail: {description: '', sizeGuide: ''},
+        detail: {description: '', content: ''},
         files: [],
       },
       errorMessage: {},
@@ -211,7 +222,7 @@ export default {
 
       const MAX_NAME_LENGTH = 100;
       const MAX_DETAIL_DESCRIPTION_LENGTH = 2000;
-      const MAX_DETAIL_SIZE_GUIDE_LENGTH = 2000;
+      const MAX_DETAIL_CONTENT_LENGTH = 10000;
 
       state.errorMessage = {};
 
@@ -254,8 +265,8 @@ export default {
         result = false;
       }
 
-      if (state.form.detail.sizeGuide && state.form.detail.sizeGuide.length > MAX_DETAIL_SIZE_GUIDE_LENGTH) {
-        state.errorMessage.detailSizeGuide = `사이즈 가이드는 ${MAX_DETAIL_SIZE_GUIDE_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
+      if (state.form.detail.content && state.form.detail.content.length > MAX_DETAIL_CONTENT_LENGTH) {
+        state.errorMessage.detailContent = `상세 정보는 ${MAX_DETAIL_CONTENT_LENGTH.toLocaleString()}자 이하로 입력해주세요.`;
         result = false;
       }
 
@@ -266,6 +277,8 @@ export default {
       state.isSubmitting = true;
 
       if (checkInput()) {
+        state.form.detail.content = editorContent.value;
+
         const formData = new FormData();
 
         formData.append('product', JSON.stringify(state.form.product));
@@ -313,7 +326,7 @@ export default {
 
     return {
       lib,
-      categories, imageInput, images, state,
+      categories, imageInput, images, editorContent, state,
       updateSubCategories,
       addSizeInput,
       clickImageInput, previewImage, dropImage, deleteImage,

@@ -14,7 +14,7 @@ export default class UploadAdapter {
             const formData = new FormData();
             formData.append('image', file);
 
-            axios.post('/api/toast-ui/image-upload', formData, {
+            axios.post('/api/editor/image-upload', formData, {
                 headers: {'upload-type': this.uploadType}
 
             }).then(({data}) => {

@@ -1,7 +1,7 @@
 <template>
   <div class="stats-sales">
     <div class="title">
-      <p>매출 분석 (날짜)</p>
+      <p>매출 분석</p>
       <button type="button" class="btn-batch" @click="runBatch">batch</button>
     </div>
 

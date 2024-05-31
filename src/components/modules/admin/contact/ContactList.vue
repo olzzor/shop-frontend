@@ -40,12 +40,21 @@
           <tr>
             <th colspan="2">조건</th>
             <th>
+              <select class="select-field" v-model="state.form.isPrivate">
+                <option value="">전체</option>
+                <option :value="false">공개</option>
+                <option :value="true">비공개</option>
+              </select>
+            </th>
+
+            <th>
               <select class="select-field" v-model="state.form.type">
                 <option value="">전체</option>
                 <option v-for="ct in contactTypes" :key="ct.key" :value="ct.key">{{ ct.description }}</option>
               </select>
             </th>
 
+            <th><input type="text" class="input-field" v-model="state.form.productName"></th>
             <th><input type="text" class="input-field" v-model="state.form.title"></th>
             <th><input type="text" class="input-field" v-model="state.form.inquirerName"></th>
             <th><input type="text" class="input-field" v-model="state.form.inquirerEmail"></th>
@@ -92,10 +101,17 @@
               </router-link>
             </td>
 
+            <td>{{ contact.isPrivate ? '비공개' : '공개' }}</td>
+
             <td>
               <select class="select-field" v-model="contact.type" :disabled="!state.isModify[idx].value">
                 <option v-for="ct in contactTypes" :key="ct.key" :value="ct.key">{{ ct.description }}</option>
               </select>
+            </td>
+
+            <td>
+              <span v-if="contact.product">{{ contact.product.name }}</span>
+              <span v-else>-</span>
             </td>
 
             <td>{{ contact.title }}</td>
@@ -153,15 +169,15 @@ export default {
   name: 'ContactList',
   components: {},
   setup() {
-    const tableHeaders = ['문의 사항', '제목', '문의자 이름', '문의자 이메일', '주문 번호', '상태', '작성 날짜'];
-    const sortKey = ['type', 'title', 'inquirerName', 'inquirerEmail', 'orderNumber', 'status', 'regDate'];
+    const tableHeaders = ['공개 여부', '문의 사항', '문의 상품', '제목', '문의자 이름', '문의자 이메일', '주문 번호', '상태', '작성 날짜'];
+    const sortKey = ['isPrivate', 'type', 'contactProduct', 'title', 'inquirerName', 'inquirerEmail', 'orderNumber', 'status', 'regDate'];
     const contactTypes = constants.CONTACT_TYPES;
     const contactStatuses = constants.CONTACT_STATUSES;
 
     const state = reactive({
       contacts: [],
       form: {
-        type: '', title: '', inquirerName: '', inquirerEmail: '', orderNumber: '', status: '',
+        isPrivate: '', type: '', productName:'', title: '', inquirerName: '', inquirerEmail: '', orderNumber: '', status: '',
         startRegDate: '', endRegDate: '',
       },
       page: {pageSize: 15, currentPage: 1, totalPages: 0},
@@ -194,8 +210,10 @@ export default {
 
       tableDatas.forEach((data, idx) => {
         rows += (idx + 1)
+            + '\t' + (data.isPrivate ? '비공개' : '공개')
             + '\t' + formatter.getContactTypeName(data.type)
             + '\t' + data.title
+            + '\t' + data.productName
             + '\t' + data.inquirerName
             + '\t' + data.inquirerEmail
             + '\t' + data.orderNumber
@@ -270,7 +288,7 @@ export default {
 
     const clearSearchConditions = () => {
       state.form = {
-        type: '', title: '', inquirerName: '', inquirerEmail: '',
+        isPrivate: '', type: '', productName: '', title: '', inquirerName: '', inquirerEmail: '',
         orderNumber: '', status: '', startRegDate: '', endRegDate: '',
       };
     };

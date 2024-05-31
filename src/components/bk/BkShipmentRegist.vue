@@ -6,17 +6,13 @@
         <input type="text" class="input-field" v-model="state.form.orderNumber" placeholder="주문 번호" disabled>
 
         <select class="select-field" v-model="state.form.courier">
-          <option v-for="cc in courierCompanies" :key="cc" :value="cc">
-            {{ lib.getCourierCompanyName(cc) }}
-          </option>
+          <option v-for="cc in courierCompanies" :key="cc.key" :value="cc.key">{{ cc.description }}</option>
         </select>
 
         <input type="text" class="input-field" v-model="state.form.trackingNumber" placeholder="송장 번호">
 
         <select class="select-field" v-model="state.form.status">
-          <option v-for="status in shipmentStatuses" :key="status" :value="status">
-            {{ lib.getShipmentStatusName(status) }}
-          </option>
+          <option v-for="ss in shipmentStatuses" :key="ss.key" :value="ss.key">{{ ss.description }}</option>
         </select>
       </div>
       <button @click="regist">저장</button>
@@ -29,12 +25,13 @@
 import {reactive} from 'vue';
 import axios from 'axios';
 import lib from "@/scripts/lib";
+import constants from "@/scripts/constants";
 
 export default {
   props: ['isVisible', 'orderNumber'],
   setup(props, {emit}) {
-    const courierCompanies = lib.courierCompanies;
-    const shipmentStatuses = lib.shipmentStatuses;
+    const courierCompanies = constants.COURIER_COMPANIES;
+    const shipmentStatuses = constants.SHIPMENT_STATUSES;
 
     const state = reactive({
       form: {orderNumber: "", courier: "", trackingNumber: "", status: "",}

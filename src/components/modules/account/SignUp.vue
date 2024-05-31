@@ -120,7 +120,7 @@ export default {
 
       if (checkInput()) {
         axios.post('/api/user/signup', state.form).then(() => {
-          window.alert('계정 생성에 성공하였습니다.');
+          window.alert('가입되었습니다.');
           login();
 
         }).catch(error => {

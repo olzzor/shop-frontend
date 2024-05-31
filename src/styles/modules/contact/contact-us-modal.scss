@@ -19,6 +19,17 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
   form {
+    .product-inquiry-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      span {}
+      i {
+        font-size: 20px;
+      }
+    }
+
     .inquirer-email-field, .inquirer-name-field, .order-number-field, .title-field, .content-field {
       display: flex;
       align-items: center;

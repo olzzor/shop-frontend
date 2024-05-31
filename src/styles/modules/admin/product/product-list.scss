@@ -105,8 +105,15 @@
         .column-product-category {
           width: 150px;
         }
+
         .column-product-size {
           width: 180px;
+
+          .product-size {
+            #product-size-quantity {
+              width: 50px;
+            }
+          }
         }
 
         .column-product-image {

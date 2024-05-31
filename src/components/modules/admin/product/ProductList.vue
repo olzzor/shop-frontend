@@ -120,8 +120,11 @@
 
           <td class="column-product-size">
             <div class="product-size">
-              <span v-for="(ps, idx) in product.productSizes" :key="idx">
-                {{ getProductSize(ps) }}<br>
+              <span v-for="(ps, index) in product.productSizes" :key="index">
+<!--                {{ getProductSize(ps) }}-->
+                {{ps.size}} (재고:
+                <input type="text" class="input-field" id="product-size-quantity" v-model="product.productSizes[index].adjustmentQuantity" :disabled="!state.isModify[idx].value">
+                )<br>
               </span>
             </div>
           </td>
@@ -255,28 +258,36 @@ export default {
 
     const getFullList = () => {
       axios.get(`/api/product/list?page=${state.page.currentPage - 1}&size=${state.page.pageSize}&sort=regDate,desc`).then(({data}) => {
-        state.products = data.products;
-        state.page.totalPages = data.totalPages;
-        state.selectedAll = false;
-        state.isModify = Array(data.products.length).fill().map(() => ref(false));
+        setLoadData(data);
       });
     };
 
     const getSearchedList = () => {
       axios.post(`/api/product/search?page=${state.page.currentPage - 1}&size=${state.page.pageSize}`, state.form).then(({data}) => {
-        state.products = data.products;
-        state.page.totalPages = data.totalPages;
-        state.selectedAll = false;
-        state.isModify = Array(data.products.length).fill().map(() => ref(false));
+        setLoadData(data);
       })
-    }
+    };
+
+    const setLoadData = (data) => {
+      state.products = data.products.map(product => ({
+        ...product,
+        productSizes: product.productSizes.map(size => ({
+          ...size,
+          // adjustmentQuantity 는 백엔드에서 재고 업데이트의 경우, 프론트에서 입력된 수정 전후의 수량차로 갱신하기 위함. 업데이트 시 실시간으로 상품이 판매되어 수량이 변경된 경우에 대비하기 위함.
+          adjustmentQuantity: size.quantity
+        }))
+      }));
+      state.page.totalPages = data.totalPages;
+      state.selectedAll = false;
+      state.isModify = Array(data.products.length).fill().map(() => ref(false));
+    };
 
     const searchFull = () => {
       state.onclickSearchCondition = false;
       state.page.currentPage = 1;
 
       getFullList();
-    }
+    };
 
     const searchCondition = () => {
       state.onclickSearchCondition = true;
@@ -287,8 +298,8 @@ export default {
 
     const clearSearchConditions = () => {
       state.form = {
-        categoryCode: '', name: '', price: '', discountPer: '', isDisplay: true,
-        status: '', startRegDate: '', endRegDate: '', startModDate: '', endModDate: '',
+        categoryCode: '', name: '', productSize: '', price: '', discountPer: '', isDisplay: true, status: '',
+        startRegDate: '', endRegDate: '', startModDate: '', endModDate: '',
       };
     };
 
@@ -335,8 +346,18 @@ export default {
               status: product.status
             }));
 
+        const productSizesDataList = state.products.filter((product, idx) => state.isModify[idx].value)
+            .flatMap(product => product.productSizes.map(size => ({
+              productId: product.id,
+              id: size.id,
+              size: size.size,
+              quantity: size.quantity,
+              adjustmentQuantity: size.adjustmentQuantity
+            })));
+
         const formData = new FormData();
         formData.append('productList', JSON.stringify(productDataList));
+        formData.append('sizesList', JSON.stringify(productSizesDataList));
 
         axios.post("/api/product/update/multiple", formData, {
           headers: {'Content-Type': 'multipart/form-data'}

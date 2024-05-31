@@ -39,12 +39,6 @@
           </tr>
 
           <tr>
-            <td colspan="2" class="table-title">내용</td>
-            <td>(생략)</td>
-            <td><router-link :to="{ name: 'AdminNoticeContentUpdate', params: { id: state.notice.id }}">내용 변경</router-link></td>
-          </tr>
-
-          <tr>
             <td colspan="2" class="table-title">메인 이미지</td>
             <td>
               <div class="image">
@@ -61,6 +55,12 @@
                 </div>
               </div>
             </td>
+          </tr>
+
+          <tr>
+            <td colspan="2" class="table-title">내용</td>
+            <td>(생략)</td>
+            <td><router-link :to="{ name: 'AdminNoticeContentUpdate', params: { id: state.notice.id }}">내용 변경</router-link></td>
           </tr>
 
           <tr>

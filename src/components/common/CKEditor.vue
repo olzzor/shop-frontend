@@ -20,7 +20,7 @@ export default {
       type: String, default: ''
     },
     uploadType: {
-      type: String, default: 'notice'
+      type: String, default: 'products'
     }
   },
   setup(props, {emit}) {
@@ -126,6 +126,25 @@ export default {
         ],
         columns: 9,
         documentColors: 9,
+      },
+      image: {
+        resizeOptions: [
+          {
+            name: 'resizeImage:original',
+            value: null,
+            icon: 'original'
+          },
+          {
+            name: 'resizeImage:50',
+            value: '50',
+            icon: 'medium'
+          },
+          {
+            name: 'resizeImage:75',
+            value: '75',
+            icon: 'large'
+          }
+        ]
       },
     });
 
